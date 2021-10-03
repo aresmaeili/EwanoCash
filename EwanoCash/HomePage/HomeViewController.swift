@@ -10,12 +10,13 @@ import UIKit
 class HomeViewController: UIViewController {
     
     
-    @IBAction func navigationAddButton(_ sender: Any) {
-    }
+
+    @IBOutlet weak var homeChartView: UIView!
     
-    @IBOutlet weak var homeChartLabel: UILabel!
     @IBOutlet weak var homeTableView: UITableView!
     
+    @IBAction func plusAddButton(_ sender: Any) {
+    }
     
     let items = ["bill" , "buying show" , "coffee" , "taxi"]
     override func viewDidLoad() {
@@ -27,8 +28,13 @@ class HomeViewController: UIViewController {
         homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         homeTableView.delegate = self
         homeTableView.dataSource = self
-        homeChartLabel.layer.cornerRadius = 25
-        homeChartLabel.clipsToBounds = true
+        navigationItem.title = "Month Of June"
+
+        
+        
+        
+        homeChartView.layer.cornerRadius = 25
+        homeChartView.clipsToBounds = true
         
         
         

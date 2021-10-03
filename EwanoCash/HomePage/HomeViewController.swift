@@ -7,9 +7,11 @@
 
 import UIKit
 
-class HomeViewController: UIViewController{
-
+class HomeViewController: UIViewController {
     
+    
+    @IBAction func navigationAddButton(_ sender: Any) {
+    }
     
     @IBOutlet weak var homeChartLabel: UILabel!
     @IBOutlet weak var homeTableView: UITableView!
@@ -18,26 +20,28 @@ class HomeViewController: UIViewController{
     let items = ["bill" , "buying show" , "coffee" , "taxi"]
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        
         homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         homeTableView.delegate = self
         homeTableView.dataSource = self
         homeChartLabel.layer.cornerRadius = 25
         homeChartLabel.clipsToBounds = true
-
-
+        
+        
         
         
     }
     
-    
 }
-
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         cell.itemTitle.text = items[indexPath.row]
-//        cell?.itemImage.image =
+        //        cell?.itemImage.image =
         cell.itemPrice.text = ""
         return cell
     }
@@ -47,3 +51,27 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     }
 }
 
+extension UINavigationItem {
+    
+    func setTitle(_ title: String, subtitle: String) {
+        let appearance = UINavigationBar.appearance()
+        let textColor = appearance.titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .black
+        
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .preferredFont(forTextStyle: UIFont.TextStyle.headline)
+        titleLabel.textColor = textColor
+        
+        let subtitleLabel = UILabel()
+        subtitleLabel.text = subtitle
+        subtitleLabel.font = .preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
+        subtitleLabel.textColor = textColor.withAlphaComponent(0.75)
+        
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
+        stackView.axis = .vertical
+        
+        self.titleView = stackView
+    }
+}

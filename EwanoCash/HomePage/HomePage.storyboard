@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
+        <!--Month of June-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="HomeViewController" customModule="EwanoCash" customModuleProvider="target" sceneMemberID="viewController">
@@ -69,7 +69,9 @@
                             <constraint firstItem="Vml-Ab-57q" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="pLf-cc-I8A"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="DTz-gU-64q"/>
+                    <navigationItem key="navigationItem" title="Month of June" id="Ref-Rd-CRz">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Nng-hw-fZX"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="homeChartLabel" destination="W9i-6Q-qcu" id="cWv-cd-EyS"/>
                         <outlet property="homeTableView" destination="15f-QT-TD5" id="Ytf-Gj-3dD"/>
@@ -87,51 +89,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o12-E6-ND5" userLabel="TopperView">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="92"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Reports" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8t6-FN-N7r">
-                                        <rect key="frame" x="115" y="52" width="160" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="bBg-Me-LSd"/>
-                                            <constraint firstAttribute="width" constant="160" id="mdW-GQ-QKL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="8t6-FN-N7r" firstAttribute="top" secondItem="o12-E6-ND5" secondAttribute="top" constant="52" id="K5A-bJ-sTH"/>
-                                    <constraint firstItem="8t6-FN-N7r" firstAttribute="centerX" secondItem="o12-E6-ND5" secondAttribute="centerX" id="Okw-Zd-FaM"/>
-                                    <constraint firstAttribute="bottom" secondItem="8t6-FN-N7r" secondAttribute="bottom" constant="20" id="UAB-N2-qp6"/>
-                                </constraints>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="hsH-Lf-SXx">
-                                <rect key="frame" x="0.0" y="92" width="390" height="752"/>
+                                <rect key="frame" x="0.0" y="88" width="390" height="756"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WGE-5q-PCj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="o12-E6-ND5" firstAttribute="leading" secondItem="WGE-5q-PCj" secondAttribute="leading" id="6sP-i8-PDy"/>
-                            <constraint firstItem="o12-E6-ND5" firstAttribute="top" secondItem="tkH-D4-MXh" secondAttribute="top" id="EeN-CV-Rgw"/>
-                            <constraint firstAttribute="bottom" secondItem="hsH-Lf-SXx" secondAttribute="bottom" id="KtE-pt-QW3"/>
-                            <constraint firstItem="WGE-5q-PCj" firstAttribute="trailing" secondItem="hsH-Lf-SXx" secondAttribute="trailing" id="PUy-JC-sME"/>
-                            <constraint firstItem="hsH-Lf-SXx" firstAttribute="top" secondItem="o12-E6-ND5" secondAttribute="bottom" id="U75-xl-Y4Y"/>
-                            <constraint firstItem="hsH-Lf-SXx" firstAttribute="leading" secondItem="WGE-5q-PCj" secondAttribute="leading" id="W3z-y4-rhs"/>
-                            <constraint firstItem="o12-E6-ND5" firstAttribute="trailing" secondItem="WGE-5q-PCj" secondAttribute="trailing" id="qpV-rg-52y"/>
+                            <constraint firstItem="hsH-Lf-SXx" firstAttribute="trailing" secondItem="WGE-5q-PCj" secondAttribute="trailing" id="GVD-mI-fPB"/>
+                            <constraint firstItem="hsH-Lf-SXx" firstAttribute="top" secondItem="WGE-5q-PCj" secondAttribute="top" id="Get-7r-0yf"/>
+                            <constraint firstAttribute="bottom" secondItem="hsH-Lf-SXx" secondAttribute="bottom" id="h5D-08-s26"/>
+                            <constraint firstItem="hsH-Lf-SXx" firstAttribute="leading" secondItem="WGE-5q-PCj" secondAttribute="leading" id="x44-li-Ydg"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Wallet" image="dollarsign.square" catalog="system" id="SIo-PG-pe7"/>
+                    <navigationItem key="navigationItem" title="Wallet" id="Qvg-xY-qjH"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCo-hl-ofn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2686.1538461538462" y="83.886255924170612"/>
+            <point key="canvasLocation" x="1891" y="776"/>
         </scene>
-        <!--Total-->
+        <!--Total Summery-->
         <scene sceneID="K5G-uV-QMg">
             <objects>
                 <viewController id="EOG-8y-7QS" sceneMemberID="viewController">
@@ -141,11 +119,11 @@
                         <viewLayoutGuide key="safeArea" id="gJ7-kD-tej"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Total" image="sum" catalog="system" id="3h7-k2-zQa"/>
+                    <navigationItem key="navigationItem" title="Total Summery" id="WHy-Fw-waa"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gdN-Kw-Pvw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3558.4615384615386" y="88.862559241706151"/>
+            <point key="canvasLocation" x="1892" y="-627"/>
         </scene>
         <!--Home-->
         <scene sceneID="YfP-mg-YPn">
@@ -153,8 +131,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cMi-Mr-ipM" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="homekit" catalog="system" id="r6J-Rn-A3V"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="p2h-00-q0O">
-                        <rect key="frame" x="0.0" y="44" width="390" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="p2h-00-q0O">
+                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -178,13 +156,51 @@
                     </tabBar>
                     <connections>
                         <segue destination="cMi-Mr-ipM" kind="relationship" relationship="viewControllers" id="lmg-OL-oK9"/>
-                        <segue destination="dTi-qK-YX6" kind="relationship" relationship="viewControllers" id="Nfh-8w-yPT"/>
-                        <segue destination="EOG-8y-7QS" kind="relationship" relationship="viewControllers" id="Dxc-Jg-SLN"/>
+                        <segue destination="N7X-Ka-4my" kind="relationship" relationship="viewControllers" id="Nfh-8w-yPT"/>
+                        <segue destination="R0v-YO-2Ga" kind="relationship" relationship="viewControllers" id="Dxc-Jg-SLN"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="faC-kh-FrW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="33.846153846153847" y="83.886255924170612"/>
+        </scene>
+        <!--Wallet-->
+        <scene sceneID="c91-7H-H7n">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N7X-Ka-4my" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Wallet" image="dollarsign.square" catalog="system" id="SIo-PG-pe7"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wOJ-Fl-B5J">
+                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dTi-qK-YX6" kind="relationship" relationship="rootViewController" id="y15-9W-FBo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6AS-6P-mef" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="963" y="776"/>
+        </scene>
+        <!--Total-->
+        <scene sceneID="9vc-ru-Kfl">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R0v-YO-2Ga" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Total" image="sum" catalog="system" id="3h7-k2-zQa"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hxx-HQ-f17">
+                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EOG-8y-7QS" kind="relationship" relationship="rootViewController" id="orM-BU-Vqq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ukN-6v-guT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="963" y="-627"/>
         </scene>
     </scenes>
     <resources>

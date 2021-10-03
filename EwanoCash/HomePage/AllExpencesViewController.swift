@@ -9,7 +9,6 @@ import UIKit
 
 class AllExpencesViewController: UIViewController {
     
-    
     @IBOutlet weak var allExpencesTableView: UITableView!
     
     let items = ["bill" , "buying show" , "coffee" , "taxi"]
@@ -20,9 +19,7 @@ class AllExpencesViewController: UIViewController {
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        
     }
-    
     
 }
 

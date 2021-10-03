@@ -17,6 +17,7 @@
 		F718D3FB27049D600034D15B /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718D3F927049D600034D15B /* HomeTableViewCell.swift */; };
 		F718D3FC27049D600034D15B /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F718D3FA27049D600034D15B /* HomeTableViewCell.xib */; };
 		F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */; };
+		F72EE76F2709BAFB00FB8A7D /* AllExpencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		F718D3F927049D600034D15B /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		F718D3FA27049D600034D15B /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
 		F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalSummaryViewController.swift; sourceTree = "<group>"; };
+		F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllExpencesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				0CBEE5332704833D00809059 /* HomeViewController.swift */,
+				F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */,
 				F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */,
 				F718D3F2270490460034D15B /* HomePage.storyboard */,
 				F718D3F927049D600034D15B /* HomeTableViewCell.swift */,
@@ -168,6 +171,7 @@
 				0CBEE5342704833D00809059 /* HomeViewController.swift in Sources */,
 				0CBEE5302704833D00809059 /* AppDelegate.swift in Sources */,
 				F718D3FB27049D600034D15B /* HomeTableViewCell.swift in Sources */,
+				F72EE76F2709BAFB00FB8A7D /* AllExpencesViewController.swift in Sources */,
 				F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */,
 				0CBEE5322704833D00809059 /* SceneDelegate.swift in Sources */,
 			);

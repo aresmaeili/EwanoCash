@@ -8,24 +8,47 @@
 import UIKit
 
 class TotalSummaryViewController: UIViewController {
-
-    @IBOutlet var summaryChartView: UIView!
     
+    @IBOutlet var summaryChartView: UIView!
+    @IBOutlet weak var totalSpendingAmountLabel: UILabel!
+    
+    @IBOutlet weak var totalIncomeAmountLabel: UILabel!
+    
+    @IBOutlet weak var totalSummaryTableView: UITableView!
+    
+    
+    
+    let items = ["bill" , "buying show" , "coffee" , "taxi" , "bill" , "buying show" , "coffee" , "taxi" , "bill" , "buying show" , "coffee" , "taxi"]
     override func viewDidLoad() {
         super.viewDidLoad()
+        totalSummaryTableView.delegate = self
+        totalSummaryTableView.dataSource = self
+        
+        
+        
         navigationItem.title = "Total Summary"
         summaryChartView.layer.cornerRadius = 25
-        summaryChartView.clipsToBounds = true    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        summaryChartView.clipsToBounds = true
+        totalSummaryTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        
+        
     }
-    */
+    
+    
+}
 
+extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        cell.itemTitle.text = items[indexPath.row]
+        //        cell?.itemImage.image =
+        cell.itemPrice.text = ""
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
 }

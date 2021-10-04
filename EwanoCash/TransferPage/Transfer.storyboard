@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W49-Ai-tiE">
-                                <rect key="frame" x="0.0" y="366" width="414" height="396"/>
+                                <rect key="frame" x="0.0" y="472" width="414" height="290"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="400" id="3QR-Zx-MAL"/>
@@ -48,10 +48,20 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="56" translatesAutoresizingMaskIntoConstraints="NO" id="lll-d1-ALF">
-                                <rect key="frame" x="0.0" y="84" width="414" height="262"/>
+                                <rect key="frame" x="0.0" y="84" width="414" height="368"/>
                                 <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Oi2-VO-SW2">
+                                        <rect key="frame" x="50" y="0.0" width="314" height="51"/>
+                                        <segments>
+                                            <segment title="▼ Income"/>
+                                            <segment title="▲ Outcome"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="transactionTypeSegmentAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="HpD-0J-bUd"/>
+                                        </connections>
+                                    </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7sx-B1-T6i">
-                                        <rect key="frame" x="30" y="0.0" width="354" height="50"/>
+                                        <rect key="frame" x="30" y="106" width="354" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="Frh-o8-2Oo"/>
                                         </constraints>
@@ -60,7 +70,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title Of This Transaction ..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UrR-XC-tEv">
-                                        <rect key="frame" x="30" y="106" width="354" height="50"/>
+                                        <rect key="frame" x="30" y="212" width="354" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="FoS-R5-9hR"/>
                                         </constraints>
@@ -68,7 +78,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zIT-d6-8zp">
-                                        <rect key="frame" x="131" y="212" width="152" height="50"/>
+                                        <rect key="frame" x="131" y="318" width="152" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VZd-t3-mFS">
                                                 <rect key="frame" x="0.0" y="10" width="30" height="30"/>
@@ -98,7 +108,9 @@
                                     <constraint firstAttribute="trailing" secondItem="UrR-XC-tEv" secondAttribute="trailing" constant="30" id="V8Q-G7-RjG"/>
                                     <constraint firstItem="UrR-XC-tEv" firstAttribute="leading" secondItem="lll-d1-ALF" secondAttribute="leading" constant="30" id="aDH-98-07L"/>
                                     <constraint firstAttribute="trailing" secondItem="7sx-B1-T6i" secondAttribute="trailing" constant="30" id="glP-pV-TbT"/>
+                                    <constraint firstAttribute="trailing" secondItem="Oi2-VO-SW2" secondAttribute="trailing" constant="50" id="jIO-7K-DUe"/>
                                     <constraint firstItem="7sx-B1-T6i" firstAttribute="leading" secondItem="lll-d1-ALF" secondAttribute="leading" constant="30" id="kMh-dp-PET"/>
+                                    <constraint firstItem="Oi2-VO-SW2" firstAttribute="leading" secondItem="lll-d1-ALF" secondAttribute="leading" constant="50" id="ptr-dE-IvP"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -123,6 +135,7 @@
                         <outlet property="datePickerTextField" destination="FjX-1q-XcU" id="0Vg-wj-fER"/>
                         <outlet property="numbersCollectionView" destination="W49-Ai-tiE" id="Xeh-US-adQ"/>
                         <outlet property="transactionTitletextField" destination="UrR-XC-tEv" id="j5N-7g-7JB"/>
+                        <outlet property="transactionTypeSegment" destination="Oi2-VO-SW2" id="nML-pE-XAm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

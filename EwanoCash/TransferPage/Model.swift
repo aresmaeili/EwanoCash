@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct TransfersModel:Codable {
+struct TransfersModel : Codable {
     
     var titleOfTransaction = ""
     var amountOfTransaction = ""

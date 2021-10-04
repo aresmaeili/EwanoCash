@@ -16,15 +16,25 @@ class HomeViewController: UIViewController {
     @IBAction func plusAddButton(_ sender: Any) {
         let controller = UIStoryboard(name: "Transfer", bundle: .main).instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
         present(controller, animated: true, completion: nil)
- 
+       // loadDataFromUserDefault ()
+
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        homeTableView.reloadData()
+
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         homeTableView.delegate = self
         homeTableView.dataSource = self
         homeCollectionView.delegate = self
         homeCollectionView.dataSource = self
+        
+        
+        loadDataFromUserDefault()
+        
         homeTableView.separatorStyle = .none
         homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         homeCollectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
@@ -34,8 +44,28 @@ class HomeViewController: UIViewController {
 }
 
 
+
+
+func loadDataFromUserDefault() {
+    
+    if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+        if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+        print("*****************\(String(describing: transferData))")
+            
+            item = transferData
+            
+        }
+    }
+    
+
+    
+}
+
+
+var item = [TransfersModel]()
+var items = [TransfersModel]()
 var month = ["April" , "June"]
-var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
+//var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
 
 
 extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -68,9 +98,15 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        cell.itemTitle.text = items[indexPath.row]
+        cell.itemTitle.text = items[indexPath.row].titleOfTransaction
+        cell.itemDate.text = items[indexPath.row].dateOfTransaction
         //        cell?.itemImage.image =
-        cell.itemPrice.text = ""
+        cell.itemPrice.text = items[indexPath.row].amountOfTransaction
+        
+        //titleOfTransaction: "", amountOfTransaction: "1234", dateOfTransaction: "Oct 4, 2021", isIncome: true)
+
+        
+        
         return cell
     }
     

@@ -16,7 +16,7 @@ class TransferViewController: UIViewController {
         }else{
             isIncome = false
             print (isIncome)
-
+            
         }
     }
     @IBOutlet weak var transactionTypeSegment: UISegmentedControl!
@@ -83,12 +83,12 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
             cell.numbersButton.tintColor = .systemBlue
         }
         return cell
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: Int(collectionView.frame.width)/3   , height: Int(collectionView.frame.height)/4)
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -103,7 +103,7 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
         if keyPadArray[indexPath.row] == "←" {
             if cost.isEmpty {
             }else{
-            cost.removeLast()
+                cost.removeLast()
             }
         }else{
             cost = cost + keyPadArray[indexPath.row]
@@ -152,20 +152,21 @@ extension TransferViewController {
         listOfTransactions.append(item)
         cost = ""
         print(listOfTransactions)
-       
+        
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
         dismiss(animated: true, completion: nil)
+        
     }
 }
 
 extension UIViewController {
-func dismissKeyboard() {
-       let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
-       tap.cancelsTouchesInView = false
-       view.addGestureRecognizer(tap)
+    func dismissKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
     @objc private func dismissKeyboardTouchOutside() {
-       view.endEditing(true)
+        view.endEditing(true)
     }
 }

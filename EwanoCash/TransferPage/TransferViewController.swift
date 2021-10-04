@@ -24,6 +24,7 @@ class TransferViewController: UIViewController {
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButtonAction(_ sender: Any) {
         ContinueButtonDidTapped()
+        
     }
     @IBOutlet weak var numbersCollectionView: UICollectionView!
     @IBOutlet weak var costTransferedLabel: UILabel!
@@ -153,6 +154,7 @@ extension TransferViewController {
         print(listOfTransactions)
        
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
+        dismiss(animated: true, completion: nil)
     }
 }
 

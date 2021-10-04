@@ -11,11 +11,12 @@ import Charts
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var monthLabel: UILabel!
-    
     @IBOutlet weak var homeCollectionView: UICollectionView!
     @IBOutlet weak var homeTableView: UITableView!
     @IBAction func plusAddButton(_ sender: Any) {
-        
+        let controller = UIStoryboard(name: "Transfer", bundle: .main).instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
+        present(controller, animated: true, completion: nil)
+ 
     }
     
     override func viewDidLoad() {

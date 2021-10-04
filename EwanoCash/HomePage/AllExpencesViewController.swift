@@ -11,16 +11,16 @@ class AllExpencesViewController: UIViewController {
     
     @IBOutlet weak var allExpencesTableView: UITableView!
     
-    let items = ["bill" , "buying show" , "coffee" , "taxi"]
+    var items = ["bill" , "buying shoe" , "coffee" , "taxi" , "bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
+        allExpencesTableView.separatorStyle = .none
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
     }
-    
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
@@ -37,4 +37,20 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         return items.count
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            tableView.beginUpdates()
+            
+            items.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+            print(items)
+        }
+        return
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
 }

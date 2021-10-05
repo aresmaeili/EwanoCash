@@ -24,6 +24,7 @@ class TotalSummaryViewController: UIViewController {
         summaryChartView.layer.cornerRadius = 25
         summaryChartView.clipsToBounds = true
         totalSummaryTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tabBarController?.selectedIndex = 2
     }
 }
 

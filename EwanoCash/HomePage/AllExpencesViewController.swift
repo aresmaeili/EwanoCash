@@ -18,6 +18,7 @@ class AllExpencesViewController: UIViewController {
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
+        tabBarController?.selectedIndex = 1
         allExpencesTableView.separatorStyle = .none
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
     }

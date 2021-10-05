@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadDataFromUserDefault()
         homeTableView.reloadData()
     }
 
@@ -31,15 +32,29 @@ class HomeViewController: UIViewController {
         homeTableView.dataSource = self
         homeCollectionView.delegate = self
         homeCollectionView.dataSource = self
+        tabBarController?.selectedIndex = 0
+        setTabBarsStyle()
         
-        
-        loadDataFromUserDefault()
+//        loadDataFromUserDefault()
+//        homeTableView.reloadData()
         
         homeTableView.separatorStyle = .none
         homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         homeCollectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
         navigationItem.title = "Home"
         
+    }
+    
+    func setTabBarsStyle() {
+        tabBarController?.tabBar.items![0].image = UIImage(named: "home")
+        tabBarController?.tabBar.items![0].selectedImage = UIImage(named: "home_filled")
+        tabBarController?.tabBar.items![0].title = "Home"
+        tabBarController?.tabBar.items![1].image = UIImage(named: "expense")
+        tabBarController?.tabBar.items![1].selectedImage = UIImage(named: "expense_filled")
+        tabBarController?.tabBar.items![1].title = "Expences"
+        tabBarController?.tabBar.items![2].image = UIImage(named: "total")
+        tabBarController?.tabBar.items![2].selectedImage = UIImage(named: "total_filled")
+        tabBarController?.tabBar.items![2].title = "Total"
     }
 }
 
@@ -53,7 +68,7 @@ func loadDataFromUserDefault() {
         print("*****************\(String(describing: transferData))")
             
             item = transferData
-            
+            items.append(contentsOf: item)
         }
     }
     

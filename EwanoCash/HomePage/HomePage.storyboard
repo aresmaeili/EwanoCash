@@ -240,11 +240,11 @@
             </objects>
             <point key="canvasLocation" x="1890.7692307692307" y="-627.01421800947867"/>
         </scene>
-        <!--Home-->
+        <!--Navigation Controller-->
         <scene sceneID="YfP-mg-YPn">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cMi-Mr-ipM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" id="r6J-Rn-A3V"/>
+                    <tabBarItem key="tabBarItem" title="" id="r6J-Rn-A3V"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="p2h-00-q0O">
                         <rect key="frame" x="0.0" y="44" width="390" height="44"/>
@@ -279,11 +279,11 @@
             </objects>
             <point key="canvasLocation" x="33.846153846153847" y="83.886255924170612"/>
         </scene>
-        <!--All Expences-->
+        <!--Navigation Controller-->
         <scene sceneID="c91-7H-H7n">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N7X-Ka-4my" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="All Expences" image="dollarsign.square" catalog="system" id="SIo-PG-pe7"/>
+                    <tabBarItem key="tabBarItem" title="" id="SIo-PG-pe7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wOJ-Fl-B5J">
                         <rect key="frame" x="0.0" y="44" width="390" height="44"/>
@@ -298,11 +298,11 @@
             </objects>
             <point key="canvasLocation" x="963" y="776"/>
         </scene>
-        <!--Total Summary-->
+        <!--Navigation Controller-->
         <scene sceneID="9vc-ru-Kfl">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R0v-YO-2Ga" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Total Summary" image="sum" catalog="system" id="3h7-k2-zQa"/>
+                    <tabBarItem key="tabBarItem" title="" id="3h7-k2-zQa"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hxx-HQ-f17">
                         <rect key="frame" x="0.0" y="44" width="390" height="44"/>
@@ -319,9 +319,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="dollarsign.square" catalog="system" width="128" height="114"/>
-        <image name="house" catalog="system" width="128" height="106"/>
-        <image name="sum" catalog="system" width="102" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

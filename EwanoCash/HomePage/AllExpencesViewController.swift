@@ -11,10 +11,11 @@ class AllExpencesViewController: UIViewController {
     
     @IBOutlet weak var allExpencesTableView: UITableView!
     
-    var items = ["bill" , "buying shoe" , "coffee" , "taxi" , "bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee"]
+    //var items = ["bill" , "buying shoe" , "coffee" , "taxi" , "bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadDataFromUserDefault()
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
@@ -22,20 +23,76 @@ class AllExpencesViewController: UIViewController {
         allExpencesTableView.separatorStyle = .none
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
     }
+    
+    
+    
+    func loadDataFromUserDefault() {
+        
+        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+                print("*****************\(String(describing: transferData))")
+                
+                item = transferData
+                //items.append(contentsOf: item)
+            }
+        }
+    }
+    
+    var item = [TransfersModel]()
+    let days = [Date]()
+    
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        cell.itemTitle.text = items[indexPath.row]
-        //        cell?.itemImage.image =
-        cell.itemPrice.text = ""
+        cell.itemTitle.text = item[indexPath.row].titleOfTransaction
+        cell.itemDate.text = item[indexPath.row].dateOfTransaction
+        cell.itemPrice.text = item[indexPath.row].amountOfTransaction
+        if item[indexPath.row].isIncome == true {
+            // cell?.itemImage.image =
+        } else {
+            //cell?.itemImage.image =
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return item.count
+    }
+    
+    
+    
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return days.count
+    }
+    
+//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        
+//    }
+    
+    func getDate() {
+
+        let dateString = item[0].dateOfTransaction
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM-dd-yyyy"
+        guard let date = formatter.date(from: dateString) else { return }
+
+        formatter.dateFormat = "yyyy"
+        let year = formatter.string(from: date)
+        formatter.dateFormat = "MM"
+        let month = formatter.string(from: date)
+        formatter.dateFormat = "dd"
+        let day = formatter.string(from: date)
+        print(year, month, day) // 2018 12 24
+        
+        //days.append(dateString)
+        let sections = days
+
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -43,10 +100,10 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         if editingStyle == .delete {
             tableView.beginUpdates()
             
-            items.remove(at: indexPath.row)
+            item.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
-            print(items)
+            print(item)
         }
         return
     }

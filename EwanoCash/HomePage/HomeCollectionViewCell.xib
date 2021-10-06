@@ -20,7 +20,19 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sE7-Im-MYC" customClass="LineChartView" customModule="Charts">
                         <rect key="frame" x="0.0" y="0.0" width="382" height="146"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8V-vG-uYs">
+                                <rect key="frame" x="12" y="12" width="61" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="D8V-vG-uYs" firstAttribute="leading" secondItem="sE7-Im-MYC" secondAttribute="leading" constant="12" id="59J-K7-IVq"/>
+                            <constraint firstItem="D8V-vG-uYs" firstAttribute="top" secondItem="sE7-Im-MYC" secondAttribute="top" constant="12" id="Y4a-kd-KkH"/>
+                        </constraints>
                     </view>
                 </subviews>
             </view>
@@ -38,6 +50,7 @@
             <size key="customSize" width="382" height="146"/>
             <connections>
                 <outlet property="homeChartView" destination="sE7-Im-MYC" id="OcL-bf-adw"/>
+                <outlet property="monthLabel" destination="D8V-vG-uYs" id="Wei-zF-Hez"/>
             </connections>
             <point key="canvasLocation" x="378.26086956521743" y="111.83035714285714"/>
         </collectionViewCell>

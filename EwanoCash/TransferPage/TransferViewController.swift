@@ -8,6 +8,10 @@
 import UIKit
 
 class TransferViewController: UIViewController {
+    @IBAction func doneButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+
+    }
     
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
@@ -32,9 +36,9 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
+    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
     
     var isIncome = true
-    var listOfTransactions = [ TransfersModel ]()
     var selectedDate: String?
     let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
     var cost : String = "" {
@@ -42,9 +46,12 @@ class TransferViewController: UIViewController {
             costTransferedLabel.text = cost
         }
     }
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
+
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
@@ -62,6 +69,7 @@ class TransferViewController: UIViewController {
             dateFormatter.dateStyle = .medium
             datePickerTextField.text = dateFormatter.string(from: datePicker.date)
             selectedDate = datePicker.date.description
+            //print("ABDBABDBABDBABDBABD**********\(selectedDate)**8")
         }
         datePickerTextField.resignFirstResponder()
     }
@@ -144,17 +152,26 @@ extension TransferViewController {
         datePickerTextField.text = dateFormatter.string(from: date)
         selectedDate = dateFormatter.string(from: date)
     }
+
+   // var listOfTransactions = [ TransfersModel ]()
+  
+
     
     func ContinueButtonDidTapped(){
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
+        
         listOfTransactions.append(item)
         cost = ""
-        print(listOfTransactions)
+        print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
         
+        
+        
+ 
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        
         
     }
 }

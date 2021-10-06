@@ -10,14 +10,13 @@ import Charts
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var homeCollectionView: UICollectionView!
     @IBOutlet weak var homeTableView: UITableView!
     @IBAction func plusAddButton(_ sender: Any) {
         let controller = UIStoryboard(name: "Transfer", bundle: .main).instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
         present(controller, animated: true, completion: nil)
-       // loadDataFromUserDefault ()
-
+        // loadDataFromUserDefault ()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,7 +24,7 @@ class HomeViewController: UIViewController {
         loadDataFromUserDefault()
         homeTableView.reloadData()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         homeTableView.delegate = self
@@ -35,8 +34,8 @@ class HomeViewController: UIViewController {
         tabBarController?.selectedIndex = 0
         setTabBarsStyle()
         
-//        loadDataFromUserDefault()
-//        homeTableView.reloadData()
+        //        loadDataFromUserDefault()
+        //        homeTableView.reloadData()
         
         homeTableView.separatorStyle = .none
         homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
@@ -65,22 +64,30 @@ func loadDataFromUserDefault() {
     
     if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
         if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-        print("*****************\(String(describing: transferData))")
+            print("*****************\(String(describing: transferData))")
             
             item = transferData
-            items.append(contentsOf: item)
+            //items.append(contentsOf: item)
         }
     }
+    let dateString = item[0].dateOfTransaction
+    let formatter = DateFormatter()
+    formatter.dateFormat = "MMMM-dd-yyyy"
+    guard let date = formatter.date(from: dateString) else {
+        return
+    }
     
-
+    formatter.dateFormat = "MMMM"
     
 }
 
 
 var item = [TransfersModel]()
-var items = [TransfersModel]()
-var month = ["April" , "June"]
+//var items = [TransfersModel]()
+var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
+
 //var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
+var monthValue : String = ""
 
 
 extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -91,10 +98,8 @@ extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
         // cell.backgroundView =
+        cell.monthLabel.text = month[indexPath.row]
         
-        
-        //cell.layer.cornerRadius = 25
-        // cell.clipsToBounds = true
         
         return cell
     }
@@ -113,31 +118,31 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        cell.itemTitle.text = items[indexPath.row].titleOfTransaction
-        cell.itemDate.text = items[indexPath.row].dateOfTransaction
-        //        cell?.itemImage.image =
-        cell.itemPrice.text = items[indexPath.row].amountOfTransaction
-        
-        //titleOfTransaction: "", amountOfTransaction: "1234", dateOfTransaction: "Oct 4, 2021", isIncome: true)
-
-        
-        
+        cell.itemTitle.text = item[indexPath.row].titleOfTransaction
+        cell.itemDate.text = item[indexPath.row].dateOfTransaction
+        cell.itemPrice.text = item[indexPath.row].amountOfTransaction
+        if item[indexPath.row].isIncome == true {
+            // cell?.itemImage.image =
+        } else {
+            //cell?.itemImage.image =
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return item.count
     }
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
             tableView.beginUpdates()
             
-            items.remove(at: indexPath.row)
+            item.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
-            print(items)
+            print(item)
         }
         return
     }

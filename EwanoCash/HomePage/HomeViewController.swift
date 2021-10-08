@@ -58,7 +58,7 @@ class HomeViewController: UIViewController {
 }
 
 func saveDataToUserDefault() {
-   UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
+    UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
 }
 
 
@@ -72,14 +72,14 @@ func loadDataFromUserDefault() {
             //items.append(contentsOf: item)
         }
     }
-//    let dateString = item[0].dateOfTransaction
-//    let formatter = DateFormatter()
-//    formatter.dateFormat = "MMMM-dd-yyyy"
-//    guard let date = formatter.date(from: dateString) else {
-//        return
-//    }
-//    
-//    formatter.dateFormat = "MMMM"
+    //    let dateString = item[0].dateOfTransaction
+    //    let formatter = DateFormatter()
+    //    formatter.dateFormat = "MMMM-dd-yyyy"
+    //    guard let date = formatter.date(from: dateString) else {
+    //        return
+    //    }
+    //
+    //    formatter.dateFormat = "MMMM"
     
 }
 
@@ -123,9 +123,9 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         cell.itemDate.text = item[indexPath.row].dateOfTransaction
         cell.itemPrice.text = item[indexPath.row].amountOfTransaction
         if item[indexPath.row].isIncome == true {
-            // cell?.itemImage.image =
+            cell.itemImage.image = UIImage(named: "chevron_down")
         } else {
-            //cell?.itemImage.image =
+            cell.itemImage.image = UIImage(named: "chevron_up")
         }
         return cell
     }
@@ -140,7 +140,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         if editingStyle == .delete {
             tableView.beginUpdates()
             item.remove(at: indexPath.row)
-
+            
             saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()

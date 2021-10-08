@@ -10,7 +10,7 @@ import UIKit
 class TransferViewController: UIViewController {
     @IBAction func doneButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-
+        
     }
     
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
@@ -36,9 +36,9 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
-  var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
+    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
     
-        //var listOfTransactions :[TransfersModel]?
+    //var listOfTransactions :[TransfersModel]?
     var isIncome = true
     var selectedDate: String?
     let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
@@ -48,13 +48,13 @@ class TransferViewController: UIViewController {
         }
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
         //**********************
         listOfTransactions.remove(at: 0)
-
+        
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
@@ -155,12 +155,12 @@ extension TransferViewController {
         datePickerTextField.text = dateFormatter.string(from: date)
         selectedDate = dateFormatter.string(from: date)
     }
-
-   // var listOfTransactions = [ TransfersModel ]()
-  
-
     
-     func saveDataToUserDefault() {
+    // var listOfTransactions = [ TransfersModel ]()
+    
+    
+    
+    func saveDataToUserDefault() {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
     }
     
@@ -168,7 +168,7 @@ extension TransferViewController {
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
-      //  item = TransfersModel()
+        //  item = TransfersModel()
         listOfTransactions = []
         
         
@@ -186,7 +186,7 @@ extension TransferViewController {
         
         
         
- 
+        
         saveDataToUserDefault()
         dismiss(animated: true, completion: nil)
         

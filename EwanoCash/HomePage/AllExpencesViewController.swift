@@ -71,17 +71,17 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         return days.count
     }
     
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        
-//    }
+    //    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    //
+    //    }
     
     func getDate() {
-
+        
         let dateString = item[0].dateOfTransaction
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM-dd-yyyy"
         guard let date = formatter.date(from: dateString) else { return }
-
+        
         formatter.dateFormat = "yyyy"
         let year = formatter.string(from: date)
         formatter.dateFormat = "MM"
@@ -92,7 +92,7 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         
         //days.append(dateString)
         let sections = days
-
+        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

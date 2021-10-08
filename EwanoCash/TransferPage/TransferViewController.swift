@@ -36,8 +36,9 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
-    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
+  var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
     
+        //var listOfTransactions :[TransfersModel]?
     var isIncome = true
     var selectedDate: String?
     let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
@@ -51,6 +52,8 @@ class TransferViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
+        //**********************
+        listOfTransactions.remove(at: 0)
 
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
@@ -161,6 +164,17 @@ extension TransferViewController {
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
+      //  item = TransfersModel()
+        listOfTransactions = []
+        
+        
+        
+        
+        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+                listOfTransactions = transferData
+            }
+        }
         
         listOfTransactions.append(item)
         cost = ""
@@ -170,7 +184,7 @@ extension TransferViewController {
         
  
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
-        //dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
         
     }

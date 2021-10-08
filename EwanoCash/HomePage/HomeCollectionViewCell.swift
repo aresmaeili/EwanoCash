@@ -76,8 +76,8 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         
         
         let sampleData : [ChartDataEntry] = [
-            ChartDataEntry(x: 0, y: Double(item[0].amountOfTransaction) ?? 0),
-            ChartDataEntry(x: 1, y: Double(item[1].amountOfTransaction) ?? 0)
+//            ChartDataEntry(x: 0, y: Double(item[0].amountOfTransaction) ?? 0),
+//            ChartDataEntry(x: 1, y: Double(item[1].amountOfTransaction) ?? 0)
             
         ]
         

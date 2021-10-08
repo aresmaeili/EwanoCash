@@ -70,14 +70,14 @@ func loadDataFromUserDefault() {
             //items.append(contentsOf: item)
         }
     }
-    let dateString = item[0].dateOfTransaction
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMMM-dd-yyyy"
-    guard let date = formatter.date(from: dateString) else {
-        return
-    }
-    
-    formatter.dateFormat = "MMMM"
+//    let dateString = item[0].dateOfTransaction
+//    let formatter = DateFormatter()
+//    formatter.dateFormat = "MMMM-dd-yyyy"
+//    guard let date = formatter.date(from: dateString) else {
+//        return
+//    }
+//    
+//    formatter.dateFormat = "MMMM"
     
 }
 

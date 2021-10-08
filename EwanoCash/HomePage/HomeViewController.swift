@@ -57,7 +57,9 @@ class HomeViewController: UIViewController {
     }
 }
 
-
+func saveDataToUserDefault() {
+   UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
+}
 
 
 func loadDataFromUserDefault() {
@@ -80,7 +82,6 @@ func loadDataFromUserDefault() {
 //    formatter.dateFormat = "MMMM"
     
 }
-
 
 var item = [TransfersModel]()
 //var items = [TransfersModel]()
@@ -138,8 +139,9 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         
         if editingStyle == .delete {
             tableView.beginUpdates()
-            
             item.remove(at: indexPath.row)
+
+            saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
             print(item)

@@ -160,6 +160,10 @@ extension TransferViewController {
   
 
     
+     func saveDataToUserDefault() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
+    }
+    
     func ContinueButtonDidTapped(){
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
@@ -183,7 +187,7 @@ extension TransferViewController {
         
         
  
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
+        saveDataToUserDefault()
         dismiss(animated: true, completion: nil)
         
         

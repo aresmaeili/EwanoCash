@@ -23,20 +23,42 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-                //  print("*****************\(String(describing: transferData))")
                 item = transferData
-                //items.append(contentsOf: item)
-                let perItemCost : [()] = item.map { someMoney in
-                    costList.append(someMoney.amountOfTransaction)
-                    print("@#@#@#@#@#@\(costList)#@#@#@#@#@#@#")
+                
+                let chartCostList = item.map { cost in
+                    return Double(cost.amountOfTransaction)
                 }
+                let chartDateList = item.map { date in
+                    return Double(date.dateOfTransaction)
+                }
+                
+                let combinedIncomeChart = zip(chartDateList, chartCostList).map { ($0, $1) }
+//                incomeChart = combinedIncomeChart
+                
+                print("HJHJHJHJHJ\(combinedIncomeChart)HJHJHJHJH")
+                
+               // var incomeChart = [ChartDataEntry(x: Double, y: Double)]
+
+//                for i in 0..<chartDateList.count {
+//                    incomeChart.append((chartDateList[i], chartCostList[i]))
+//                }
+//                print(incomeChart)
+                
+
             }
+            
+            
+            //        incomeChart[ChartDataEntry(x: chartDateList[0], y: chartCostList[0])]
+            
         }
     }
     
-    
-    var costList = [String]()
-    
+    //    var chartDateList = [Double]()
+    //    var chartCostList = [Double]()
+    //    var dateList = [String]()
+    //    var costList = [String]()
+   // var incomeChart = [ChartDataEntry]()
+    var incomeChart = [ChartDataEntry]()
     let topColor =  UIColor(ciColor: .blue).cgColor
     let bottomColor = UIColor(ciColor: .white).cgColor
     
@@ -45,40 +67,10 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         loadDataFromUserDefault()
         
         
-        let sampleData : [ChartDataEntry] = [
-            //ChartDataEntry(x: 1, y: Double(item[0].amountOfTransaction) ?? 0),
-            ChartDataEntry(x: 1, y: 5),
-            ChartDataEntry(x: 2, y: 2),
-            ChartDataEntry(x: 3, y: 10),
-            ChartDataEntry(x: 4, y: 5),
-            ChartDataEntry(x: 5, y: 2),
-            ChartDataEntry(x: 6, y: 10),
-            ChartDataEntry(x: 7, y: 5),
-            ChartDataEntry(x: 8, y: 2),
-            ChartDataEntry(x: 9, y: 2),
-            ChartDataEntry(x: 10, y: 9),
-            ChartDataEntry(x: 11, y: 15),
-            ChartDataEntry(x: 12, y: 21),
-            ChartDataEntry(x: 13, y: 12),
-            ChartDataEntry(x: 14, y: 10),
-            ChartDataEntry(x: 15, y: 5),
-            ChartDataEntry(x: 16, y: 2),
-            ChartDataEntry(x: 17, y: 2),
-            ChartDataEntry(x: 18, y: 9),
-            ChartDataEntry(x: 19, y: 15),
-            ChartDataEntry(x: 20, y: 25),
-            ChartDataEntry(x: 21, y: 12),
-            ChartDataEntry(x: 22, y: 2),
-            ChartDataEntry(x: 23, y: 9),
-            ChartDataEntry(x: 24, y: 10),
-            ChartDataEntry(x: 25, y: 5),
-            ChartDataEntry(x: 26, y: 2),
-            ChartDataEntry(x: 27, y: 2),
-            ChartDataEntry(x: 28, y: 9),
-            ChartDataEntry(x: 29, y: 10),
-            ChartDataEntry(x: 30, y: 5),
-            ChartDataEntry(x: 31, y: 2),
-        ]
+        //        let incomeChart : [ChartDataEntry] = [
+        //            ChartDataEntry(x: chartDateList[0], y: chartCostList[0])
+        
+        //  ]
         
         
         homeChartView.backgroundColor = .clear
@@ -102,7 +94,7 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         homeChartView.xAxis.axisLineColor = .blue
         // homeChartView.xAxis.labelPosition = .bottom
         func setData() {
-            let set1 = LineChartDataSet(entries: sampleData, label: "Spendings")
+            let set1 = LineChartDataSet(entries: incomeChart, label: "Spendings")
             let data = LineChartData(dataSet: set1)
             homeChartView.data = data
             //set1.mode = .cubicBezier
@@ -151,3 +143,5 @@ class HomeCollectionViewCell: UICollectionViewCell  {
     //        set1.drawHorizontalHighlightIndicatorEnabled = false
     //    }
 }
+
+

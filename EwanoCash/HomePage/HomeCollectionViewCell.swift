@@ -26,13 +26,16 @@ class HomeCollectionViewCell: UICollectionViewCell  {
                 //  print("*****************\(String(describing: transferData))")
                 item = transferData
                 //items.append(contentsOf: item)
+                let perItemCost : [()] = item.map { someMoney in
+                    costList.append(someMoney.amountOfTransaction)
+                    print("@#@#@#@#@#@\(costList)#@#@#@#@#@#@#")
+                }
             }
         }
     }
     
     
-    
-        
+    var costList = [String]()
     
     let topColor =  UIColor(ciColor: .blue).cgColor
     let bottomColor = UIColor(ciColor: .white).cgColor

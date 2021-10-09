@@ -150,6 +150,7 @@ extension TransferViewController {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateFormat = "YY, MMM d" 
         dateFormatter.dateStyle = DateFormatter.Style.medium
         datePickerTextField.text = dateFormatter.string(from: date)
         selectedDate = dateFormatter.string(from: date)
@@ -163,7 +164,7 @@ extension TransferViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
     }
     
-    func ContinueButtonDidTapped(){
+    func ContinueButtonDidTapped() {
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)

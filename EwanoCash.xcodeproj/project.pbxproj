@@ -3,13 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0CBEE5302704833D00809059 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE52F2704833D00809059 /* AppDelegate.swift */; };
 		0CBEE5322704833D00809059 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE5312704833D00809059 /* SceneDelegate.swift */; };
-		0CBEE5342704833D00809059 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE5332704833D00809059 /* ViewController.swift */; };
+		0CBEE5342704833D00809059 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE5332704833D00809059 /* HomeViewController.swift */; };
 		0CBEE5372704833D00809059 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CBEE5352704833D00809059 /* Main.storyboard */; };
 		0CBEE5392704833E00809059 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CBEE5382704833E00809059 /* Assets.xcassets */; };
 		0CBEE53C2704833E00809059 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CBEE53A2704833E00809059 /* LaunchScreen.storyboard */; };
@@ -19,13 +19,20 @@
 		0CBEE5702704A18400809059 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE56F2704A18400809059 /* TransferViewController.swift */; };
 		0CE1D6182709B36200E37D34 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE1D6172709B36200E37D34 /* Model.swift */; };
 		F718D3F3270490460034D15B /* HomePage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F718D3F2270490460034D15B /* HomePage.storyboard */; };
+		F718D3FB27049D600034D15B /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718D3F927049D600034D15B /* HomeTableViewCell.swift */; };
+		F718D3FC27049D600034D15B /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F718D3FA27049D600034D15B /* HomeTableViewCell.xib */; };
+		F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */; };
+		F72EE76F2709BAFB00FB8A7D /* AllExpencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */; };
+		F72EE7722709D76800FB8A7D /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE7702709D76800FB8A7D /* HomeCollectionViewCell.swift */; };
+		F72EE7732709D76800FB8A7D /* HomeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F72EE7712709D76800FB8A7D /* HomeCollectionViewCell.xib */; };
+		F72EE7762709E17E00FB8A7D /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = F72EE7752709E17E00FB8A7D /* Charts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0CBEE52C2704833D00809059 /* EwanoCash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EwanoCash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CBEE52F2704833D00809059 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CBEE5312704833D00809059 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0CBEE5332704833D00809059 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0CBEE5332704833D00809059 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0CBEE5362704833D00809059 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0CBEE5382704833E00809059 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CBEE53B2704833E00809059 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -40,6 +47,12 @@
 		F718D3F6270492BC0034D15B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		F718D3F7270492F30034D15B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Main.strings; sourceTree = "<group>"; };
 		F718D3F8270492F30034D15B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		F718D3F927049D600034D15B /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		F718D3FA27049D600034D15B /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
+		F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalSummaryViewController.swift; sourceTree = "<group>"; };
+		F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllExpencesViewController.swift; sourceTree = "<group>"; };
+		F72EE7702709D76800FB8A7D /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		F72EE7712709D76800FB8A7D /* HomeCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F72EE7762709E17E00FB8A7D /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +88,6 @@
 			children = (
 				0CBEE52F2704833D00809059 /* AppDelegate.swift */,
 				0CBEE5312704833D00809059 /* SceneDelegate.swift */,
-				0CBEE5332704833D00809059 /* ViewController.swift */,
 				0CBEE5352704833D00809059 /* Main.storyboard */,
 				0CBEE566270495A600809059 /* TransferPage */,
 				0CBEE5382704833E00809059 /* Assets.xcassets */,
@@ -101,6 +114,13 @@
 			isa = PBXGroup;
 			children = (
 				F718D3F2270490460034D15B /* HomePage.storyboard */,
+				0CBEE5332704833D00809059 /* HomeViewController.swift */,
+				F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */,
+				F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */,
+				F72EE7712709D76800FB8A7D /* HomeCollectionViewCell.xib */,
+				F72EE7702709D76800FB8A7D /* HomeCollectionViewCell.swift */,
+				F718D3FA27049D600034D15B /* HomeTableViewCell.xib */,
+				F718D3F927049D600034D15B /* HomeTableViewCell.swift */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -121,6 +141,9 @@
 			dependencies = (
 			);
 			name = EwanoCash;
+			packageProductDependencies = (
+				F72EE7752709E17E00FB8A7D /* Charts */,
+			);
 			productName = EwanoCash;
 			productReference = 0CBEE52C2704833D00809059 /* EwanoCash.app */;
 			productType = "com.apple.product-type.application";
@@ -150,6 +173,9 @@
 				fa,
 			);
 			mainGroup = 0CBEE5232704833D00809059;
+			packageReferences = (
+				F72EE7742709E17E00FB8A7D /* XCRemoteSwiftPackageReference "Charts" */,
+			);
 			productRefGroup = 0CBEE52D2704833D00809059 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -165,10 +191,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F718D3F3270490460034D15B /* HomePage.storyboard in Resources */,
+				F72EE7732709D76800FB8A7D /* HomeCollectionViewCell.xib in Resources */,
 				0CBEE568270495DA00809059 /* Transfer.storyboard in Resources */,
 				0CBEE56C27049CA700809059 /* CollectionViewCell.xib in Resources */,
 				0CBEE53C2704833E00809059 /* LaunchScreen.storyboard in Resources */,
 				0CBEE5392704833E00809059 /* Assets.xcassets in Resources */,
+				F718D3FC27049D600034D15B /* HomeTableViewCell.xib in Resources */,
 				0CBEE5372704833D00809059 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,6 +208,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F72EE7722709D76800FB8A7D /* HomeCollectionViewCell.swift in Sources */,
+				0CBEE5342704833D00809059 /* HomeViewController.swift in Sources */,
+				0CBEE5302704833D00809059 /* AppDelegate.swift in Sources */,
+				F718D3FB27049D600034D15B /* HomeTableViewCell.swift in Sources */,
+				F72EE76F2709BAFB00FB8A7D /* AllExpencesViewController.swift in Sources */,
+				F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */,
 				0CBEE5342704833D00809059 /* ViewController.swift in Sources */,
 				0CBEE5702704A18400809059 /* TransferViewController.swift in Sources */,
 				0CBEE5302704833D00809059 /* AppDelegate.swift in Sources */,
@@ -395,6 +429,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F72EE7742709E17E00FB8A7D /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F72EE7752709E17E00FB8A7D /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F72EE7742709E17E00FB8A7D /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0CBEE5242704833D00809059 /* Project object */;
 }

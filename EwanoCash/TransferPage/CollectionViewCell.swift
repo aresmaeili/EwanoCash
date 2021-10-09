@@ -8,15 +8,15 @@
 import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var numbersButton: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         numbersButton.layer.cornerRadius = 0
-//        numbersButton.layer.borderWidth = 0.5
+        // numbersButton.layer.borderWidth = 0.5
         numbersButton.layer.borderColor = UIColor.lightGray.cgColor
         numbersButton.titleLabel?.textColor = .blue
     }
-
+    
 }

@@ -8,6 +8,10 @@
 import UIKit
 
 class TransferViewController: UIViewController {
+    @IBAction func doneButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        
+    }
     
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
@@ -16,7 +20,7 @@ class TransferViewController: UIViewController {
         }else{
             isIncome = false
             print (isIncome)
-
+            
         }
     }
     @IBOutlet weak var transactionTypeSegment: UISegmentedControl!
@@ -31,9 +35,10 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
+    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
     
+    //var listOfTransactions :[TransfersModel]?
     var isIncome = true
-    var listOfTransactions = [ TransfersModel ]()
     var selectedDate: String?
     let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
     var cost : String = "" {
@@ -41,9 +46,14 @@ class TransferViewController: UIViewController {
             costTransferedLabel.text = cost
         }
     }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
+        //**********************
+        listOfTransactions.remove(at: 0)
+        
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
@@ -61,6 +71,7 @@ class TransferViewController: UIViewController {
             dateFormatter.dateStyle = .medium
             datePickerTextField.text = dateFormatter.string(from: datePicker.date)
             selectedDate = datePicker.date.description
+            //print("ABDBABDBABDBABDBABD**********\(selectedDate)**8")
         }
         datePickerTextField.resignFirstResponder()
     }
@@ -82,12 +93,12 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
             cell.numbersButton.tintColor = .systemBlue
         }
         return cell
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: Int(collectionView.frame.width)/3   , height: Int(collectionView.frame.height)/4)
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -102,7 +113,7 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
         if keyPadArray[indexPath.row] == "←" {
             if cost.isEmpty {
             }else{
-            cost.removeLast()
+                cost.removeLast()
             }
         }else{
             cost = cost + keyPadArray[indexPath.row]
@@ -144,26 +155,60 @@ extension TransferViewController {
         selectedDate = dateFormatter.string(from: date)
     }
     
+    // var listOfTransactions = [ TransfersModel ]()
+    
+    
+    
+    func saveDataToUserDefault() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
+    }
+    
     func ContinueButtonDidTapped(){
         var transactionTitle = ""
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
+        //  item = TransfersModel()
+        listOfTransactions = []
+        
+        
+        
+        
+        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+                listOfTransactions = transferData
+            }
+        }
+        
         listOfTransactions.append(item)
         cost = ""
-        print(listOfTransactions)
-       
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
+        print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
+        
+
+        if transactionTitle != "" && costTransferedLabel.text == "" {
+            saveDataToUserDefault()
+            dismiss(animated: true, completion: nil)
+
+        }
+        
+        else {
+            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
     }
 }
 
 extension UIViewController {
-func dismissKeyboard() {
-       let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
-       tap.cancelsTouchesInView = false
-       view.addGestureRecognizer(tap)
+    func dismissKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
     @objc private func dismissKeyboardTouchOutside() {
-       view.endEditing(true)
+        view.endEditing(true)
     }
 }

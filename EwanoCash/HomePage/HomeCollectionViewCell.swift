@@ -32,40 +32,7 @@ class HomeCollectionViewCell: UICollectionViewCell  {
     
     
     
-    //    let sampleData : [ChartDataEntry] = [
-    //        ChartDataEntry(x: 1, y: Double(item[0].amountOfTransaction) ?? 0),
-    //        ChartDataEntry(x: 1, y: 5),
-    //        ChartDataEntry(x: 2, y: 2),
-    //        ChartDataEntry(x: 3, y: 10),
-    //        ChartDataEntry(x: 4, y: 5),
-    //        ChartDataEntry(x: 5, y: 2),
-    //        ChartDataEntry(x: 6, y: 10),
-    //        ChartDataEntry(x: 7, y: 5),
-    //        ChartDataEntry(x: 8, y: 2),
-    //        ChartDataEntry(x: 9, y: 2),
-    //        ChartDataEntry(x: 10, y: 9),
-    //        ChartDataEntry(x: 11, y: 15),
-    //        ChartDataEntry(x: 12, y: 21),
-    //        ChartDataEntry(x: 13, y: 12),
-    //        ChartDataEntry(x: 14, y: 10),
-    //        ChartDataEntry(x: 15, y: 5),
-    //        ChartDataEntry(x: 16, y: 2),
-    //        ChartDataEntry(x: 17, y: 2),
-    //        ChartDataEntry(x: 18, y: 9),
-    //        ChartDataEntry(x: 19, y: 15),
-    //        ChartDataEntry(x: 20, y: 25),
-    //        ChartDataEntry(x: 21, y: 12),
-    //        ChartDataEntry(x: 22, y: 2),
-    //        ChartDataEntry(x: 23, y: 9),
-    //        ChartDataEntry(x: 24, y: 10),
-    //        ChartDataEntry(x: 25, y: 5),
-    //        ChartDataEntry(x: 26, y: 2),
-    //        ChartDataEntry(x: 27, y: 2),
-    //        ChartDataEntry(x: 28, y: 9),
-    //        ChartDataEntry(x: 29, y: 10),
-    //        ChartDataEntry(x: 30, y: 5),
-    //        ChartDataEntry(x: 31, y: 2),
-    //    ]
+        
     
     let topColor =  UIColor(ciColor: .blue).cgColor
     let bottomColor = UIColor(ciColor: .white).cgColor
@@ -76,9 +43,38 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         
         
         let sampleData : [ChartDataEntry] = [
-            //            ChartDataEntry(x: 0, y: Double(item[0].amountOfTransaction) ?? 0),
-            //            ChartDataEntry(x: 1, y: Double(item[1].amountOfTransaction) ?? 0)
-            
+            //ChartDataEntry(x: 1, y: Double(item[0].amountOfTransaction) ?? 0),
+            ChartDataEntry(x: 1, y: 5),
+            ChartDataEntry(x: 2, y: 2),
+            ChartDataEntry(x: 3, y: 10),
+            ChartDataEntry(x: 4, y: 5),
+            ChartDataEntry(x: 5, y: 2),
+            ChartDataEntry(x: 6, y: 10),
+            ChartDataEntry(x: 7, y: 5),
+            ChartDataEntry(x: 8, y: 2),
+            ChartDataEntry(x: 9, y: 2),
+            ChartDataEntry(x: 10, y: 9),
+            ChartDataEntry(x: 11, y: 15),
+            ChartDataEntry(x: 12, y: 21),
+            ChartDataEntry(x: 13, y: 12),
+            ChartDataEntry(x: 14, y: 10),
+            ChartDataEntry(x: 15, y: 5),
+            ChartDataEntry(x: 16, y: 2),
+            ChartDataEntry(x: 17, y: 2),
+            ChartDataEntry(x: 18, y: 9),
+            ChartDataEntry(x: 19, y: 15),
+            ChartDataEntry(x: 20, y: 25),
+            ChartDataEntry(x: 21, y: 12),
+            ChartDataEntry(x: 22, y: 2),
+            ChartDataEntry(x: 23, y: 9),
+            ChartDataEntry(x: 24, y: 10),
+            ChartDataEntry(x: 25, y: 5),
+            ChartDataEntry(x: 26, y: 2),
+            ChartDataEntry(x: 27, y: 2),
+            ChartDataEntry(x: 28, y: 9),
+            ChartDataEntry(x: 29, y: 10),
+            ChartDataEntry(x: 30, y: 5),
+            ChartDataEntry(x: 31, y: 2),
         ]
         
         

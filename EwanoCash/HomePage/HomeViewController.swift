@@ -22,8 +22,26 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadDataFromUserDefault()
+        
+        let df = DateFormatter()
+        df.dateFormat = "MMMM-dd-yyyy"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        df.timeZone = TimeZone(identifier: "UTC")!
+        
+        let sortedArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
+        print(sortedArray)
+        
+        
+        
         homeTableView.reloadData()
     }
+    
+    var dateArray = [String]()
+    var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
+    
+    //var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
+    var monthValue : String = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,10 +75,11 @@ class HomeViewController: UIViewController {
     }
 }
 
+var item = [TransfersModel]()
+
 func saveDataToUserDefault() {
     UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
 }
-
 
 func loadDataFromUserDefault() {
     
@@ -72,23 +91,10 @@ func loadDataFromUserDefault() {
             //items.append(contentsOf: item)
         }
     }
-    //    let dateString = item[0].dateOfTransaction
-    //    let formatter = DateFormatter()
-    //    formatter.dateFormat = "MMMM-dd-yyyy"
-    //    guard let date = formatter.date(from: dateString) else {
-    //        return
-    //    }
-    //
-    //    formatter.dateFormat = "MMMM"
     
 }
 
-var item = [TransfersModel]()
-//var items = [TransfersModel]()
-var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
 
-//var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
-var monthValue : String = ""
 
 
 extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -119,8 +125,21 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        
+        for _ in item[indexPath.row].dateOfTransaction {
+            dateArray.append(item[indexPath.row].dateOfTransaction)
+        }
+        print("This isssssss \(dateArray)")
+       
+        homeTableView.reloadData()
+        
+        
+        
+        
+        
         cell.itemTitle.text = item[indexPath.row].titleOfTransaction
         cell.itemDate.text = item[indexPath.row].dateOfTransaction
+        
         cell.itemPrice.text = item[indexPath.row].amountOfTransaction
         if item[indexPath.row].isIncome == true {
             cell.itemImage.image = UIImage(named: "chevron_down")

@@ -28,7 +28,6 @@ class TransferViewController: UIViewController {
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButtonAction(_ sender: Any) {
         ContinueButtonDidTapped()
-        
     }
     @IBOutlet weak var numbersCollectionView: UICollectionView!
     @IBOutlet weak var costTransferedLabel: UILabel!
@@ -184,11 +183,19 @@ extension TransferViewController {
         cost = ""
         print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
         
+
+        if transactionTitle != "" && costTransferedLabel.text == "" {
+            saveDataToUserDefault()
+            dismiss(animated: true, completion: nil)
+
+        }
         
+        else {
+            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
         
-        
-        saveDataToUserDefault()
-        dismiss(animated: true, completion: nil)
         
         
     }

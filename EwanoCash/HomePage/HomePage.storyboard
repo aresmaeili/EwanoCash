@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -47,6 +48,12 @@
                                     <constraint firstAttribute="trailing" secondItem="xSl-1O-ybl" secondAttribute="trailing" id="zBK-tC-WXv"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There's no Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQh-Qi-wOq">
+                                <rect key="frame" x="120.66666666666669" y="413" width="149" height="23"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -54,10 +61,12 @@
                             <constraint firstItem="15f-QT-TD5" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="19z-2n-cR0"/>
                             <constraint firstItem="Vml-Ab-57q" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="CdA-l7-oKq"/>
                             <constraint firstAttribute="bottom" secondItem="15f-QT-TD5" secondAttribute="bottom" id="KOd-TG-agO"/>
+                            <constraint firstItem="sQh-Qi-wOq" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="NUm-Xy-3iZ"/>
                             <constraint firstItem="15f-QT-TD5" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="ZHk-6i-OdJ"/>
                             <constraint firstItem="Vml-Ab-57q" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="ZO3-fR-oQ5"/>
                             <constraint firstItem="15f-QT-TD5" firstAttribute="top" secondItem="Vml-Ab-57q" secondAttribute="bottom" id="nG0-6U-qFO"/>
                             <constraint firstItem="Vml-Ab-57q" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="pLf-cc-I8A"/>
+                            <constraint firstItem="sQh-Qi-wOq" firstAttribute="centerY" secondItem="vDu-zF-Fre" secondAttribute="centerY" id="wwN-As-QMa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ref-Rd-CRz">
@@ -70,6 +79,7 @@
                     <connections>
                         <outlet property="homeCollectionView" destination="xSl-1O-ybl" id="GYL-BZ-kvb"/>
                         <outlet property="homeTableView" destination="15f-QT-TD5" id="Ytf-Gj-3dD"/>
+                        <outlet property="listStatusLabel" destination="sQh-Qi-wOq" id="Isq-X9-zoE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -305,6 +315,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -10,6 +10,9 @@ import Charts
 
 class HomeViewController: UIViewController {
     
+    
+    @IBOutlet weak var listStatusLabel: UILabel!
+    
     @IBOutlet weak var homeCollectionView: UICollectionView!
     @IBOutlet weak var homeTableView: UITableView!
     @IBAction func plusAddButton(_ sender: Any) {
@@ -19,9 +22,26 @@ class HomeViewController: UIViewController {
         
     }
     
+     func updateListViewForItems() {
+        if item.isEmpty {
+            listStatusLabel.isHidden = false
+            homeTableView.isHidden = true
+            homeCollectionView.isHidden = true
+        } else {
+            listStatusLabel.isHidden = true
+            homeTableView.isHidden = false
+            homeCollectionView.isHidden = false
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadDataFromUserDefault()
+        
+        
+        updateListViewForItems()
+        
+        
         
         let df = DateFormatter()
         df.dateFormat = "MMMM-dd-yyyy"
@@ -35,7 +55,7 @@ class HomeViewController: UIViewController {
         
         homeTableView.reloadData()
     }
-    
+    var item = [TransfersModel]()
     var dateArray = [String]()
     var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
     
@@ -73,26 +93,27 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.items![2].selectedImage = UIImage(named: "total_filled")
         tabBarController?.tabBar.items![2].title = "Total"
     }
-}
-
-var item = [TransfersModel]()
-
-func saveDataToUserDefault() {
-    UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
-}
-
-func loadDataFromUserDefault() {
     
-    if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-        if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-            print("*****************\(String(describing: transferData))")
-            
-            item = transferData
-            //items.append(contentsOf: item)
-        }
+
+    func saveDataToUserDefault() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
     }
-    
+
+    func loadDataFromUserDefault() {
+        
+        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+                print("*****************\(String(describing: transferData))")
+                
+                item = transferData
+                //items.append(contentsOf: item)
+            }
+        }
+        
+    }
+
 }
+
 
 
 
@@ -126,12 +147,12 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         
-        for _ in item[indexPath.row].dateOfTransaction {
-            dateArray.append(item[indexPath.row].dateOfTransaction)
-        }
-        print("This isssssss \(dateArray)")
+//        for _ in item[indexPath.row].dateOfTransaction {
+//            dateArray.append(item[indexPath.row].dateOfTransaction)
+//        }
+//        print("This isssssss \(dateArray)")
        
-        homeTableView.reloadData()
+        //homeTableView.reloadData()
         
         
         
@@ -163,6 +184,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
             saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+            updateListViewForItems()
             print(item)
         }
         return

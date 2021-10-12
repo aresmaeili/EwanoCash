@@ -13,6 +13,9 @@ class TransferViewController: UIViewController {
         
     }
     
+    @IBAction func cancelButtonAcion(_ sender: Any) {
+        
+    }
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
             isIncome = true
@@ -92,8 +95,12 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
         cell.numbersButton.isUserInteractionEnabled = false
         if keyPadArray[indexPath.row] == "." || keyPadArray[indexPath.row] == "←" {
             cell.numbersButton.tintColor = .purple
+           
         }else{
             cell.numbersButton.tintColor = .systemBlue
+        }
+        if keyPadArray[indexPath.row] == "."{
+            cell.numbersButton.titleLabel?.font = .boldSystemFont(ofSize: 32.0)
         }
         return cell
         
@@ -163,11 +170,7 @@ extension TransferViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
     }
     
-    func ContinueButtonDidTapped() {
-
-//        let item = TransfersModel(titleOfTransaction: transactionTitletextField.text ?? "", amountOfTransaction: cost, dateOfTransaction: selectedDate! , isIncome: isIncome)
-//        listOfTransactions = []
-        
+    func ContinueButtonDidTapped(){
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: selectedDate!, isIncome: isIncome)
@@ -185,12 +188,16 @@ extension TransferViewController {
 //        cost = ""
         print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
         
+
         if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {
             let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
             
+        else {
 
+            saveDataToUserDefault()
+            dismiss(animated: true, completion: nil)
         }
         
         else {

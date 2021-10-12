@@ -12,7 +12,7 @@ struct TransfersModel : Codable {
     
     var titleOfTransaction = ""
     var amountOfTransaction = ""
-    var dateOfTransaction = ""
+    var dateOfTransaction: Date
     var isIncome = true
 }
 

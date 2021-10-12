@@ -48,7 +48,7 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         cell.itemTitle.text = item[indexPath.row].titleOfTransaction
-        cell.itemDate.text = item[indexPath.row].dateOfTransaction
+        cell.itemDate.text = item[indexPath.row].dateOfTransaction.description
         cell.itemPrice.text = item[indexPath.row].amountOfTransaction
         if item[indexPath.row].isIncome == true {
             // cell?.itemImage.image =
@@ -80,18 +80,15 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         let dateString = item[0].dateOfTransaction
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM-dd-yyyy"
-        guard let date = formatter.date(from: dateString) else { return }
-        
         formatter.dateFormat = "yyyy"
-        let year = formatter.string(from: date)
+        let year = formatter.string(from: dateString)
         formatter.dateFormat = "MM"
-        let month = formatter.string(from: date)
+        let month = formatter.string(from: dateString)
         formatter.dateFormat = "dd"
-        let day = formatter.string(from: date)
+        let day = formatter.string(from: dateString)
         print(year, month, day) // 2018 12 24
         
         //days.append(dateString)
-        let sections = days
         
     }
     

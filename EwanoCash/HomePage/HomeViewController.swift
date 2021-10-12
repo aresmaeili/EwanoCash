@@ -6,80 +6,52 @@
 //
 
 import UIKit
-import Charts
+import AAInfographics
 
 class HomeViewController: UIViewController {
     
-    
     @IBOutlet weak var listStatusLabel: UILabel!
-    
-    @IBOutlet weak var homeCollectionView: UICollectionView!
-    @IBOutlet weak var homeTableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tableView: UITableView!
     @IBAction func plusAddButton(_ sender: Any) {
-        let controller = UIStoryboard(name: "Transfer", bundle: .main).instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
-        present(controller, animated: true, completion: nil)
-        // loadDataFromUserDefault ()
-        
+        let vc = storyboard?.instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
+        vc.delegate = self
+        present(vc, animated: true, completion: nil)
     }
     
-     func updateListViewForItems() {
-        if item.isEmpty {
-            listStatusLabel.isHidden = false
-            homeTableView.isHidden = true
-            homeCollectionView.isHidden = true
-        } else {
-            listStatusLabel.isHidden = true
-            homeTableView.isHidden = false
-            homeCollectionView.isHidden = false
+    var dateArray = [String]()
+    var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
+    var monthValue : String = ""
+    var items: [TransfersModel] = [] {
+        didSet {
+            DispatchQueue.main.async { [self] in
+                updateListViewForItems()
+                tableView.reloadData()
+                collectionView.reloadData()
+            }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.title = "Home"
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        collectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        tabBarController?.selectedIndex = 0
+        tableView.separatorStyle = .none
+        setTabBarsStyle()
+        sortDates()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadDataFromUserDefault()
         
-        
-        updateListViewForItems()
-        
-        
-        
-        let df = DateFormatter()
-        df.dateFormat = "MMMM-dd-yyyy"
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.timeZone = TimeZone(identifier: "UTC")!
-        
-        let sortedArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
-        print(sortedArray)
-        
-        
-        
-        homeTableView.reloadData()
-    }
-    var item = [TransfersModel]()
-    var dateArray = [String]()
-    var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
-    
-    //var items = ["bill" , "buying shoe" , "coffee" , "taxi"]
-    var monthValue : String = ""
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        homeTableView.delegate = self
-        homeTableView.dataSource = self
-        homeCollectionView.delegate = self
-        homeCollectionView.dataSource = self
-        tabBarController?.selectedIndex = 0
-        setTabBarsStyle()
-        
-        //        loadDataFromUserDefault()
-        //        homeTableView.reloadData()
-        
-        homeTableView.separatorStyle = .none
-        homeTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        homeCollectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
-        navigationItem.title = "Home"
-        
+        items = getDataFromUserDefault()
     }
     
     func setTabBarsStyle() {
@@ -94,41 +66,73 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.items![2].title = "Total"
     }
     
-
     func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
     }
-
-    func loadDataFromUserDefault() {
-        
+    
+    func getDataFromUserDefault()-> [TransfersModel] {
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
                 print("*****************\(String(describing: transferData))")
-                
-                item = transferData
-                //items.append(contentsOf: item)
+                return transferData
             }
         }
-        
+        return []
     }
-
+    
+    func getChartData()-> AAChartModel {
+        let income = items.filter({$0.isIncome})
+        let outcome = items.filter({!$0.isIncome})
+        let data = AAChartModel()
+            .chartType(.spline)//Can be any of the chart types listed under `AAChartType`.
+            .animationType(.bounce)
+            //                  .title("TITLE")//The chart title
+            //                  .subtitle("subtitle")//The chart subtitle
+            .categories(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))
+            //                  .tooltipValueSuffix("USD")//the value suffix of the chart tooltip
+            .dataLabelsEnabled(false) //Enable or disable the data labels. Defaults to false
+            .touchEventEnabled(false)
+            .tooltipEnabled(false)
+            .colorsTheme(["#fe117c","#ffc069","#06caf4","#7dffc0"])
+            .series([
+                AASeriesElement()
+                    .name("Income")
+                    .data(income.compactMap({Double($0.amountOfTransaction)})),
+                AASeriesElement()
+                    .name("Outcome")
+                    .data(outcome.compactMap({Double($0.amountOfTransaction)})),
+            ])
+        return data
+    }
+    
+    func updateListViewForItems() {
+        if items.isEmpty {
+            listStatusLabel.isHidden = false
+        } else {
+            listStatusLabel.isHidden = true
+        }
+    }
+    
+    func sortDates() {
+        let df = DateFormatter()
+        df.dateFormat = "MMMM-dd-yyyy"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        df.timeZone = TimeZone(identifier: "UTC")!
+        dateArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
+        tableView.reloadData()
+    }
 }
 
-
-
-
-
-extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return month.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
-        // cell.backgroundView =
         cell.monthLabel.text = month[indexPath.row]
-        
-        
+        cell.fill(with: getChartData())
         return cell
     }
     
@@ -146,23 +150,11 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        
-//        for _ in item[indexPath.row].dateOfTransaction {
-//            dateArray.append(item[indexPath.row].dateOfTransaction)
-//        }
-//        print("This isssssss \(dateArray)")
-       
-        //homeTableView.reloadData()
-        
-        
-        
-        
-        
-        cell.itemTitle.text = item[indexPath.row].titleOfTransaction
-        cell.itemDate.text = item[indexPath.row].dateOfTransaction
-        
-        cell.itemPrice.text = item[indexPath.row].amountOfTransaction
-        if item[indexPath.row].isIncome == true {
+        let item = items[indexPath.row]
+        cell.itemTitle.text = item.titleOfTransaction
+        cell.itemDate.text = item.dateOfTransaction.description
+        cell.itemPrice.text = item.amountOfTransaction
+        if item.isIncome == true {
             cell.itemImage.image = UIImage(named: "chevron_down")
         } else {
             cell.itemImage.image = UIImage(named: "chevron_up")
@@ -171,26 +163,38 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return item.count
+        return items.count
     }
     
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
             tableView.beginUpdates()
-            item.remove(at: indexPath.row)
-            
+            items.remove(at: indexPath.row)
             saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
-            updateListViewForItems()
-            print(item)
         }
         return
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
+    }
+}
+
+extension HomeViewController: TransferViewControllerDelegate {
+    
+    func insertedNewData() {
+        items = getDataFromUserDefault()
+    }
+}
+
+extension Date {
+ 
+    func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
+        return calendar.dateComponents(Set(components), from: self)
+    }
+    func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
+        return calendar.component(component, from: self)
     }
 }

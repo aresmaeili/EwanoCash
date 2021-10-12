@@ -13,6 +13,9 @@ class TransferViewController: UIViewController {
         
     }
     
+    @IBAction func cancelButtonAcion(_ sender: Any) {
+        
+    }
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
             isIncome = true
@@ -89,8 +92,12 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
         cell.numbersButton.isUserInteractionEnabled = false
         if keyPadArray[indexPath.row] == "." || keyPadArray[indexPath.row] == "←" {
             cell.numbersButton.tintColor = .purple
+           
         }else{
             cell.numbersButton.tintColor = .systemBlue
+        }
+        if keyPadArray[indexPath.row] == "."{
+            cell.numbersButton.titleLabel?.font = .boldSystemFont(ofSize: 32.0)
         }
         return cell
         
@@ -164,7 +171,7 @@ extension TransferViewController {
     }
     
     func ContinueButtonDidTapped(){
-        var transactionTitle = ""
+        var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
         //  item = TransfersModel()
@@ -180,20 +187,22 @@ extension TransferViewController {
         }
         
         listOfTransactions.append(item)
-        cost = ""
+//        cost = ""
         print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
         
 
-        if transactionTitle != "" && costTransferedLabel.text == "" {
-            saveDataToUserDefault()
-            dismiss(animated: true, completion: nil)
+        if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {
+            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+            
 
         }
         
         else {
-            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
-            present(alert, animated: true, completion: nil)
+
+            saveDataToUserDefault()
+            dismiss(animated: true, completion: nil)
         }
         
         

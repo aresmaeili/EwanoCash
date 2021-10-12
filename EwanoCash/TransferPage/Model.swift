@@ -10,12 +10,11 @@ import Foundation
 
 struct TransfersModel : Codable {
     
-    var titleOfTransaction = ""
-    var amountOfTransaction = ""
-    var dateOfTransaction = ""
-    var isIncome = true
+    var titleOfTransaction: String
+    var amountOfTransaction: String
+    var dateOfTransaction: Date
+    var isIncome: Bool
     
-    
-    
+
 }
 

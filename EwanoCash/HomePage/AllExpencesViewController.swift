@@ -9,13 +9,15 @@ import UIKit
 
 class AllExpencesViewController: UIViewController {
     
+    @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var allExpencesTableView: UITableView!
     
-    //var items = ["bill" , "buying shoe" , "coffee" , "taxi" , "bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee" ,"bill" , "buying shoe" , "coffee"]
+    var items = [TransfersModel]()
+    var daysForSection : [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadDataFromUserDefault()
+        
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
@@ -24,88 +26,87 @@ class AllExpencesViewController: UIViewController {
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadDataFromUserDefault()
+        allExpencesTableView.reloadData()
+        updateListViewForItems()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+    }
     
+    func updateListViewForItems() {
+        if items.isEmpty {
+            listStatusLabel.isHidden = false
+            allExpencesTableView.isHidden = true
+        } else {
+            listStatusLabel.isHidden = true
+            allExpencesTableView.isHidden = false
+        }
+    }
+    
+    func saveDataToUserDefault() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
+    }
     
     func loadDataFromUserDefault() {
         
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-                print("*****************\(String(describing: transferData))")
-                
-                item = transferData
-                //items.append(contentsOf: item)
+                // print("*****************\(String(describing: transferData))")
+                items = transferData
+                daysForSection = items.compactMap{$0.dateOfTransaction.get(.day , .month , .year).description}
+                DispatchQueue.main.async {
+                    self.allExpencesTableView.reloadData()
+                }
             }
         }
     }
-    
-    var item = [TransfersModel]()
-    let days = [Date]()
-    
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        cell.itemTitle.text = item[indexPath.row].titleOfTransaction
-        cell.itemDate.text = item[indexPath.row].dateOfTransaction
-        cell.itemPrice.text = item[indexPath.row].amountOfTransaction
-        if item[indexPath.row].isIncome == true {
-            // cell?.itemImage.image =
+        cell.itemTitle.text = items[indexPath.section].titleOfTransaction
+        cell.itemDate.text = items[indexPath.section].dateOfTransaction.get(.hour , .minute).description
+        
+        cell.itemPrice.text = items[indexPath.section].amountOfTransaction.description
+        if items[indexPath.section].isIncome == true {
+            cell.itemImage.image = UIImage(named: "chevron_down")
         } else {
-            //cell?.itemImage.image =
+            cell.itemImage.image = UIImage(named: "chevron_up")
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return item.count
+        return 1
     }
-    
-    
-    
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return days.count
+        return daysForSection.count
     }
     
-    //    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-    //
-    //    }
-    
-    func getDate() {
-        
-        let dateString = item[0].dateOfTransaction
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM-dd-yyyy"
-        guard let date = formatter.date(from: dateString) else { return }
-        
-        formatter.dateFormat = "yyyy"
-        let year = formatter.string(from: date)
-        formatter.dateFormat = "MM"
-        let month = formatter.string(from: date)
-        formatter.dateFormat = "dd"
-        let day = formatter.string(from: date)
-        print(year, month, day) // 2018 12 24
-        
-        //days.append(dateString)
-        let sections = days
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return daysForSection[section]
         
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
-            tableView.beginUpdates()
+//            tableView.beginUpdates()
+            items.remove(at: indexPath.section)
             
-            item.remove(at: indexPath.row)
+            saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
-            print(item)
+//            tableView.endUpdates()
+            tableView.reloadData()
+            updateListViewForItems()
         }
-        return
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

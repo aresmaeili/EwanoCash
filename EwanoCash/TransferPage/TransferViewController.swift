@@ -35,11 +35,10 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
-    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: "Oct 6, 2021", isIncome: true)]
+    var listOfTransactions: [TransfersModel] = []
     
-    //var listOfTransactions :[TransfersModel]?
     var isIncome = true
-    var selectedDate: String?
+    var selectedDate: Date?
     let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
     var cost : String = "" {
         didSet{
@@ -52,7 +51,7 @@ class TransferViewController: UIViewController {
         super.viewDidLoad()
         self.dismissKeyboard()
         //**********************
-        listOfTransactions.remove(at: 0)
+        //listOfTransactions.remove(at: 0)
         
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
@@ -68,9 +67,13 @@ class TransferViewController: UIViewController {
     @objc func dateSelected() {
         if let datePicker = datePickerTextField.inputView as? UIDatePicker {
             let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMMM-dd-yyyy"
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.timeZone = TimeZone(identifier: "UTC")!
+            
             dateFormatter.dateStyle = .medium
             datePickerTextField.text = dateFormatter.string(from: datePicker.date)
-            selectedDate = datePicker.date.description
+            selectedDate = datePicker.date
             //print("ABDBABDBABDBABDBABD**********\(selectedDate)**8")
         }
         datePickerTextField.resignFirstResponder()
@@ -150,29 +153,27 @@ extension TransferViewController {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = DateFormatter.Style.none
-        dateFormatter.dateFormat = "YY, MMM d" 
+        dateFormatter.dateFormat = "YY, MMM d"
         dateFormatter.dateStyle = DateFormatter.Style.medium
         datePickerTextField.text = dateFormatter.string(from: date)
-        selectedDate = dateFormatter.string(from: date)
+        selectedDate = date
     }
-    
-    // var listOfTransactions = [ TransfersModel ]()
-    
-    
     
     func saveDataToUserDefault() {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
     }
     
     func ContinueButtonDidTapped() {
-        var transactionTitle = ""
+
+//        let item = TransfersModel(titleOfTransaction: transactionTitletextField.text ?? "", amountOfTransaction: cost, dateOfTransaction: selectedDate! , isIncome: isIncome)
+//        listOfTransactions = []
+        
+        var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
-        let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!, isIncome: isIncome)
+        let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: selectedDate!, isIncome: isIncome)
         //  item = TransfersModel()
         listOfTransactions = []
-        
-        
-        
+
         
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
@@ -181,22 +182,23 @@ extension TransferViewController {
         }
         
         listOfTransactions.append(item)
-        cost = ""
+//        cost = ""
         print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
         
-
-        if transactionTitle != "" && costTransferedLabel.text == "" {
-            saveDataToUserDefault()
-            dismiss(animated: true, completion: nil)
+        if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {
+            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+            
 
         }
         
         else {
-            let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
-            present(alert, animated: true, completion: nil)
+
+            saveDataToUserDefault()
+            dismiss(animated: true, completion: nil)
         }
-        
+
         
         
     }

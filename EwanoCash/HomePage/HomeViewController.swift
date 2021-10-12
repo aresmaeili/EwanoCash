@@ -23,7 +23,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateListViewForItems() {
-        if item.isEmpty {
+        if items.isEmpty {
             listStatusLabel.isHidden = false
             homeTableView.isHidden = true
             homeCollectionView.isHidden = true
@@ -43,19 +43,20 @@ class HomeViewController: UIViewController {
         
         
         
-        let df = DateFormatter()
-        df.dateFormat = "MMMM-dd-yyyy"
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.timeZone = TimeZone(identifier: "UTC")!
+        let dateFormatter = DateFormatter()
+       // dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        dateFormatter.dateStyle = DateFormatter.Style.medium
         
-        let sortedArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
+        let sortedArray = dateArray.sorted {dateFormatter.date(from: $0)! < dateFormatter.date(from: $1)!}
         print(sortedArray)
         
         
         
         homeTableView.reloadData()
     }
-    var item = [TransfersModel]()
+    var items = [TransfersModel]()
     var dateArray = [String]()
     var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
     
@@ -69,6 +70,7 @@ class HomeViewController: UIViewController {
         homeTableView.dataSource = self
         homeCollectionView.delegate = self
         homeCollectionView.dataSource = self
+        homeCollectionView.contentInsetAdjustmentBehavior = .never
         tabBarController?.selectedIndex = 0
         setTabBarsStyle()
         
@@ -96,33 +98,22 @@ class HomeViewController: UIViewController {
     
     
     func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( item ) , forKey: "listOfTransactions")
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
     }
     
     func loadDataFromUserDefault() {
-        
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-              //  print("*****************\(String(describing: transferData))")
-                
-                item = transferData
-                
-                
-                
-                item = item.sorted(by: { firstItem, secondItem in
-                    
-                    
+                //  print("*****************\(String(describing: transferData))")
+                items = transferData
+                items = items.sorted(by: { firstItem, secondItem in
                     let dateFormatter = DateFormatter()
-                    // dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                    dateFormatter.timeStyle = DateFormatter.Style.none
-                    dateFormatter.dateFormat = "YY, MMM d"
+                    //dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    dateFormatter.timeStyle = DateFormatter.Style.medium
+                    dateFormatter.dateFormat = "MMM d, yyyy"
                     dateFormatter.dateStyle = DateFormatter.Style.medium
                     
-                    
-
-                    
-                    
-                    guard let firstDate = dateFormatter.date(from:firstItem.dateOfTransaction), let secondDate = dateFormatter.date(from: secondItem.dateOfTransaction) else { return  true }
+                    guard let firstDate = dateFormatter.date(from:firstItem.dateOfTransaction.description), let secondDate = dateFormatter.date(from: secondItem.dateOfTransaction.description) else { return  true }
                     print("this is firstDate\(firstDate)***********#########")
                     print("this is secondDate\(secondDate)***********#########")
                     return firstDate < secondDate
@@ -131,7 +122,6 @@ class HomeViewController: UIViewController {
                 //items.append(contentsOf: item)
             }
         }
-        
     }
     
 }
@@ -141,6 +131,7 @@ class HomeViewController: UIViewController {
 
 
 extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return month.count
     }
@@ -155,19 +146,19 @@ extension HomeViewController: UICollectionViewDelegate , UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = view.frame.width
+        let width = homeCollectionView.frame.width - 32
         return CGSize(width: width, height: width / 1.9)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20.0, bottom: 0, right: 20.0)
-    }
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    //        return UIEdgeInsets(top: 0, left: 20.0, bottom: 0, right: 20.0)
+    //    }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-            let x = scrollView.contentOffset.x
-            let w = scrollView.bounds.size.width
-            let currentPage = Int(ceil(x/w))
-            // Do whatever with currentPage.
+        let x = scrollView.contentOffset.x
+        let w = scrollView.bounds.size.width
+        let currentPage = Int(ceil(x/w))
+        // Do whatever with currentPage.
         print("@@@@@@@\(currentPage)")
     }
     
@@ -189,11 +180,11 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         
         
         
-        cell.itemTitle.text = item[indexPath.row].titleOfTransaction
-        cell.itemDate.text = item[indexPath.row].dateOfTransaction
+        cell.itemTitle.text = items[indexPath.row].titleOfTransaction
+        cell.itemDate.text = items[indexPath.row].dateOfTransaction.description
         
-        cell.itemPrice.text = item[indexPath.row].amountOfTransaction
-        if item[indexPath.row].isIncome == true {
+        cell.itemPrice.text = items[indexPath.row].amountOfTransaction.description
+        if items[indexPath.row].isIncome == true {
             cell.itemImage.image = UIImage(named: "chevron_down")
         } else {
             cell.itemImage.image = UIImage(named: "chevron_up")
@@ -202,7 +193,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return item.count
+        return items.count
     }
     
     
@@ -210,13 +201,13 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         
         if editingStyle == .delete {
             tableView.beginUpdates()
-            item.remove(at: indexPath.row)
+            items.remove(at: indexPath.row)
             
             saveDataToUserDefault()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
             updateListViewForItems()
-            print(item)
+            print(items)
         }
         return
     }

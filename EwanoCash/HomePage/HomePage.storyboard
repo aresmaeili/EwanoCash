@@ -19,17 +19,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="15f-QT-TD5">
-                                <rect key="frame" x="0.0" y="328" width="390" height="516"/>
+                                <rect key="frame" x="0.0" y="408" width="390" height="436"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vml-Ab-57q" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="88" width="390" height="240"/>
+                                <rect key="frame" x="0.0" y="88" width="390" height="320"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xSl-1O-ybl">
-                                        <rect key="frame" x="0.0" y="50" width="390" height="170"/>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xSl-1O-ybl">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="300"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="170" id="bTy-ck-GRn"/>
+                                            <constraint firstAttribute="height" constant="300" id="bTy-ck-GRn"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uF2-a4-80c">
                                             <size key="itemSize" width="128" height="128"/>
@@ -42,7 +42,7 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="240" id="R5M-nW-hod"/>
+                                    <constraint firstAttribute="height" constant="320" id="R5M-nW-hod"/>
                                     <constraint firstAttribute="bottom" secondItem="xSl-1O-ybl" secondAttribute="bottom" constant="20" id="e7S-aj-RsW"/>
                                     <constraint firstItem="xSl-1O-ybl" firstAttribute="leading" secondItem="Vml-Ab-57q" secondAttribute="leading" id="rYI-1w-zVM"/>
                                     <constraint firstAttribute="trailing" secondItem="xSl-1O-ybl" secondAttribute="trailing" id="zBK-tC-WXv"/>
@@ -98,19 +98,28 @@
                                 <rect key="frame" x="0.0" y="88" width="390" height="756"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There's no Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1a-Kw-cXP">
+                                <rect key="frame" x="120.66666666666669" y="413" width="149" height="23"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WGE-5q-PCj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hsH-Lf-SXx" firstAttribute="trailing" secondItem="WGE-5q-PCj" secondAttribute="trailing" id="GVD-mI-fPB"/>
                             <constraint firstItem="hsH-Lf-SXx" firstAttribute="top" secondItem="WGE-5q-PCj" secondAttribute="top" id="Get-7r-0yf"/>
+                            <constraint firstItem="K1a-Kw-cXP" firstAttribute="centerY" secondItem="WGE-5q-PCj" secondAttribute="centerY" id="Idm-4q-GpN"/>
                             <constraint firstAttribute="bottom" secondItem="hsH-Lf-SXx" secondAttribute="bottom" id="h5D-08-s26"/>
+                            <constraint firstItem="K1a-Kw-cXP" firstAttribute="centerX" secondItem="WGE-5q-PCj" secondAttribute="centerX" id="q7m-2S-zlk"/>
                             <constraint firstItem="hsH-Lf-SXx" firstAttribute="leading" secondItem="WGE-5q-PCj" secondAttribute="leading" id="x44-li-Ydg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HgH-kY-orR"/>
                     <connections>
                         <outlet property="allExpencesTableView" destination="hsH-Lf-SXx" id="baa-eT-h7O"/>
+                        <outlet property="listStatusLabel" destination="K1a-Kw-cXP" id="uOv-H6-Hr6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCo-hl-ofn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

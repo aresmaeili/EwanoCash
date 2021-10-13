@@ -35,7 +35,7 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
-
+    
     
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
@@ -63,6 +63,9 @@ class TransferViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
+        transactionTypeSegment.tintColor = UIColor.systemBlue
+        transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
+        transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         todayButton.layer.cornerRadius = 5
         costTransferedLabel.layer.cornerRadius = 25
         costTransferedLabel.clipsToBounds = true

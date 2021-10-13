@@ -76,7 +76,6 @@ class HomeViewController: UIViewController {
     func getDataFromUserDefault()-> [TransfersModel] {
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-                print("*****************\(String(describing: transferData))")
                 return transferData
             }
         }

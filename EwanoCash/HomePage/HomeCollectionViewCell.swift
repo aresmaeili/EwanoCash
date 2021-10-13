@@ -21,7 +21,6 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         super.awakeFromNib()
         
         chartParentView.addSubview(chart)
-//        chart.scrollEnabled = false
         chart.scrollView.bounces = false
     }
     

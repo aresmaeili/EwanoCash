@@ -100,10 +100,10 @@ class HomeViewController: UIViewController {
                 allTransactions.append(balance) // MARK: Not sure about that
             }
         }
-//        let gradientColor = AAGradientColor.linearGradient(
-//            direction: .toBottomRight,
-//            startColor: "#0000FF",
-//            endColor: "#fffff")
+        //        let gradientColor = AAGradientColor.linearGradient(
+        //            direction: .toBottomRight,
+        //            startColor: "#0000FF",
+        //            endColor: "#fffff")
         let data = AAChartModel()
             .chartType(.spline)
             .animationType(.easeInCubic)
@@ -118,7 +118,7 @@ class HomeViewController: UIViewController {
                 AASeriesElement()
                     .name("Expences")
                     .data(allTransactions),
-//                    .color(gradientColor),
+                //                    .color(gradientColor),
                 AASeriesElement()
                     .name("")
                     .data(Array(1...31).compactMap({$0})),
@@ -184,7 +184,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let width = collectionView.frame.width
         return CGSize(width: width, height: width / 1.5)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
@@ -205,7 +205,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         let items = getData(of: month[collectionView.indexPathsForVisibleItems.first!.row])
         let item = items[indexPath.row]
         cell.itemTitle.text = item.titleOfTransaction
-        cell.itemDate.text = item.dateOfTransaction.description
+        cell.itemDate.text = item.dateOfTransaction.getPrettyDate()
         cell.itemPrice.text = item.amountOfTransaction
         if item.isIncome == true {
             cell.itemImage.image = UIImage(named: "chevron_down")
@@ -236,11 +236,12 @@ extension HomeViewController: TransferViewControllerDelegate {
     func insertedNewData() {
         allItems = getDataFromUserDefault()
         items = allItems
+        tableView.reloadData()
     }
 }
 
 extension Date {
- 
+    
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
     }
@@ -253,5 +254,17 @@ extension Date {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMMM")
         return df.string(from: self)
+    }
+    
+    func getPrettyDate() -> String {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
+        return df.string(from: self)
+    }
+    
+    func getPrettyTime() -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: self)
     }
 }

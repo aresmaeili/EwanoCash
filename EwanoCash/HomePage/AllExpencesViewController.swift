@@ -31,11 +31,6 @@ class AllExpencesViewController: UIViewController {
         loadDataFromUserDefault()
         allExpencesTableView.reloadData()
         updateListViewForItems()
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeStyle = DateFormatter.Style.none
-        dateFormatter.dateFormat = "MMM d, yyyy"
-        dateFormatter.dateStyle = DateFormatter.Style.medium
     }
     
     func updateListViewForItems() {
@@ -58,7 +53,7 @@ class AllExpencesViewController: UIViewController {
             if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
                 // print("*****************\(String(describing: transferData))")
                 items = transferData
-                daysForSection = items.compactMap{$0.dateOfTransaction.get(.day , .month , .year).description}
+                daysForSection = items.compactMap{$0.dateOfTransaction.getPrettyDate().description}
                 DispatchQueue.main.async {
                     self.allExpencesTableView.reloadData()
                 }
@@ -71,8 +66,12 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        let dateFormatter = DateFormatter()
+       // dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        
         cell.itemTitle.text = items[indexPath.section].titleOfTransaction
-        cell.itemDate.text = items[indexPath.section].dateOfTransaction.get(.hour , .minute).description
+        cell.itemDate.text = items[indexPath.section].dateOfTransaction.getPrettyTime()
         
         cell.itemPrice.text = items[indexPath.section].amountOfTransaction.description
         if items[indexPath.section].isIncome == true {

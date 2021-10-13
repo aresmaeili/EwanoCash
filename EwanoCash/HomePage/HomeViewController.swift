@@ -22,12 +22,16 @@ class HomeViewController: UIViewController {
     var dateArray = [String]()
     var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
     var monthValue : String = ""
+    var isTableAutoReloadEnabled = true
     var items: [TransfersModel] = [] {
         didSet {
-            DispatchQueue.main.async { [self] in
-                updateListViewForItems()
-                tableView.reloadData()
-                collectionView.reloadData()
+            if isTableAutoReloadEnabled {
+                DispatchQueue.main.async { [self] in
+                    makeOutcomesNegetive()
+                    updateListViewForItems()
+                    tableView.reloadData()
+                    collectionView.reloadData()
+                }
             }
         }
     }
@@ -45,12 +49,12 @@ class HomeViewController: UIViewController {
         tabBarController?.selectedIndex = 0
         tableView.separatorStyle = .none
         setTabBarsStyle()
-        items = getDataFromUserDefault()
+        loadData()
 //        sortDates()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func loadData() {
+        items = getDataFromUserDefault()
     }
     
     func setTabBarsStyle() {
@@ -80,8 +84,25 @@ class HomeViewController: UIViewController {
     }
     
     func getChartData()-> AAChartModel {
-        let income = items.filter({$0.isIncome}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
-        let outcome = items.filter({!$0.isIncome}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        isTableAutoReloadEnabled = false
+        items = items.sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        isTableAutoReloadEnabled = true
+        var balance = 0
+        var allTransactions:[Int] = []
+        for i in 0...31 {
+            if items.compactMap({$0.dateOfTransaction.get(.day)}).contains(i) {
+                for j in 0..<items.count {
+                    if items[j].dateOfTransaction.get(.day) == i { // transaction in day of i
+                        balance = balance + Int(items[j].amountOfTransaction)!
+                        allTransactions.append(balance)
+                    }
+                }
+            } else {
+                allTransactions.append(balance) // MARK: Not sure about that
+            }
+        }
+        
+        
         let data = AAChartModel()
             .chartType(.spline)//Can be any of the chart types listed under `AAChartType`.
             .animationType(.bounce)
@@ -93,22 +114,16 @@ class HomeViewController: UIViewController {
             .touchEventEnabled(false)
             .tooltipEnabled(false)
             .legendEnabled(false)
-            .colorsTheme(["#fe117c","#ffc069", "#00000000"])
+            .colorsTheme(["#0000FF", "#00000000"])
             .categories(Array(1...31).compactMap({$0.description}))
             .series([
                 AASeriesElement()
-                    .name("Income")
-                    .data([4, 14, 30]),
-                AASeriesElement()
-                    .name("Outcome")
-                    .data([1, 2, 24]),
+                    .name("Expences")
+                    .data(allTransactions),
                 AASeriesElement()
                     .name("")
                     .data(Array(1...31).compactMap({$0})),
             ])
-        print("income: \(income.compactMap({$0.dateOfTransaction.get(.day)}))")
-        print("outcome: \(outcome.compactMap({$0.dateOfTransaction.get(.day)}))")
-        print("chart data: \(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))")
         return data
     }
     
@@ -134,6 +149,16 @@ class HomeViewController: UIViewController {
         let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let days = cal.range(of: .day, in: .month, for: date)
         return days.hashValue
+    }
+    
+    func makeOutcomesNegetive() {
+        for i in 0..<items.count {
+            if !items[i].isIncome {
+                if Int(items[i].amountOfTransaction)! > 0 {
+                    items[i].amountOfTransaction = (Int(items[i].amountOfTransaction)! * -1).description
+                }
+            }
+        }
     }
 }
 

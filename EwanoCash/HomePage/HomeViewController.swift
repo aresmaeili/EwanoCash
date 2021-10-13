@@ -30,7 +30,6 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async { [self] in
                     makeOutcomesNegetive()
                     updateListViewForItems()
-                    tableView.reloadData()
                     collectionView.reloadData()
                 }
             }
@@ -51,7 +50,6 @@ class HomeViewController: UIViewController {
         tableView.separatorStyle = .none
         setTabBarsStyle()
         loadData()
-//        sortDates()
     }
     
     func loadData() {
@@ -87,7 +85,7 @@ class HomeViewController: UIViewController {
     
     func getChartData(for month: String)-> AAChartModel {
         isTableAutoReloadEnabled = false
-        items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        items = getData(of: month)
         isTableAutoReloadEnabled = true
         var balance = 0
         var allTransactions:[Int] = []
@@ -127,6 +125,11 @@ class HomeViewController: UIViewController {
                     .data(Array(1...31).compactMap({$0})),
             ])
         return data
+    }
+    
+    func getData(of month: String)-> [TransfersModel] {
+        let items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        return items
     }
     
     func updateListViewForItems() {
@@ -170,6 +173,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == collectionView {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         return CGSize(width: width, height: width / 1.5)
@@ -183,12 +194,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let index = collectionView.indexPathsForVisibleItems.first {
+            return getData(of: month[index.row]).count
+        }
         return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
+        let items = getData(of: month[collectionView.indexPathsForVisibleItems.first!.row])
         let item = items[indexPath.row]
         cell.itemTitle.text = item.titleOfTransaction
         cell.itemDate.text = item.dateOfTransaction.description

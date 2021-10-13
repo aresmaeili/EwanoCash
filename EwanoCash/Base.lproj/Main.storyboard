@@ -232,6 +232,7 @@
                     <connections>
                         <outlet property="chartParentView" destination="KrR-pg-d9g" id="lbK-XN-WuH"/>
                         <outlet property="tableView" destination="7U4-nR-Iav" id="Hnn-C2-DLd"/>
+                        <outlet property="tableViewHeightConstraint" destination="BZV-Sp-mJX" id="eRU-4n-LOa"/>
                         <outlet property="totalIncomeAmountLabel" destination="oSB-Yn-XUn" id="jyH-U0-MjU"/>
                         <outlet property="totalSpendingAmountLabel" destination="AIQ-Js-YzA" id="Sr0-aO-em7"/>
                     </connections>

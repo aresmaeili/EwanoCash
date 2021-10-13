@@ -14,14 +14,17 @@ class TotalSummaryViewController: UIViewController {
     @IBOutlet weak var totalSpendingAmountLabel: UILabel!
     @IBOutlet weak var totalIncomeAmountLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     
     var chartView = AAChartView()
+    let cellHeight:CGFloat = 60
     var isTableAutoReloadEnabled = true
     var items: [TransfersModel] = [] {
         didSet {
             if true {
                 DispatchQueue.main.async { [self] in
                     tableView.reloadData()
+                    tableViewHeightConstraint.constant = cellHeight * CGFloat(items.count)
                 }
             }
         }
@@ -123,6 +126,6 @@ extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return cellHeight
     }
 }

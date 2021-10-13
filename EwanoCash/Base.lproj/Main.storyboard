@@ -19,19 +19,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="bPD-rf-z1U">
-                                <rect key="frame" x="0.0" y="328" width="414" height="568"/>
+                                <rect key="frame" x="0.0" y="388" width="414" height="508"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="and-td-V4H" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="88" width="414" height="240"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="300"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="CXx-ua-ZGO">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="170"/>
+                                    <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="CXx-ua-ZGO">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="170" id="DoY-fu-0dH"/>
-                                        </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="knq-Ib-rtc">
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="knq-Ib-rtc">
                                             <size key="itemSize" width="128" height="128"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -42,9 +39,10 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="CXx-ua-ZGO" secondAttribute="bottom" constant="20" id="8d5-aB-Ye4"/>
+                                    <constraint firstAttribute="bottom" secondItem="CXx-ua-ZGO" secondAttribute="bottom" id="8d5-aB-Ye4"/>
                                     <constraint firstItem="CXx-ua-ZGO" firstAttribute="leading" secondItem="and-td-V4H" secondAttribute="leading" id="IvR-pu-Bvq"/>
-                                    <constraint firstAttribute="height" constant="240" id="ewg-4n-xSm"/>
+                                    <constraint firstAttribute="height" constant="300" id="ewg-4n-xSm"/>
+                                    <constraint firstItem="CXx-ua-ZGO" firstAttribute="top" secondItem="and-td-V4H" secondAttribute="top" id="qeW-lA-WL6"/>
                                     <constraint firstAttribute="trailing" secondItem="CXx-ua-ZGO" secondAttribute="trailing" id="rxL-Tb-0CT"/>
                                 </constraints>
                             </view>
@@ -345,15 +343,17 @@
                                                             <action selector="transactionTypeSegmentAction:" destination="Ov1-TF-v1D" eventType="valueChanged" id="siF-Nz-HO5"/>
                                                         </connections>
                                                     </segmentedControl>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="OjT-TP-Nkr">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title Of This Transaction ..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zb4-Yl-Ujn">
                                                         <rect key="frame" x="40" y="80" width="334" height="50"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ibp-sz-DQs"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="1Wk-WN-lob"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="52"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                        <color key="textColor" systemColor="linkColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    </textField>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DaI-CN-IxD">
                                                         <rect key="frame" x="123.5" y="160" width="167" height="50"/>
                                                         <subviews>
@@ -382,17 +382,15 @@
                                                             <constraint firstItem="836-vn-e35" firstAttribute="height" secondItem="DNQ-aS-jbB" secondAttribute="height" id="yJK-Rv-o1h"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title Of This Transaction ..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zb4-Yl-Ujn">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="OjT-TP-Nkr">
                                                         <rect key="frame" x="40" y="240" width="334" height="50"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="1Wk-WN-lob"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ibp-sz-DQs"/>
                                                         </constraints>
-                                                        <color key="textColor" systemColor="linkColor"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                                    </textField>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="52"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="270" id="1ND-6B-F1Q"/>

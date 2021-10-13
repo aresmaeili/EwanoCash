@@ -45,13 +45,12 @@ class HomeViewController: UIViewController {
         tabBarController?.selectedIndex = 0
         tableView.separatorStyle = .none
         setTabBarsStyle()
+        items = getDataFromUserDefault()
 //        sortDates()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        items = getDataFromUserDefault()
     }
     
     func setTabBarsStyle() {
@@ -152,13 +151,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = view.frame.width-70
+        let width = collectionView.frame.width
         return CGSize(width: width, height: width / 1.5)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20.0, bottom: 0, right: 20.0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
+
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {

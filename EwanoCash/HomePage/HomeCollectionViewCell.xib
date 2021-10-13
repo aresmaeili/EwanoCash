@@ -10,48 +10,44 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeCollectionViewCell" id="gTV-IL-0wX" customClass="HomeCollectionViewCell" customModule="EwanoCash" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="382" height="146"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeCollectionViewCell" id="gTV-IL-0wX" customClass="HomeCollectionViewCell" customModule="EwanoCash" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="438" height="181"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="382" height="146"/>
+                <rect key="frame" x="0.0" y="0.0" width="438" height="181"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sE7-Im-MYC">
-                        <rect key="frame" x="0.0" y="0.0" width="382" height="146"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8V-vG-uYs">
-                                <rect key="frame" x="12" y="12" width="61" height="24"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
+                        <rect key="frame" x="0.0" y="24" width="438" height="157"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="D8V-vG-uYs" firstAttribute="leading" secondItem="sE7-Im-MYC" secondAttribute="leading" constant="12" id="59J-K7-IVq"/>
-                            <constraint firstItem="D8V-vG-uYs" firstAttribute="top" secondItem="sE7-Im-MYC" secondAttribute="top" constant="12" id="Y4a-kd-KkH"/>
-                        </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8V-vG-uYs">
+                        <rect key="frame" x="8" y="0.0" width="61" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="2n6-jX-fc8"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="sE7-Im-MYC" secondAttribute="trailing" id="4f7-l0-oli"/>
-                <constraint firstAttribute="bottom" secondItem="sE7-Im-MYC" secondAttribute="bottom" id="6wc-z7-Qaa"/>
-                <constraint firstItem="sE7-Im-MYC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Esr-sy-7Os"/>
-                <constraint firstItem="sE7-Im-MYC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="aAq-RN-QIN"/>
-                <constraint firstAttribute="bottom" secondItem="sE7-Im-MYC" secondAttribute="bottom" id="i1i-9A-HL7"/>
-                <constraint firstItem="sE7-Im-MYC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="rLX-vh-PKu"/>
-                <constraint firstAttribute="trailing" secondItem="sE7-Im-MYC" secondAttribute="trailing" id="w4q-rW-29J"/>
-                <constraint firstItem="sE7-Im-MYC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="yGo-FL-bFv"/>
+                <constraint firstAttribute="bottom" secondItem="sE7-Im-MYC" secondAttribute="bottom" id="9ZA-q6-g8g"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="sE7-Im-MYC" secondAttribute="trailing" id="BgB-VT-IvV"/>
+                <constraint firstAttribute="top" secondItem="D8V-vG-uYs" secondAttribute="top" id="Gj5-LV-0zG"/>
+                <constraint firstItem="sE7-Im-MYC" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="NVs-4N-PZb"/>
+                <constraint firstItem="sE7-Im-MYC" firstAttribute="top" secondItem="D8V-vG-uYs" secondAttribute="bottom" id="RuA-ir-M2e"/>
+                <constraint firstItem="sE7-Im-MYC" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="ahN-nY-5uz"/>
+                <constraint firstItem="D8V-vG-uYs" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="8" id="bQV-Nd-CRq"/>
             </constraints>
-            <size key="customSize" width="382" height="146"/>
+            <size key="customSize" width="438" height="181"/>
             <connections>
                 <outlet property="chartParentView" destination="sE7-Im-MYC" id="4uC-0S-6O2"/>
                 <outlet property="monthLabel" destination="D8V-vG-uYs" id="Wei-zF-Hez"/>
             </connections>
-            <point key="canvasLocation" x="378.26086956521743" y="111.83035714285714"/>
+            <point key="canvasLocation" x="418.84057971014494" y="123.54910714285714"/>
         </collectionViewCell>
     </objects>
 </document>

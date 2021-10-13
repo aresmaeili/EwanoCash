@@ -21,7 +21,17 @@ class HomeCollectionViewCell: UICollectionViewCell  {
         super.awakeFromNib()
         
         chartParentView.addSubview(chart)
-        chart.frame = chartParentView.frame
+//        chart.scrollEnabled = false
+        chart.scrollView.bounces = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        DispatchQueue.main.async { [self] in
+            chart.frame = chartParentView.frame
+            contentView.layoutIfNeeded()
+        }
     }
     
     func fill(with data: AAChartModel) {

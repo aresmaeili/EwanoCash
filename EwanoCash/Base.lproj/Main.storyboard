@@ -138,7 +138,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJl-oa-eqU" userLabel="TopView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="240"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gq5-uT-Nmf">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gq5-uT-Nmf">
                                                 <rect key="frame" x="20" y="0.0" width="374" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="UYH-8b-oEh"/>
@@ -148,11 +148,8 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KrR-pg-d9g" userLabel="totalSummeryChartView">
-                                                <rect key="frame" x="20" y="50" width="374" height="170"/>
+                                                <rect key="frame" x="10" y="40" width="394" height="190"/>
                                                 <color key="backgroundColor" red="0.95343607659999996" green="0.94294714930000001" blue="0.8343961835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="170" id="mva-N9-z7b"/>
-                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -160,11 +157,11 @@
                                             <constraint firstAttribute="height" constant="240" id="LV5-qP-lxE"/>
                                             <constraint firstAttribute="trailing" secondItem="Gq5-uT-Nmf" secondAttribute="trailing" constant="20" id="OmZ-YY-IY5"/>
                                             <constraint firstItem="Gq5-uT-Nmf" firstAttribute="leading" secondItem="EJl-oa-eqU" secondAttribute="leading" constant="20" id="SCE-pn-npC"/>
-                                            <constraint firstAttribute="bottom" secondItem="KrR-pg-d9g" secondAttribute="bottom" constant="20" id="TT8-po-bLO"/>
-                                            <constraint firstItem="KrR-pg-d9g" firstAttribute="leading" secondItem="EJl-oa-eqU" secondAttribute="leading" constant="20" id="Y5b-CF-Xqy"/>
-                                            <constraint firstItem="KrR-pg-d9g" firstAttribute="top" secondItem="Gq5-uT-Nmf" secondAttribute="bottom" constant="20" id="iga-Rr-Rw1"/>
+                                            <constraint firstAttribute="bottom" secondItem="KrR-pg-d9g" secondAttribute="bottom" constant="10" id="TT8-po-bLO"/>
+                                            <constraint firstItem="KrR-pg-d9g" firstAttribute="leading" secondItem="EJl-oa-eqU" secondAttribute="leading" constant="10" id="Y5b-CF-Xqy"/>
+                                            <constraint firstItem="KrR-pg-d9g" firstAttribute="top" secondItem="Gq5-uT-Nmf" secondAttribute="bottom" constant="10" id="iga-Rr-Rw1"/>
                                             <constraint firstItem="Gq5-uT-Nmf" firstAttribute="top" secondItem="EJl-oa-eqU" secondAttribute="top" id="nI5-rB-O8w"/>
-                                            <constraint firstAttribute="trailing" secondItem="KrR-pg-d9g" secondAttribute="trailing" constant="20" id="tUi-tv-gHF"/>
+                                            <constraint firstAttribute="trailing" secondItem="KrR-pg-d9g" secondAttribute="trailing" constant="10" id="tUi-tv-gHF"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ChN-RC-h9m">
@@ -233,10 +230,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="mUL-9I-vDq"/>
                     <connections>
-                        <outlet property="summaryChartView" destination="KrR-pg-d9g" id="lbK-XN-WuH"/>
+                        <outlet property="chartParentView" destination="KrR-pg-d9g" id="lbK-XN-WuH"/>
+                        <outlet property="tableView" destination="7U4-nR-Iav" id="Hnn-C2-DLd"/>
                         <outlet property="totalIncomeAmountLabel" destination="oSB-Yn-XUn" id="jyH-U0-MjU"/>
                         <outlet property="totalSpendingAmountLabel" destination="AIQ-Js-YzA" id="Sr0-aO-em7"/>
-                        <outlet property="totalSummaryTableView" destination="7U4-nR-Iav" id="Hnn-C2-DLd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LS3-qe-OHo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

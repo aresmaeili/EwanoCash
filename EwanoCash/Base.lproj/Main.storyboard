@@ -323,14 +323,13 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="699"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvw-7l-6s1">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="785"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="705"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9IW-bt-Eii">
                                                 <rect key="frame" x="0.0" y="25" width="414" height="330"/>
                                                 <subviews>
                                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DvV-0L-bbG">
                                                         <rect key="frame" x="40" y="0.0" width="334" height="51"/>
-                                                        <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="999" constant="40" id="mpo-IE-9WD"/>
                                                         </constraints>
@@ -338,6 +337,7 @@
                                                             <segment title="▼ Income"/>
                                                             <segment title="▲ Outcome"/>
                                                         </segments>
+                                                        <color key="tintColor" systemColor="systemBlueColor"/>
                                                         <color key="selectedSegmentTintColor" systemColor="opaqueSeparatorColor"/>
                                                         <connections>
                                                             <action selector="transactionTypeSegmentAction:" destination="Ov1-TF-v1D" eventType="valueChanged" id="siF-Nz-HO5"/>
@@ -352,7 +352,6 @@
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zb4-Yl-Ujn">
                                                         <rect key="frame" x="40" y="140" width="334" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="1Wk-WN-lob"/>
                                                         </constraints>
@@ -363,7 +362,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DaI-CN-IxD">
                                                         <rect key="frame" x="123.5" y="210" width="167" height="50"/>
                                                         <subviews>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="  Select Month" borderStyle="roundedRect" textAlignment="center" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="DNQ-aS-jbB">
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Select Month" borderStyle="roundedRect" textAlignment="center" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="DNQ-aS-jbB">
                                                                 <rect key="frame" x="0.0" y="10" width="117" height="30"/>
                                                                 <color key="backgroundColor" systemColor="linkColor"/>
                                                                 <color key="tintColor" red="0.0" green="0.1754556367" blue="0.36891614779999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -377,13 +376,14 @@
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="836-vn-e35">
                                                                 <rect key="frame" x="122" y="10" width="45" height="30"/>
-                                                                <color key="backgroundColor" name="AccentColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="45" id="f3t-F2-oQn"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <state key="normal" title="Today"/>
+                                                                <state key="normal" title="Today">
+                                                                    <color key="titleColor" systemColor="linkColor"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="refreshButtonAction:" destination="Ov1-TF-v1D" eventType="touchUpInside" id="KC1-fj-gko"/>
                                                                 </connections>
@@ -419,10 +419,10 @@
                                                 </constraints>
                                             </stackView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fVi-7m-cNL">
-                                                <rect key="frame" x="0.0" y="375" width="414" height="400"/>
+                                                <rect key="frame" x="0.0" y="375" width="414" height="320"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="400" id="0PR-X2-AhD"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="0PR-X2-AhD"/>
                                                     <constraint firstAttribute="width" secondItem="fVi-7m-cNL" secondAttribute="height" multiplier="25:18" priority="900" id="87G-A3-Avl"/>
                                                 </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TXX-ty-ASR">
@@ -478,11 +478,11 @@
                                     <constraint firstAttribute="height" constant="50" id="371-gL-pqG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                <state key="normal" title="Continue">
+                                <state key="normal" title="Add">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="continueButtonAction:" destination="Ov1-TF-v1D" eventType="touchUpInside" id="sM6-vv-aWz"/>
+                                    <action selector="addButtonAction:" destination="Ov1-TF-v1D" eventType="touchUpInside" id="dBW-LC-FsL"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -504,8 +504,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="s0d-BR-eKQ"/>
                     <connections>
+                        <outlet property="addButton" destination="mdd-0x-TYR" id="Eu3-Ta-jzF"/>
                         <outlet property="cancelButton" destination="XEJ-jW-JnD" id="mnP-8Y-dOT"/>
-                        <outlet property="continueButton" destination="mdd-0x-TYR" id="Eu3-Ta-jzF"/>
                         <outlet property="costTransferedLabel" destination="OjT-TP-Nkr" id="Bib-Et-XGy"/>
                         <outlet property="currentBalanceLabel" destination="jxo-v6-Uff" id="epv-Vt-4Xj"/>
                         <outlet property="datePickerTextField" destination="DNQ-aS-jbB" id="5Hd-QI-ElT"/>
@@ -551,11 +551,11 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tertiarySystemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

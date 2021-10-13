@@ -18,10 +18,10 @@ class TransferViewController: UIViewController {
     
     @IBOutlet weak var currentBalanceLabel: UILabel!
     @IBOutlet weak var transactionTitletextField: UITextField!
-    @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
-    @IBAction func continueButtonAction(_ sender: Any) {
-        ContinueButtonDidTapped()
+    @IBAction func addButtonAction(_ sender: Any) {
+        addButtonDidTapped()
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
@@ -64,11 +64,9 @@ class TransferViewController: UIViewController {
         super.viewDidLoad()
         self.dismissKeyboard()
         todayButton.layer.cornerRadius = 5
-        todayButton.layer.borderWidth = 1
-        todayButton.layer.borderColor = UIColor.black.cgColor
         costTransferedLabel.layer.cornerRadius = 25
         costTransferedLabel.clipsToBounds = true
-        continueButton.layer.cornerRadius = 25
+        addButton.layer.cornerRadius = 25
         cancelButton.layer.cornerRadius = 25
         //**********************
         listOfTransactions.remove(at: 0)
@@ -207,7 +205,7 @@ extension TransferViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
     }
     
-    func ContinueButtonDidTapped() {
+    func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
         let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)

@@ -12,6 +12,7 @@ protocol TransferViewControllerDelegate: AnyObject {
 }
 
 class TransferViewController: UIViewController {
+    @IBOutlet weak var todayButton: UIButton!
     
     @IBOutlet weak var transactionTypeSegment: UISegmentedControl!
     
@@ -34,9 +35,7 @@ class TransferViewController: UIViewController {
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
-    @IBAction func doneButton(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
+
     
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
@@ -64,7 +63,11 @@ class TransferViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
-        
+        todayButton.layer.cornerRadius = 5
+        todayButton.layer.borderWidth = 1
+        todayButton.layer.borderColor = UIColor.black.cgColor
+        costTransferedLabel.layer.cornerRadius = 25
+        costTransferedLabel.clipsToBounds = true
         continueButton.layer.cornerRadius = 25
         cancelButton.layer.cornerRadius = 25
         //**********************

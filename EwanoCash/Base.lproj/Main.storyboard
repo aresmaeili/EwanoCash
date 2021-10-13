@@ -323,10 +323,10 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="699"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvw-7l-6s1">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="825"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="785"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="9IW-bt-Eii">
-                                                <rect key="frame" x="0.0" y="25" width="414" height="370"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9IW-bt-Eii">
+                                                <rect key="frame" x="0.0" y="25" width="414" height="330"/>
                                                 <subviews>
                                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DvV-0L-bbG">
                                                         <rect key="frame" x="40" y="0.0" width="334" height="51"/>
@@ -343,14 +343,14 @@
                                                             <action selector="transactionTypeSegmentAction:" destination="Ov1-TF-v1D" eventType="valueChanged" id="siF-Nz-HO5"/>
                                                         </connections>
                                                     </segmentedControl>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Enter Your Current Balance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jxo-v6-Uff">
-                                                        <rect key="frame" x="24.5" y="80" width="365.5" height="50"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your Current Balance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jxo-v6-Uff">
+                                                        <rect key="frame" x="62.5" y="70" width="289" height="50"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zb4-Yl-Ujn">
-                                                        <rect key="frame" x="40" y="160" width="334" height="50"/>
+                                                        <rect key="frame" x="40" y="140" width="334" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
@@ -360,24 +360,30 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                                     </textField>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DaI-CN-IxD">
-                                                        <rect key="frame" x="123.5" y="240" width="167" height="50"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DaI-CN-IxD">
+                                                        <rect key="frame" x="123.5" y="210" width="167" height="50"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="  Select Month" borderStyle="roundedRect" textAlignment="center" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="DNQ-aS-jbB">
-                                                                <rect key="frame" x="0.0" y="10" width="134" height="30"/>
+                                                                <rect key="frame" x="0.0" y="10" width="117" height="30"/>
                                                                 <color key="backgroundColor" systemColor="linkColor"/>
                                                                 <color key="tintColor" red="0.0" green="0.1754556367" blue="0.36891614779999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="KNx-1G-z58"/>
+                                                                    <constraint firstAttribute="width" constant="117" id="gSo-RQ-Ixd"/>
                                                                 </constraints>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
-                                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="836-vn-e35">
-                                                                <rect key="frame" x="134" y="10" width="33" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="836-vn-e35">
+                                                                <rect key="frame" x="122" y="10" width="45" height="30"/>
+                                                                <color key="backgroundColor" name="AccentColor"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="45" id="f3t-F2-oQn"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <state key="normal" title="🔄"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <state key="normal" title="Today"/>
                                                                 <connections>
                                                                     <action selector="refreshButtonAction:" destination="Ov1-TF-v1D" eventType="touchUpInside" id="KC1-fj-gko"/>
                                                                 </connections>
@@ -389,7 +395,8 @@
                                                         </constraints>
                                                     </stackView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="OjT-TP-Nkr">
-                                                        <rect key="frame" x="40" y="320" width="334" height="50"/>
+                                                        <rect key="frame" x="40" y="280" width="334" height="50"/>
+                                                        <color key="backgroundColor" red="0.9723265767" green="0.97647422549999996" blue="0.98048216099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ibp-sz-DQs"/>
                                                         </constraints>
@@ -405,14 +412,14 @@
                                                     <constraint firstItem="DvV-0L-bbG" firstAttribute="centerX" secondItem="Zb4-Yl-Ujn" secondAttribute="centerX" id="TWT-70-Ags"/>
                                                     <constraint firstItem="DaI-CN-IxD" firstAttribute="centerX" secondItem="Zb4-Yl-Ujn" secondAttribute="centerX" id="Yp1-Pn-QaN"/>
                                                     <constraint firstItem="Zb4-Yl-Ujn" firstAttribute="leading" secondItem="9IW-bt-Eii" secondAttribute="leading" constant="40" id="hrg-OK-j0S"/>
+                                                    <constraint firstItem="jxo-v6-Uff" firstAttribute="height" secondItem="DvV-0L-bbG" secondAttribute="height" id="i9l-W5-xKC"/>
                                                     <constraint firstItem="DaI-CN-IxD" firstAttribute="width" secondItem="Zb4-Yl-Ujn" secondAttribute="width" multiplier="0.5" id="maG-Xk-pha"/>
-                                                    <constraint firstItem="jxo-v6-Uff" firstAttribute="height" secondItem="Zb4-Yl-Ujn" secondAttribute="height" id="tSS-fO-dcq"/>
                                                     <constraint firstItem="DvV-0L-bbG" firstAttribute="width" secondItem="Zb4-Yl-Ujn" secondAttribute="width" id="zMu-yl-ZsE"/>
                                                     <constraint firstAttribute="trailing" secondItem="Zb4-Yl-Ujn" secondAttribute="trailing" constant="40" id="zmS-na-gfP"/>
                                                 </constraints>
                                             </stackView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fVi-7m-cNL">
-                                                <rect key="frame" x="0.0" y="415" width="414" height="400"/>
+                                                <rect key="frame" x="0.0" y="375" width="414" height="400"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="400" id="0PR-X2-AhD"/>
@@ -495,13 +502,7 @@
                             <constraint firstItem="3Ai-jZ-pye" firstAttribute="trailing" secondItem="2cP-Wc-8vr" secondAttribute="trailing" id="xXn-Bh-VJU"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="s0d-BR-eKQ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="96B-Ql-mde">
-                            <connections>
-                                <action selector="doneButton:" destination="Ov1-TF-v1D" id="lV2-1O-wWo"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="s0d-BR-eKQ"/>
                     <connections>
                         <outlet property="cancelButton" destination="XEJ-jW-JnD" id="mnP-8Y-dOT"/>
                         <outlet property="continueButton" destination="mdd-0x-TYR" id="Eu3-Ta-jzF"/>
@@ -509,6 +510,7 @@
                         <outlet property="currentBalanceLabel" destination="jxo-v6-Uff" id="epv-Vt-4Xj"/>
                         <outlet property="datePickerTextField" destination="DNQ-aS-jbB" id="5Hd-QI-ElT"/>
                         <outlet property="numbersCollectionView" destination="fVi-7m-cNL" id="1RO-i6-fDL"/>
+                        <outlet property="todayButton" destination="836-vn-e35" id="Ifx-7P-rZt"/>
                         <outlet property="transactionTitletextField" destination="Zb4-Yl-Ujn" id="rss-pC-yHz"/>
                         <outlet property="transactionTypeSegment" destination="DvV-0L-bbG" id="dwJ-Hf-368"/>
                     </connections>

@@ -108,10 +108,6 @@ class HomeViewController: UIViewController {
 //            startColor: "#0000FF",
 //            endColor: "#fffff")
         let data = AAChartModel()
-            //                  .title("TITLE")//The chart title
-            //                  .subtitle("subtitle")//The chart subtitle
-            //                   .categories(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))
-            //                  .tooltipValueSuffix("USD")//the value suffix of the chart tooltip
             .chartType(.spline)
             .animationType(.easeInCubic)
             .dataLabelsEnabled(false) //Enable or disable the data labels. Defaults to false
@@ -141,15 +137,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func sortDates() {
-        let df = DateFormatter()
-        df.dateFormat = "MMMM-dd-yyyy"
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.timeZone = TimeZone(identifier: "UTC")!
-        dateArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
-        tableView.reloadData()
-    }
-    
     func getDaysNumberOfMonth(dateString: String)-> Int {
         let date = dateString.toDate()!
         let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
@@ -177,9 +164,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
         cell.monthLabel.text = month[indexPath.row]
-        print("looging for \(month[indexPath.row])")
-        DispatchQueue.main.async {
-            cell.fill(with: self.getChartData(for: self.month[indexPath.row]))
+        DispatchQueue.main.async { [self] in
+            cell.fill(with: getChartData(for: month[indexPath.row]))
         }
         return cell
     }
@@ -192,7 +178,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {

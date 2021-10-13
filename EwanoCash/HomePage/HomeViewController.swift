@@ -20,9 +20,10 @@ class HomeViewController: UIViewController {
     }
     
     var dateArray = [String]()
-    var month = ["January", "February","March","April","May","June","July","August","September","October","November","December"]
+    var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
+    var allItems: [TransfersModel] = []
     var items: [TransfersModel] = [] {
         didSet {
             if isTableAutoReloadEnabled {
@@ -54,7 +55,8 @@ class HomeViewController: UIViewController {
     }
     
     func loadData() {
-        items = getDataFromUserDefault()
+        allItems = getDataFromUserDefault()
+        items = allItems
     }
     
     func setTabBarsStyle() {
@@ -83,9 +85,9 @@ class HomeViewController: UIViewController {
         return []
     }
     
-    func getChartData()-> AAChartModel {
+    func getChartData(for month: String)-> AAChartModel {
         isTableAutoReloadEnabled = false
-        items = items.sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
         isTableAutoReloadEnabled = true
         var balance = 0
         var allTransactions:[Int] = []
@@ -101,25 +103,29 @@ class HomeViewController: UIViewController {
                 allTransactions.append(balance) // MARK: Not sure about that
             }
         }
-        
-        
+//        let gradientColor = AAGradientColor.linearGradient(
+//            direction: .toBottomRight,
+//            startColor: "#0000FF",
+//            endColor: "#fffff")
         let data = AAChartModel()
-            .chartType(.spline)//Can be any of the chart types listed under `AAChartType`.
-            .animationType(.bounce)
             //                  .title("TITLE")//The chart title
             //                  .subtitle("subtitle")//The chart subtitle
             //                   .categories(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))
             //                  .tooltipValueSuffix("USD")//the value suffix of the chart tooltip
+            .chartType(.spline)
+            .animationType(.easeInCubic)
             .dataLabelsEnabled(false) //Enable or disable the data labels. Defaults to false
             .touchEventEnabled(false)
             .tooltipEnabled(false)
             .legendEnabled(false)
+            .markerSymbolStyle(.borderBlank)
             .colorsTheme(["#0000FF", "#00000000"])
             .categories(Array(1...31).compactMap({$0.description}))
             .series([
                 AASeriesElement()
                     .name("Expences")
                     .data(allTransactions),
+//                    .color(gradientColor),
                 AASeriesElement()
                     .name("")
                     .data(Array(1...31).compactMap({$0})),
@@ -171,7 +177,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
         cell.monthLabel.text = month[indexPath.row]
-        cell.fill(with: getChartData())
+        print("looging for \(month[indexPath.row])")
+        DispatchQueue.main.async {
+            cell.fill(with: self.getChartData(for: self.month[indexPath.row]))
+        }
         return cell
     }
     
@@ -188,8 +197,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        if items.isEmpty { return cell }
         let item = items[indexPath.row]
         cell.itemTitle.text = item.titleOfTransaction
         cell.itemDate.text = item.dateOfTransaction.description
@@ -200,10 +214,6 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
             cell.itemImage.image = UIImage(named: "chevron_up")
         }
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -225,7 +235,8 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
 extension HomeViewController: TransferViewControllerDelegate {
     
     func insertedNewData() {
-        items = getDataFromUserDefault()
+        allItems = getDataFromUserDefault()
+        items = allItems
     }
 }
 
@@ -237,5 +248,11 @@ extension Date {
     
     func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
         return calendar.component(component, from: self)
+    }
+    
+    func getStringMonth() -> String {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("MMMM")
+        return df.string(from: self)
     }
 }

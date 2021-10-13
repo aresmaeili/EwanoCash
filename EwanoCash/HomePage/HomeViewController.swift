@@ -45,7 +45,7 @@ class HomeViewController: UIViewController {
         tabBarController?.selectedIndex = 0
         tableView.separatorStyle = .none
         setTabBarsStyle()
-        sortDates()
+//        sortDates()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,27 +81,35 @@ class HomeViewController: UIViewController {
     }
     
     func getChartData()-> AAChartModel {
-        let income = items.filter({$0.isIncome})
-        let outcome = items.filter({!$0.isIncome})
+        let income = items.filter({$0.isIncome}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+        let outcome = items.filter({!$0.isIncome}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
         let data = AAChartModel()
             .chartType(.spline)//Can be any of the chart types listed under `AAChartType`.
             .animationType(.bounce)
             //                  .title("TITLE")//The chart title
             //                  .subtitle("subtitle")//The chart subtitle
-            .categories(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))
+            //                   .categories(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))
             //                  .tooltipValueSuffix("USD")//the value suffix of the chart tooltip
             .dataLabelsEnabled(false) //Enable or disable the data labels. Defaults to false
             .touchEventEnabled(false)
             .tooltipEnabled(false)
-            .colorsTheme(["#fe117c","#ffc069","#06caf4","#7dffc0"])
+            .legendEnabled(false)
+            .colorsTheme(["#fe117c","#ffc069", "#00000000"])
+            .categories(Array(1...31).compactMap({$0.description}))
             .series([
                 AASeriesElement()
                     .name("Income")
-                    .data(income.compactMap({Double($0.amountOfTransaction)})),
+                    .data([4, 14, 30]),
                 AASeriesElement()
                     .name("Outcome")
-                    .data(outcome.compactMap({Double($0.amountOfTransaction)})),
+                    .data([1, 2, 24]),
+                AASeriesElement()
+                    .name("")
+                    .data(Array(1...31).compactMap({$0})),
             ])
+        print("income: \(income.compactMap({$0.dateOfTransaction.get(.day)}))")
+        print("outcome: \(outcome.compactMap({$0.dateOfTransaction.get(.day)}))")
+        print("chart data: \(((income + outcome).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})).compactMap({$0.dateOfTransaction.get(.day).description}))")
         return data
     }
     
@@ -120,6 +128,13 @@ class HomeViewController: UIViewController {
         df.timeZone = TimeZone(identifier: "UTC")!
         dateArray = dateArray.sorted {df.date(from: $0)! < df.date(from: $1)!}
         tableView.reloadData()
+    }
+    
+    func getDaysNumberOfMonth(dateString: String)-> Int {
+        let date = dateString.toDate()!
+        let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let days = cal.range(of: .day, in: .month, for: date)
+        return days.hashValue
     }
 }
 
@@ -194,6 +209,7 @@ extension Date {
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
     }
+    
     func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
         return calendar.component(component, from: self)
     }

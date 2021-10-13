@@ -316,7 +316,6 @@
         <!--Transfer View Controller-->
         <scene sceneID="3Ut-1P-Ter">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SEl-5j-fT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="TransferViewController" modalPresentationStyle="fullScreen" id="Ov1-TF-v1D" customClass="TransferViewController" customModule="EwanoCash" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bRa-aw-UpB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -489,6 +488,7 @@
                         <outlet property="transactionTypeSegment" destination="DvV-0L-bbG" id="dwJ-Hf-368"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SEl-5j-fT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3749" y="83"/>
         </scene>

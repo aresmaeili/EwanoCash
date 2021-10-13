@@ -217,11 +217,13 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.beginUpdates()
-            items.remove(at: indexPath.row)
-            saveDataToUserDefault()
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
+            if items.indices.contains(indexPath.row) {
+                tableView.beginUpdates()
+                items.remove(at: indexPath.row)
+                saveDataToUserDefault()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.endUpdates()
+            }
         }
         return
     }

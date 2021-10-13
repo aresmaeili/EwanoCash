@@ -14,6 +14,8 @@ protocol TransferViewControllerDelegate: AnyObject {
 class TransferViewController: UIViewController {
     
     @IBOutlet weak var transactionTypeSegment: UISegmentedControl!
+    
+    @IBOutlet weak var currentBalanceLabel: UILabel!
     @IBOutlet weak var transactionTitletextField: UITextField!
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButtonAction(_ sender: Any) {
@@ -58,6 +60,28 @@ class TransferViewController: UIViewController {
         //**********************
         listOfTransactions.remove(at: 0)
         
+        if let oldEnteries = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: oldEnteries) {
+                listOfTransactions = transferData
+                if listOfTransactions.isEmpty {
+                    print("UserDefaults array is empty")
+                    currentBalanceLabel.isHidden = false
+                    transactionTypeSegment.isHidden = true
+                    transactionTitletextField.placeholder = "Type Here"
+                    transactionTitletextField.text = "Balance"
+
+                    // = transactionTitletextField.text
+                    
+                } else {
+                    print("UserDefaults array is not empty, it has \(oldEnteries.count) items")
+                    currentBalanceLabel.isHidden = true
+                    transactionTypeSegment.isHidden = false
+                    transactionTitletextField.placeholder = "Title Of This Transaction"
+                }
+            } else {
+                print("UserDefaults array is nil")
+            }
+        }
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
@@ -123,7 +147,10 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
             }else{
                 cost.removeLast()
             }
-        }else{
+        } else {
+            if keyPadArray[indexPath.row] == "."  && cost.contains(".") {
+                return
+            }
             cost = cost + keyPadArray[indexPath.row]
         }
     }

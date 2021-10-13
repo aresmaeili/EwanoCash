@@ -18,8 +18,15 @@ class TransferViewController: UIViewController {
     @IBOutlet weak var currentBalanceLabel: UILabel!
     @IBOutlet weak var transactionTitletextField: UITextField!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     @IBAction func continueButtonAction(_ sender: Any) {
         ContinueButtonDidTapped()
+    }
+    
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        print("Cancel button perssed")
+        dismiss(animated: true, completion: nil)
+        
     }
     @IBOutlet weak var numbersCollectionView: UICollectionView!
     @IBOutlet weak var costTransferedLabel: UILabel!
@@ -30,7 +37,7 @@ class TransferViewController: UIViewController {
     @IBAction func doneButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
             isIncome = true
@@ -57,6 +64,9 @@ class TransferViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dismissKeyboard()
+        
+        continueButton.layer.cornerRadius = 25
+        cancelButton.layer.cornerRadius = 25
         //**********************
         listOfTransactions.remove(at: 0)
         
@@ -69,7 +79,7 @@ class TransferViewController: UIViewController {
                     transactionTypeSegment.isHidden = true
                     transactionTitletextField.placeholder = "Type Here"
                     transactionTitletextField.text = "Balance"
-
+                    
                     // = transactionTitletextField.text
                     
                 } else {
@@ -117,7 +127,7 @@ extension TransferViewController: UICollectionViewDelegate , UICollectionViewDat
         cell.numbersButton.isUserInteractionEnabled = false
         if keyPadArray[indexPath.row] == "." || keyPadArray[indexPath.row] == "←" {
             cell.numbersButton.tintColor = .purple
-           
+            
         }else{
             cell.numbersButton.tintColor = .systemBlue
         }
@@ -237,9 +247,11 @@ extension String {
     
     func toDate()-> Date? {
         let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        //        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
         dateFormatter.dateStyle = DateFormatter.Style.medium
-//        2021-10-12 16:31:11 +0000
+        //        2021-10-12 16:31:11 +0000
         return dateFormatter.date(from: self)
     }
 }
+
+

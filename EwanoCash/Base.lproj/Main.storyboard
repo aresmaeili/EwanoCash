@@ -450,9 +450,23 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="QSL-pw-fvO"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="KIW-Dv-kjY"/>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdd-0x-TYR">
-                                <rect key="frame" x="0.0" y="792" width="414" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEJ-jW-JnD">
+                                <rect key="frame" x="20" y="792" width="177" height="50"/>
                                 <color key="backgroundColor" name="AccentColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ACY-hV-2P3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButtonAction:" destination="Ov1-TF-v1D" eventType="touchUpInside" id="Cq8-F3-na3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdd-0x-TYR">
+                                <rect key="frame" x="217" y="792" width="177" height="50"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="371-gL-pqG"/>
                                 </constraints>
@@ -469,11 +483,15 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="mdd-0x-TYR" firstAttribute="top" secondItem="3Ai-jZ-pye" secondAttribute="bottom" constant="5" id="2Ls-pM-bQz"/>
+                            <constraint firstItem="mdd-0x-TYR" firstAttribute="leading" secondItem="XEJ-jW-JnD" secondAttribute="trailing" constant="20" id="5CF-2d-P1H"/>
                             <constraint firstItem="3Ai-jZ-pye" firstAttribute="top" secondItem="2cP-Wc-8vr" secondAttribute="top" id="5WZ-WZ-dpO"/>
+                            <constraint firstItem="2cP-Wc-8vr" firstAttribute="trailing" secondItem="mdd-0x-TYR" secondAttribute="trailing" constant="20" id="KQm-Yk-U1e"/>
+                            <constraint firstItem="XEJ-jW-JnD" firstAttribute="top" secondItem="3Ai-jZ-pye" secondAttribute="bottom" constant="5" id="N5c-E0-Zfr"/>
+                            <constraint firstItem="XEJ-jW-JnD" firstAttribute="leading" secondItem="2cP-Wc-8vr" secondAttribute="leading" constant="20" id="O8J-Oo-xK3"/>
                             <constraint firstItem="3Ai-jZ-pye" firstAttribute="leading" secondItem="2cP-Wc-8vr" secondAttribute="leading" id="Vf3-A0-bGi"/>
-                            <constraint firstItem="mdd-0x-TYR" firstAttribute="leading" secondItem="2cP-Wc-8vr" secondAttribute="leading" id="Zfx-Ej-r8u"/>
+                            <constraint firstItem="XEJ-jW-JnD" firstAttribute="width" secondItem="mdd-0x-TYR" secondAttribute="width" id="bYz-Bt-4hC"/>
                             <constraint firstItem="2cP-Wc-8vr" firstAttribute="bottom" secondItem="mdd-0x-TYR" secondAttribute="bottom" constant="20" id="kI6-Dc-mM2"/>
-                            <constraint firstItem="mdd-0x-TYR" firstAttribute="trailing" secondItem="2cP-Wc-8vr" secondAttribute="trailing" id="tEy-Fq-Rw5"/>
+                            <constraint firstItem="2cP-Wc-8vr" firstAttribute="bottom" secondItem="XEJ-jW-JnD" secondAttribute="bottom" constant="20" id="mCb-kW-5JR"/>
                             <constraint firstItem="3Ai-jZ-pye" firstAttribute="trailing" secondItem="2cP-Wc-8vr" secondAttribute="trailing" id="xXn-Bh-VJU"/>
                         </constraints>
                     </view>
@@ -485,6 +503,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cancelButton" destination="XEJ-jW-JnD" id="mnP-8Y-dOT"/>
                         <outlet property="continueButton" destination="mdd-0x-TYR" id="Eu3-Ta-jzF"/>
                         <outlet property="costTransferedLabel" destination="OjT-TP-Nkr" id="Bib-Et-XGy"/>
                         <outlet property="currentBalanceLabel" destination="jxo-v6-Uff" id="epv-Vt-4Xj"/>
@@ -496,7 +515,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEl-5j-fT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3749" y="83"/>
+            <point key="canvasLocation" x="3747.826086956522" y="82.366071428571431"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pcz-i4-qZ2">
@@ -529,6 +548,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

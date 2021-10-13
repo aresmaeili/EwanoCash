@@ -96,12 +96,20 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There's no Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fvD-22-ABt">
+                                <rect key="frame" x="132.5" y="439" width="149" height="23"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rRr-v5-OHx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="fvD-22-ABt" firstAttribute="centerY" secondItem="rRr-v5-OHx" secondAttribute="centerY" id="260-rQ-k1C"/>
                             <constraint firstItem="cXr-Rm-dSY" firstAttribute="trailing" secondItem="rRr-v5-OHx" secondAttribute="trailing" id="4HI-32-Hkc"/>
                             <constraint firstItem="cXr-Rm-dSY" firstAttribute="leading" secondItem="rRr-v5-OHx" secondAttribute="leading" id="CFi-ry-OXZ"/>
+                            <constraint firstItem="fvD-22-ABt" firstAttribute="centerX" secondItem="rRr-v5-OHx" secondAttribute="centerX" id="Iyl-tp-ILJ"/>
                             <constraint firstItem="cXr-Rm-dSY" firstAttribute="top" secondItem="rRr-v5-OHx" secondAttribute="top" id="J5n-CN-Z0U"/>
                             <constraint firstAttribute="bottom" secondItem="cXr-Rm-dSY" secondAttribute="bottom" id="baV-2U-n72"/>
                         </constraints>
@@ -109,6 +117,7 @@
                     <navigationItem key="navigationItem" id="QV9-oq-mOF"/>
                     <connections>
                         <outlet property="allExpencesTableView" destination="cXr-Rm-dSY" id="LBh-6i-Yz1"/>
+                        <outlet property="listStatusLabel" destination="fvD-22-ABt" id="HvO-jo-rcE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IxA-Kg-aAK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

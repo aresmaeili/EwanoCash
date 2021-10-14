@@ -10,7 +10,6 @@ import AAInfographics
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
     @IBAction func plusAddButton(_ sender: Any) {
@@ -144,9 +143,15 @@ class HomeViewController: UIViewController {
     
     func updateListViewForItems() {
         if items.isEmpty {
-            listStatusLabel.isHidden = false
+            let label = UILabel()
+            label.frame = CGRect(x: 0, y: 0, width: tableView.frame.width - 32, height: 30)
+            label.center = tableView.center
+            label.font = .systemFont(ofSize: 19, weight: .bold)
+            label.text = "There's no Entry"
+            label.textAlignment = .center
+            tableView.backgroundView = label
         } else {
-            listStatusLabel.isHidden = true
+            tableView.backgroundView = nil
         }
     }
     

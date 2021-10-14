@@ -20,6 +20,9 @@ class TransferViewController: UIViewController {
     @IBOutlet weak var transactionTitletextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var costTransferedLabel: UILabel!
+    @IBOutlet weak var datePickerTextField: UITextField!
+    
     @IBAction func addButtonAction(_ sender: Any) {
         addButtonDidTapped()
     }
@@ -29,9 +32,7 @@ class TransferViewController: UIViewController {
         dismiss(animated: true, completion: nil)
         
     }
-    @IBOutlet weak var numbersCollectionView: UICollectionView!
-    @IBOutlet weak var costTransferedLabel: UILabel!
-    @IBOutlet weak var datePickerTextField: UITextField!
+    
     @IBAction func refreshButtonAction(_ sender: Any) {
         refreshDate()
     }
@@ -83,9 +84,6 @@ class TransferViewController: UIViewController {
                     transactionTypeSegment.isHidden = true
                     transactionTitletextField.placeholder = "Type Here"
                     transactionTitletextField.text = "Balance"
-                    
-                    // = transactionTitletextField.text
-                    
                 } else {
                     print("UserDefaults array is not empty, it has \(oldEnteries.count) items")
                     currentBalanceLabel.isHidden = true
@@ -99,10 +97,6 @@ class TransferViewController: UIViewController {
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
-        numbersCollectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
-        numbersCollectionView.delegate = self
-        numbersCollectionView.dataSource = self
-        numbersCollectionView.bounces = false
         refreshDate()
         datePickerTextField.setDatePickerAsInputViewFor(target: self, selector: #selector(dateSelected))
     }
@@ -119,59 +113,7 @@ class TransferViewController: UIViewController {
     }
 }
 
-extension TransferViewController: UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return keyPadArray.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = numbersCollectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
-        cell.numbersButton.setTitle(keyPadArray[indexPath.row], for: .normal)
-        cell.numbersButton.isUserInteractionEnabled = false
-        if keyPadArray[indexPath.row] == "." || keyPadArray[indexPath.row] == "←" {
-            cell.numbersButton.tintColor = .purple
-            
-        }else{
-            cell.numbersButton.tintColor = .systemBlue
-        }
-        if keyPadArray[indexPath.row] == "."{
-            cell.numbersButton.titleLabel?.font = .boldSystemFont(ofSize: 32.0)
-        }
-        return cell
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Int(collectionView.frame.width)/3   , height: Int(collectionView.frame.height)/4)
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if keyPadArray[indexPath.row] == "←" {
-            if cost.isEmpty {
-            }else{
-                cost.removeLast()
-            }
-        } else {
-            if keyPadArray[indexPath.row] == "."  && cost.contains(".") {
-                return
-            }
-            cost = cost + keyPadArray[indexPath.row]
-        }
-    }
-}
-
 extension UITextField {
-    
     func setDatePickerAsInputViewFor(target: Any , selector: Selector){
         let screenWidth = UIScreen.main.bounds.width
         let datePicker = UIDatePicker(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 200.0))
@@ -194,7 +136,6 @@ extension UITextField {
 }
 
 extension TransferViewController {
-    
     func refreshDate(){
         let date = Date()
         let dateFormatter = DateFormatter()
@@ -235,7 +176,6 @@ extension TransferViewController {
 }
 
 extension UIViewController {
-    
     func dismissKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
         tap.cancelsTouchesInView = false
@@ -248,7 +188,6 @@ extension UIViewController {
 }
 
 extension String {
-    
     func toDate()-> Date? {
         let dateFormatter = DateFormatter()
         //        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"

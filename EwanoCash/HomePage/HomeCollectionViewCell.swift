@@ -13,7 +13,7 @@ class HomeCollectionViewCell: UICollectionViewCell  {
     @IBOutlet var chartParentView: UIView!
     @IBOutlet weak var monthLabel: UILabel!
     
-    var item = [TransfersModel]()
+    var item = [TransactionData]()
     var chartModel = AAChartModel()
     let chart = AAChartView()
     

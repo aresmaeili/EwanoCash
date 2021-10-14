@@ -19,7 +19,7 @@ class TotalSummaryViewController: UIViewController {
     var chartView = AAChartView()
     let cellHeight:CGFloat = 60
     var isTableAutoReloadEnabled = true
-    var items: [TransfersModel] = [] {
+    var items: [TransactionData] = [] {
         didSet {
             if true {
                 DispatchQueue.main.async { [self] in
@@ -61,20 +61,19 @@ class TotalSummaryViewController: UIViewController {
     }
     
     func fillSummaryLabels() {
-        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({Int($0.amountOfTransaction) ?? 0}).reduce(0, +).description + "$"
-        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({Int($0.amountOfTransaction) ?? 0}).reduce(0, +).description + "$"
+        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({$0.amount}).description + "$"
+        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({$0.amount}).description + "$"
     }
 }
 
 // MARK: - Data manager
 extension TotalSummaryViewController {
-    
     func loadChartData() {
         let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
-        let allTransactions = items.compactMap({Int($0.amountOfTransaction)})
+        let allTransactions = items.compactMap({Int($0.amount)})
         let data = AAChartModel()
         //            .markerRadius(0) // MARK: For Hiding points on the chart
             .chartType(.areaspline)
@@ -90,17 +89,17 @@ extension TotalSummaryViewController {
                 AASeriesElement()
                     .name("Day")
                     .data(allTransactions)
-                .color(gradientColor),
-//                AASeriesElement()
-//                    .name("")
-//                    .data(allTransactions.compactMap({$0})),
+                    .color(gradientColor),
+                //                AASeriesElement()
+                //                    .name("")
+                //                    .data(allTransactions.compactMap({$0})),
             ])
         chartView.aa_drawChartWithChartModel(data)
     }
     
-    func getData()-> [TransfersModel] {
+    func getData() -> [TransactionData] {
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
                 return transferData
             }
         }
@@ -110,21 +109,26 @@ extension TotalSummaryViewController {
 
 // MARK: - TableView Functions
 extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        let item = items[indexPath.row]
-        cell.itemTitle.text = item.titleOfTransaction
-        cell.itemDate.text = item.dateOfTransaction.getPrettyDate()
-        cell.itemPrice.text = item.amountOfTransaction
-        if item.isIncome == true {
-            cell.itemImage.image = UIImage(named: "chevron_down")
-        } else {
-            cell.itemImage.image = UIImage(named: "chevron_up")
+        if items.isEmpty { return cell }
+        if items.indices.contains(indexPath.row) {
+            let item = items[indexPath.row]
+            cell.itemTitle.text = item.title
+            cell.itemDate.text = item.date.getPrettyDate()
+            if item.isIncome {
+                cell.itemImage.image = UIImage(named: "chevron_down")
+                cell.itemImage.tintColor = .systemGreen
+                cell.itemPrice.text = item.amount.description
+            } else {
+                cell.itemImage.image = UIImage(named: "chevron_up")
+                cell.itemImage.tintColor = .systemRed
+                cell.itemPrice.text = item.amount.description
+            }
         }
         return cell
     }

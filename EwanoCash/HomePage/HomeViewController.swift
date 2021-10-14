@@ -20,7 +20,7 @@ class HomeViewController: UIViewController {
     }
     
     var dateArray = [String]()
-    var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
     var allItems: [TransfersModel] = []
@@ -50,6 +50,11 @@ class HomeViewController: UIViewController {
         tableView.separatorStyle = .none
         setTabBarsStyle()
         loadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     
     func loadData() {
@@ -82,9 +87,9 @@ class HomeViewController: UIViewController {
         return []
     }
     
-    func getChartData(for month: String)-> AAChartModel {
+    func getChartData(for path: IndexPath?)-> AAChartModel {
         isTableAutoReloadEnabled = false
-        items = getData(of: month)
+        items = getData(of: path)
         isTableAutoReloadEnabled = true
         var balance = 0
         var allTransactions:[Int] = []
@@ -126,9 +131,15 @@ class HomeViewController: UIViewController {
         return data
     }
     
-    func getData(of month: String)-> [TransfersModel] {
-        let items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
-        return items
+    func getData(of path: IndexPath?)-> [TransfersModel] {
+        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+           months.indices.contains(indexPath.row) {
+            let month: String = months[indexPath.row]
+            let items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+            return items
+        } else {
+            return []
+        }
     }
     
     func updateListViewForItems() {
@@ -158,16 +169,18 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return month.count
+        return months.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
-        cell.monthLabel.text = month[indexPath.row]
-        DispatchQueue.main.async { [self] in
-            cell.fill(with: getChartData(for: month[indexPath.row]))
+        if months.indices.contains(indexPath.row) {
+            let cellData = months[indexPath.row]
+            cell.monthLabel.text = cellData
+            DispatchQueue.main.async { [self] in
+                cell.fill(with: getChartData(for: indexPath))
+            }
         }
         return cell
     }
@@ -191,26 +204,26 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let index = collectionView.indexPathsForVisibleItems.first {
-            return getData(of: month[index.row]).count
-        }
-        return items.count
+        return getData(of: collectionView.indexPathsForVisibleItems.first).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
-        let items = getData(of: month[collectionView.indexPathsForVisibleItems.first!.row])
-        let item = items[indexPath.row]
-        cell.itemTitle.text = item.titleOfTransaction
-        cell.itemDate.text = item.dateOfTransaction.getPrettyDate()
-        cell.itemPrice.text = item.amountOfTransaction
-        if item.isIncome == true {
-            cell.itemImage.image = UIImage(named: "chevron_down")
-        } else {
-            cell.itemImage.image = UIImage(named: "chevron_up")
+        if items.indices.contains(indexPath.row) {
+            let item = items[indexPath.row]
+            cell.itemTitle.text = item.titleOfTransaction
+            cell.itemDate.text = item.dateOfTransaction.getPrettyDate()
+            if item.isIncome == true {
+                cell.itemImage.image = UIImage(named: "chevron_down")
+                cell.itemImage.tintColor = .systemRed
+                cell.itemPrice.text = "+ " + item.amountOfTransaction
+            } else {
+                cell.itemImage.image = UIImage(named: "chevron_up")
+                cell.itemImage.tintColor = .systemGreen
+                cell.itemPrice.text = "- " + item.amountOfTransaction
+            }
         }
         return cell
     }
@@ -234,7 +247,6 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
 }
 
 extension HomeViewController: TransferViewControllerDelegate {
-    
     func insertedNewData() {
         allItems = getDataFromUserDefault()
         items = allItems
@@ -243,7 +255,6 @@ extension HomeViewController: TransferViewControllerDelegate {
 }
 
 extension Date {
-    
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
     }

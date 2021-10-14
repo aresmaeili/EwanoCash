@@ -72,11 +72,11 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
             if item.isIncome {
                 cell.itemImage.image = UIImage(named: "chevron_down")
                 cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = "+ " + item.amount.description
+                cell.itemPrice.text = item.amount.description
             } else {
                 cell.itemImage.image = UIImage(named: "chevron_up")
                 cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = "- " + item.amount.description
+                cell.itemPrice.text = item.amount.description
             }
         }
         return cell

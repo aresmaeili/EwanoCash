@@ -41,11 +41,8 @@ class TransferViewController: UIViewController {
     @IBAction func transactionTypeSegmentAction(_ sender: Any) {
         if transactionTypeSegment.selectedSegmentIndex == 0 {
             isIncome = true
-            print (isIncome)
         }else{
             isIncome = false
-            print (isIncome)
-            
         }
     }
     
@@ -132,7 +129,7 @@ extension TransferViewController {
     func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
-        var amount = Double(priceTextField.text ?? "0") ?? 0
+        let amount = (Double(priceTextField.text ?? "0") ?? 0)
         let item = TransactionData(title: transactionTitle, amount: amount, date: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
         listOfTransactions = []
         

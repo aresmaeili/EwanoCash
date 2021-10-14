@@ -28,7 +28,6 @@ class HomeViewController: UIViewController {
             if isTableAutoReloadEnabled {
                 DispatchQueue.main.async { [self] in
                     makeOutcomesNegetive()
-                    updateListViewForItems()
                     collectionView.reloadData()
                 }
             }
@@ -211,6 +210,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        updateListViewForItems()
         return getData(of: collectionView.indexPathsForVisibleItems.first).count
     }
     
@@ -224,11 +224,11 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
             if item.isIncome {
                 cell.itemImage.image = UIImage(named: "chevron_down")
                 cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = "+ " + item.amount.description
+                cell.itemPrice.text = item.amount.description
             } else {
                 cell.itemImage.image = UIImage(named: "chevron_up")
                 cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = "- " + item.amount.description
+                cell.itemPrice.text = item.amount.description
             }
         }
         return cell

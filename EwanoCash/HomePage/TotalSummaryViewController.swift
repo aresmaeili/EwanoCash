@@ -61,14 +61,15 @@ class TotalSummaryViewController: UIViewController {
     }
     
     func fillSummaryLabels() {
-        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({Int($0.amount) ?? 0}).reduce(0, +).description + "$"
-        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({Int($0.amount) ?? 0}).reduce(0, +).description + "$"
+        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({$0.amount}).description + "$"
+        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({$0.amount}).description + "$"
     }
 }
 
 // MARK: - Data manager
 extension TotalSummaryViewController {
     func loadChartData() {
+        let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
@@ -82,8 +83,7 @@ extension TotalSummaryViewController {
             .tooltipEnabled(true)
             .legendEnabled(false)
             .dataLabelsEnabled(true)
-            .markerSymbolStyle(.borderBlank)
-            .colorsTheme(["#0000FF"])
+            .markerSymbolStyle(.innerBlank)
             .categories(allTransactions.compactMap({$0.description}))
             .series([
                 AASeriesElement()

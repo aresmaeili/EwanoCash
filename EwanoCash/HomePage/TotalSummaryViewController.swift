@@ -53,10 +53,11 @@ class TotalSummaryViewController: UIViewController {
     }
     
     func stupChartView() {
-        chartParentView.layer.cornerRadius = 25
+        chartParentView.layer.cornerRadius = 10
         chartParentView.clipsToBounds = true
         chartView.frame = chartParentView.bounds
         chartParentView.addSubview(chartView)
+        chartView.layer.position.x -= 5
     }
     
     func fillSummaryLabels() {
@@ -73,22 +74,25 @@ extension TotalSummaryViewController {
         isTableAutoReloadEnabled = true
         let allTransactions = items.compactMap({Int($0.amount)})
         let data = AAChartModel()
-            .chartType(.spline)
+        //            .markerRadius(0) // MARK: For Hiding points on the chart
+            .chartType(.areaspline)
             .animationType(.easeInCubic)
             .dataLabelsEnabled(false)
             .touchEventEnabled(false)
-            .tooltipEnabled(false)
+            .tooltipEnabled(true)
             .legendEnabled(false)
+            .dataLabelsEnabled(true)
             .markerSymbolStyle(.borderBlank)
             .colorsTheme(["#0000FF"])
             .categories(allTransactions.compactMap({$0.description}))
             .series([
                 AASeriesElement()
-                    .name("Expences")
-                    .data(allTransactions),
-//                AASeriesElement()
-//                    .name("")
-//                    .data(allTransactions.compactMap({$0})),
+                    .name("Day")
+                    .data(allTransactions)
+                    .color(gradientColor),
+                //                AASeriesElement()
+                //                    .name("")
+                //                    .data(allTransactions.compactMap({$0})),
             ])
         chartView.aa_drawChartWithChartModel(data)
     }

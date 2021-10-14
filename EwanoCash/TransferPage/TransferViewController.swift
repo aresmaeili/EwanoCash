@@ -82,6 +82,7 @@ class TransferViewController: UIViewController {
         transactionTitletextField.delegate = self
         transactionTitletextField.addCloseToolbar()
         priceTextField.addCloseToolbar()
+        priceTextField.keyboardType = .numberPad
     }
     
     @objc func dateSelected() {
@@ -115,7 +116,7 @@ extension TransferViewController {
     func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
-        let amount = (Double(priceTextField.text ?? "0") ?? 0)
+        let amount = (Int(priceTextField.text ?? "0") ?? 0)
         let item = TransactionData(title: transactionTitle, amount: amount, date: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
 
         if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {

@@ -23,8 +23,11 @@ class HomeViewController: UIViewController {
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
     var allItems: [TransactionData] = []
-    var items: [TransactionData] = [] {
-        didSet {
+    var items: [TransactionData] {
+        get {
+            return getData(of: collectionView.indexPathsForVisibleItems.first)
+        }
+        set {
             if isTableAutoReloadEnabled {
                 DispatchQueue.main.async { [self] in
                     updateListViewForItems()
@@ -57,7 +60,7 @@ class HomeViewController: UIViewController {
     
     func loadData() {
         allItems = DataManager.shared.transactions
-        items = allItems
+        items = getData(of: collectionView.indexPathsForVisibleItems.first)
     }
     
     func setTabBarsStyle() {
@@ -73,11 +76,8 @@ class HomeViewController: UIViewController {
     }
     
     func getChartData(for path: IndexPath?) -> AAChartModel {
-        isTableAutoReloadEnabled = false
-        items = getData(of: path)
-        isTableAutoReloadEnabled = true
-        var balance: Double = 0
-        var allTransactions: [Double] = []
+        var balance: Int = 0
+        var allTransactions: [Int] = []
         for i in 0...31 {
             if items.compactMap({$0.date.get(.day)}).contains(i) {
                 for j in 0..<items.count {
@@ -169,8 +169,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == collectionView {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+                items = getData(of: collectionView.indexPathsForVisibleItems.first)
+                tableView.reloadData()
             }
         }
     }
@@ -188,7 +189,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
-        return getData(of: collectionView.indexPathsForVisibleItems.first).count
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -235,7 +236,7 @@ extension HomeViewController: TransferViewControllerDelegate {
         allItems = DataManager.shared.transactions
         allItems.append(item)
         DataManager.shared.transactions = allItems
-        items = allItems
+        items = getData(of: collectionView.indexPathsForVisibleItems.first)
         tableView.reloadData()
     }
 }

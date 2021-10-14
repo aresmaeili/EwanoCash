@@ -18,8 +18,8 @@ class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    var dateArray = [String]()
     let yearArray = Array(2000...2030)
+    var currentYear = Date().get(.year)
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
@@ -105,15 +105,17 @@ class HomeViewController: UIViewController {
         var balance: Double = 0
         var allTransactions: [Double] = []
         for i in 0...31 {
-            if items.compactMap({$0.date.get(.day)}).contains(i) {
-                for j in 0..<items.count {
-                    if items[j].date.get(.day) == i { // transaction in day of i
-                        balance = balance + items[j].amount
-                        allTransactions.append(balance)
+            if items.compactMap({$0.date.get(.year)}).contains(currentYear) {
+                if items.compactMap({$0.date.get(.day)}).contains(i) {
+                    for j in 0..<items.count {
+                        if items[j].date.get(.day) == i { // transaction in day of i
+                            balance = balance + items[j].amount
+                            allTransactions.append(balance)
+                        }
                     }
+                } else {
+                    allTransactions.append(balance) // MARK: Not sure about that
                 }
-            } else {
-                allTransactions.append(balance) // MARK: Not sure about that
             }
         }
         //        let gradientColor = AAGradientColor.linearGradient(
@@ -223,6 +225,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
         return getData(of: collectionView.indexPathsForVisibleItems.first).count
@@ -286,11 +289,18 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         pickerView.dataSource = self
         pickerView.delegate = self
         alertView.view.addSubview(pickerView)
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: { [self] _ in
+            let selectedyear = yearArray[pickerView.selectedRow(inComponent: 0)]
+            navigationItem.rightBarButtonItem?.title = selectedyear.description
+            currentYear = selectedyear
+            loadData()
+        })
         alertView.addAction(action)
+        alertView.addAction(cancelAction)
         present(alertView, animated: true, completion: {
             pickerView.frame.size.width = alertView.view.frame.size.width
-            pickerView.selectRow(21, inComponent: 0, animated: true)
+            pickerView.selectRow(Int(self.currentYear.description.dropFirst().dropFirst().description) ?? 0, inComponent: 0, animated: true)
         })
     }
 }

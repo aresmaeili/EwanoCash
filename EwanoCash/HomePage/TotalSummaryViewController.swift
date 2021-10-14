@@ -70,7 +70,7 @@ class TotalSummaryViewController: UIViewController {
 extension TotalSummaryViewController {
     
     func loadChartData() {
-        let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#0000ffff", endColor: "#ffffff00")
+        let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
@@ -84,8 +84,7 @@ extension TotalSummaryViewController {
             .tooltipEnabled(true)
             .legendEnabled(false)
             .dataLabelsEnabled(true)
-            .markerSymbolStyle(.borderBlank)
-            .colorsTheme(["#0000FF"])
+            .markerSymbolStyle(.innerBlank)
             .categories(allTransactions.compactMap({$0.description}))
             .series([
                 AASeriesElement()

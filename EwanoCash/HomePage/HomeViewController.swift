@@ -19,6 +19,7 @@ class HomeViewController: UIViewController {
     }
     
     var dateArray = [String]()
+    let yearArray = Array(2000...2030)
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
@@ -38,24 +39,14 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Home"
-        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        collectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        tabBarController?.selectedIndex = 0
-        tableView.separatorStyle = .none
+        setupTableView()
+        setupCollectionView()
+        addYearButtonToNavigationBar()
         setTabBarsStyle()
         loadData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
-    func loadData() {
+   func loadData() {
         allItems = getDataFromUserDefault()
         items = allItems
     }
@@ -70,6 +61,28 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.items![2].image = UIImage(named: "total")
         tabBarController?.tabBar.items![2].selectedImage = UIImage(named: "total_filled")
         tabBarController?.tabBar.items![2].title = "Total"
+    }
+    
+    func setupTableView() {
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+    }
+    
+    func setupCollectionView() {
+        collectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+    func addYearButtonToNavigationBar() {
+        let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
+        navigationItem.rightBarButtonItem = butt
+    }
+    
+    @objc func navigationYearButtonAction() {
+        showYearAlertPicker()
     }
     
     func saveDataToUserDefault() {
@@ -174,6 +187,7 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return months.count
     }
@@ -252,7 +266,37 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     }
 }
 
+extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearArray[row].description
+    }
+    
+    func showYearAlertPicker() {
+        let alertView = UIAlertController(title: "Choose the year", message: "\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: 260, height: 142))
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        alertView.view.addSubview(pickerView)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertView.addAction(action)
+        present(alertView, animated: true, completion: {
+            pickerView.frame.size.width = alertView.view.frame.size.width
+            pickerView.selectRow(21, inComponent: 0, animated: true)
+        })
+    }
+}
+
 extension HomeViewController: TransferViewControllerDelegate {
+    
     func insertedNewData() {
         allItems = getDataFromUserDefault()
         items = allItems

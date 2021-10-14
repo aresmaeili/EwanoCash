@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TransferViewControllerDelegate: AnyObject {
-    func insertedNewData()
+    func insertedNewData(item: TransactionData)
 }
 
 class TransferViewController: UIViewController {
@@ -47,7 +47,6 @@ class TransferViewController: UIViewController {
     }
     
     weak var delegate: TransferViewControllerDelegate?
-    var listOfTransactions = [ TransactionData(title: "Default", amount: 0, date: Date(), isIncome: true)]
     var isIncome = true
     var selectedDate: String?
     
@@ -62,28 +61,18 @@ class TransferViewController: UIViewController {
         costTransferedLabel.clipsToBounds = true
         addButton.layer.cornerRadius = 25
         cancelButton.layer.cornerRadius = 25
-        //**********************
-        listOfTransactions.remove(at: 0)
         
-        if let oldEnteries = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: oldEnteries) {
-                listOfTransactions = transferData
-                if listOfTransactions.isEmpty {
-                    print("UserDefaults array is empty")
-                    currentBalanceLabel.isHidden = false
-                    transactionTypeSegment.isHidden = true
-                    transactionTitletextField.placeholder = "Type Here"
-                    transactionTitletextField.text = "Balance"
-                } else {
-                    print("UserDefaults array is not empty, it has \(oldEnteries.count) items")
-                    currentBalanceLabel.isHidden = true
-                    transactionTypeSegment.isHidden = false
-                    transactionTitletextField.placeholder = "Title Of This Transaction"
-                }
-            } else {
-                print("UserDefaults array is nil")
-            }
+        if DataManager.shared.transactions.isEmpty {
+            currentBalanceLabel.isHidden = false
+            transactionTypeSegment.isHidden = true
+            transactionTitletextField.placeholder = "Type Here"
+            transactionTitletextField.text = "Balance"
+        } else {
+            currentBalanceLabel.isHidden = true
+            transactionTypeSegment.isHidden = false
+            transactionTitletextField.placeholder = "Title Of This Transaction"
         }
+        
         datePickerTextField.layer.borderWidth = 1
         datePickerTextField.layer.cornerRadius = 10
         datePickerTextField.clipsToBounds = true
@@ -123,31 +112,18 @@ extension TransferViewController {
         selectedDate = dateFormatter.string(from: date)
     }
     
-    func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( listOfTransactions ) , forKey: "listOfTransactions")
-    }
-    
     func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
         let amount = (Double(priceTextField.text ?? "0") ?? 0)
         let item = TransactionData(title: transactionTitle, amount: amount, date: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
-        listOfTransactions = []
-        
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                listOfTransactions = transferData
-            }
-        }
-        listOfTransactions.append(item)
-        print("GHGHGHGHG\(listOfTransactions)HGHGHGHGHGH")
+
         if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {
             let alert = UIAlertController(title: "Incomplete Entry", message: "Please fill all parts", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
         }  else {
-            saveDataToUserDefault()
-            delegate?.insertedNewData()
+            delegate?.insertedNewData(item: item)
             dismiss(animated: true, completion: nil)
         }
     }

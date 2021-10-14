@@ -27,7 +27,7 @@ class HomeViewController: UIViewController {
         didSet {
             if isTableAutoReloadEnabled {
                 DispatchQueue.main.async { [self] in
-                    makeOutcomesNegetive()
+                    updateListViewForItems()
                     collectionView.reloadData()
                 }
             }
@@ -56,7 +56,7 @@ class HomeViewController: UIViewController {
     }
     
     func loadData() {
-        allItems = getDataFromUserDefault()
+        allItems = DataManager.shared.transactions
         items = allItems
     }
     
@@ -70,19 +70,6 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.items![2].image = UIImage(named: "total")
         tabBarController?.tabBar.items![2].selectedImage = UIImage(named: "total_filled")
         tabBarController?.tabBar.items![2].title = "Total"
-    }
-    
-    func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
-    }
-    
-    func getDataFromUserDefault() -> [TransactionData] {
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                return transferData
-            }
-        }
-        return []
     }
     
     func getChartData(for path: IndexPath?) -> AAChartModel {
@@ -130,7 +117,7 @@ class HomeViewController: UIViewController {
     }
     
     func getData(of path: IndexPath?)-> [TransactionData] {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+        if let indexPath = path,
            months.indices.contains(indexPath.row) {
             let month: String = months[indexPath.row]
             let items = allItems.filter({$0.date.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.date.get(.day) < $1.date.get(.day)})
@@ -160,16 +147,6 @@ class HomeViewController: UIViewController {
         let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let days = cal.range(of: .day, in: .month, for: date)
         return days.hashValue
-    }
-    
-    func makeOutcomesNegetive() {
-        for i in 0..<items.count {
-            if !items[i].isIncome {
-                if items[i].amount > 0 {
-                    items[i].amount = items[i].amount * -1
-                }
-            }
-        }
     }
 }
 
@@ -237,11 +214,12 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if items.indices.contains(indexPath.row) {
-                tableView.beginUpdates()
-                items.remove(at: indexPath.row)
-                saveDataToUserDefault()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.endUpdates()
+                if let index = allItems.firstIndex(where: {$0 == items[indexPath.row]}) {
+                    allItems.remove(at: index)
+                    DataManager.shared.transactions = allItems
+                    items = getData(of: collectionView.indexPathsForVisibleItems.first)
+                    tableView.reloadData()
+                }
             }
         }
         return
@@ -253,8 +231,10 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
 }
 
 extension HomeViewController: TransferViewControllerDelegate {
-    func insertedNewData() {
-        allItems = getDataFromUserDefault()
+    func insertedNewData(item: TransactionData) {
+        allItems = DataManager.shared.transactions
+        allItems.append(item)
+        DataManager.shared.transactions = allItems
         items = allItems
         tableView.reloadData()
     }

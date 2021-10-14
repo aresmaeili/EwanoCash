@@ -69,12 +69,13 @@ class TotalSummaryViewController: UIViewController {
 extension TotalSummaryViewController {
     
     func loadChartData() {
+        let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#0000ffff", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
         let allTransactions = items.compactMap({Int($0.amountOfTransaction)})
         let data = AAChartModel()
-            .chartType(.spline)
+            .chartType(.area)
             .animationType(.easeInCubic)
             .dataLabelsEnabled(false)
             .touchEventEnabled(false)
@@ -86,7 +87,8 @@ extension TotalSummaryViewController {
             .series([
                 AASeriesElement()
                     .name("Expences")
-                    .data(allTransactions),
+                    .data(allTransactions)
+                .color(gradientColor),
 //                AASeriesElement()
 //                    .name("")
 //                    .data(allTransactions.compactMap({$0})),

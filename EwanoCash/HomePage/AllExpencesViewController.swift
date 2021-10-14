@@ -13,7 +13,13 @@ class AllExpencesViewController: UIViewController {
     @IBOutlet weak var allExpencesTableView: UITableView!
     
     var items = [TransactionData]()
-    var daysForSection : [String] = []
+    var daysForSection : [String] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.allExpencesTableView.reloadData()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,13 +27,13 @@ class AllExpencesViewController: UIViewController {
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
         navigationItem.title = "All Expences"
-        tabBarController?.selectedIndex = 1
         allExpencesTableView.separatorStyle = .none
         allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         loadDataFromUserDefault()
         allExpencesTableView.reloadData()
         updateListViewForItems()
@@ -48,35 +54,32 @@ class AllExpencesViewController: UIViewController {
     }
     
     func loadDataFromUserDefault() {
-        
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+        if let data = UserDefaults.standard.value(forKey: "listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
                 items = transferData
                 daysForSection = items.compactMap{$0.date.getPrettyDate().description}
-                DispatchQueue.main.async {
-                    self.allExpencesTableView.reloadData()
-                }
             }
         }
     }
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
-        if items.indices.contains(indexPath.row) {
-            let item = items[indexPath.row]
+        if items.indices.contains(indexPath.section) {
+            let item = items[indexPath.section]
             cell.itemTitle.text = item.title
             cell.itemDate.text = item.date.getPrettyDate()
             if item.isIncome {
                 cell.itemImage.image = UIImage(named: "chevron_down")
                 cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = item.amount.description
+                cell.itemPrice.text = "$" + item.amount.description
             } else {
                 cell.itemImage.image = UIImage(named: "chevron_up")
                 cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = item.amount.description
+                cell.itemPrice.text = "$" + item.amount.description
             }
         }
         return cell
@@ -92,7 +95,6 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return daysForSection[section]
-        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

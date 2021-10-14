@@ -12,14 +12,14 @@ protocol TransferViewControllerDelegate: AnyObject {
 }
 
 class TransferViewController: UIViewController {
+    
     @IBOutlet weak var todayButton: UIButton!
-    
     @IBOutlet weak var transactionTypeSegment: UISegmentedControl!
-    
     @IBOutlet weak var currentBalanceLabel: UILabel!
     @IBOutlet weak var transactionTitletextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var priceTextField: UITextField!
     @IBOutlet weak var costTransferedLabel: UILabel!
     @IBOutlet weak var datePickerTextField: UITextField!
     
@@ -50,16 +50,9 @@ class TransferViewController: UIViewController {
     }
     
     weak var delegate: TransferViewControllerDelegate?
-    var listOfTransactions = [ TransfersModel(titleOfTransaction: "Default", amountOfTransaction: "0", dateOfTransaction: Date(), isIncome: true)]
-    //var listOfTransactions :[TransfersModel]?
+    var listOfTransactions = [ TransactionData(title: "Default", amount: 0, date: Date(), isIncome: true)]
     var isIncome = true
     var selectedDate: String?
-    let keyPadArray = ["1","2","3","4","5","6","7","8","9", "." , "0" , "←"]
-    var cost : String = "" {
-        didSet{
-            costTransferedLabel.text = cost
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +69,7 @@ class TransferViewController: UIViewController {
         listOfTransactions.remove(at: 0)
         
         if let oldEnteries = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: oldEnteries) {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: oldEnteries) {
                 listOfTransactions = transferData
                 if listOfTransactions.isEmpty {
                     print("UserDefaults array is empty")
@@ -99,6 +92,10 @@ class TransferViewController: UIViewController {
         datePickerTextField.clipsToBounds = true
         refreshDate()
         datePickerTextField.setDatePickerAsInputViewFor(target: self, selector: #selector(dateSelected))
+        priceTextField.delegate = self
+        transactionTitletextField.delegate = self
+        transactionTitletextField.addCloseToolbar()
+        priceTextField.addCloseToolbar()
     }
     
     @objc func dateSelected() {
@@ -107,31 +104,14 @@ class TransferViewController: UIViewController {
             dateFormatter.dateStyle = .medium
             datePickerTextField.text = dateFormatter.string(from: datePicker.date)
             selectedDate = datePicker.date.description
-            //print("ABDBABDBABDBABDBABD**********\(selectedDate)**8")
         }
         datePickerTextField.resignFirstResponder()
     }
 }
 
-extension UITextField {
-    func setDatePickerAsInputViewFor(target: Any , selector: Selector){
-        let screenWidth = UIScreen.main.bounds.width
-        let datePicker = UIDatePicker(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 200.0))
-        datePicker.datePickerMode = .date
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-        }
-        inputView = datePicker
-        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 40.0))
-        let cancel = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(tapCancel))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let done = UIBarButtonItem(title: "Done", style: .plain , target: target, action: selector)
-        toolBar.setItems([cancel , flexibleSpace , done], animated: false)
-        inputAccessoryView = toolBar
-    }
-    
-    @objc func tapCancel(){
-        self.resignFirstResponder()
+extension TransferViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
 }
 
@@ -152,12 +132,12 @@ extension TransferViewController {
     func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
-        let item = TransfersModel(titleOfTransaction: transactionTitle, amountOfTransaction: cost, dateOfTransaction: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
-        //  item = TransfersModel()
+        var amount = Double(priceTextField.text ?? "0") ?? 0
+        let item = TransactionData(title: transactionTitle, amount: amount, date: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
         listOfTransactions = []
         
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
                 listOfTransactions = transferData
             }
         }
@@ -174,27 +154,3 @@ extension TransferViewController {
         }
     }
 }
-
-extension UIViewController {
-    func dismissKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func dismissKeyboardTouchOutside() {
-        view.endEditing(true)
-    }
-}
-
-extension String {
-    func toDate()-> Date? {
-        let dateFormatter = DateFormatter()
-        //        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        //        2021-10-12 16:31:11 +0000
-        return dateFormatter.date(from: self)
-    }
-}
-
-

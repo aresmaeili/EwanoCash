@@ -22,8 +22,8 @@ class HomeViewController: UIViewController {
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
-    var allItems: [TransfersModel] = []
-    var items: [TransfersModel] = [] {
+    var allItems: [TransactionData] = []
+    var items: [TransactionData] = [] {
         didSet {
             if isTableAutoReloadEnabled {
                 DispatchQueue.main.async { [self] in
@@ -77,26 +77,26 @@ class HomeViewController: UIViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
     }
     
-    func getDataFromUserDefault()-> [TransfersModel] {
+    func getDataFromUserDefault() -> [TransactionData] {
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
                 return transferData
             }
         }
         return []
     }
     
-    func getChartData(for path: IndexPath?)-> AAChartModel {
+    func getChartData(for path: IndexPath?) -> AAChartModel {
         isTableAutoReloadEnabled = false
         items = getData(of: path)
         isTableAutoReloadEnabled = true
-        var balance = 0
-        var allTransactions:[Int] = []
+        var balance: Double = 0
+        var allTransactions: [Double] = []
         for i in 0...31 {
-            if items.compactMap({$0.dateOfTransaction.get(.day)}).contains(i) {
+            if items.compactMap({$0.date.get(.day)}).contains(i) {
                 for j in 0..<items.count {
-                    if items[j].dateOfTransaction.get(.day) == i { // transaction in day of i
-                        balance = balance + Int(items[j].amountOfTransaction)!
+                    if items[j].date.get(.day) == i { // transaction in day of i
+                        balance = balance + items[j].amount
                         allTransactions.append(balance)
                     }
                 }
@@ -130,11 +130,11 @@ class HomeViewController: UIViewController {
         return data
     }
     
-    func getData(of path: IndexPath?)-> [TransfersModel] {
+    func getData(of path: IndexPath?)-> [TransactionData] {
         if let indexPath = collectionView.indexPathsForVisibleItems.first,
            months.indices.contains(indexPath.row) {
             let month: String = months[indexPath.row]
-            let items = allItems.filter({$0.dateOfTransaction.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.dateOfTransaction.get(.day) < $1.dateOfTransaction.get(.day)})
+            let items = allItems.filter({$0.date.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.date.get(.day) < $1.date.get(.day)})
             return items
         } else {
             return []
@@ -148,6 +148,7 @@ class HomeViewController: UIViewController {
             label.center = tableView.center
             label.font = .systemFont(ofSize: 19, weight: .bold)
             label.text = "There's no Entry"
+            label.textColor = .systemBlue
             label.textAlignment = .center
             tableView.backgroundView = label
         } else {
@@ -165,8 +166,8 @@ class HomeViewController: UIViewController {
     func makeOutcomesNegetive() {
         for i in 0..<items.count {
             if !items[i].isIncome {
-                if Int(items[i].amountOfTransaction)! > 0 {
-                    items[i].amountOfTransaction = (Int(items[i].amountOfTransaction)! * -1).description
+                if items[i].amount > 0 {
+                    items[i].amount = items[i].amount * -1
                 }
             }
         }
@@ -218,16 +219,16 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         if items.isEmpty { return cell }
         if items.indices.contains(indexPath.row) {
             let item = items[indexPath.row]
-            cell.itemTitle.text = item.titleOfTransaction
-            cell.itemDate.text = item.dateOfTransaction.getPrettyDate()
-            if item.isIncome == true {
+            cell.itemTitle.text = item.title
+            cell.itemDate.text = item.date.getPrettyDate()
+            if item.isIncome {
                 cell.itemImage.image = UIImage(named: "chevron_down")
-                cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = "+ " + item.amountOfTransaction
+                cell.itemImage.tintColor = .systemGreen
+                cell.itemPrice.text = "+ " + item.amount.description
             } else {
                 cell.itemImage.image = UIImage(named: "chevron_up")
-                cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = "- " + item.amountOfTransaction
+                cell.itemImage.tintColor = .systemRed
+                cell.itemPrice.text = "- " + item.amount.description
             }
         }
         return cell
@@ -256,33 +257,5 @@ extension HomeViewController: TransferViewControllerDelegate {
         allItems = getDataFromUserDefault()
         items = allItems
         tableView.reloadData()
-    }
-}
-
-extension Date {
-    func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
-        return calendar.dateComponents(Set(components), from: self)
-    }
-    
-    func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
-        return calendar.component(component, from: self)
-    }
-    
-    func getStringMonth() -> String {
-        let df = DateFormatter()
-        df.setLocalizedDateFormatFromTemplate("MMMM")
-        return df.string(from: self)
-    }
-    
-    func getPrettyDate() -> String {
-        let df = DateFormatter()
-        df.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
-        return df.string(from: self)
-    }
-    
-    func getPrettyTime() -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: self)
     }
 }

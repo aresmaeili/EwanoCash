@@ -18,6 +18,7 @@
 		0CBEE56C27049CA700809059 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CBEE56A27049CA700809059 /* CollectionViewCell.xib */; };
 		0CBEE5702704A18400809059 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBEE56F2704A18400809059 /* TransferViewController.swift */; };
 		0CE1D6182709B36200E37D34 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE1D6172709B36200E37D34 /* Model.swift */; };
+		BB5FCD08271818B900A01BB8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5FCD07271818B900A01BB8 /* Extensions.swift */; };
 		F718D3FB27049D600034D15B /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718D3F927049D600034D15B /* HomeTableViewCell.swift */; };
 		F718D3FC27049D600034D15B /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F718D3FA27049D600034D15B /* HomeTableViewCell.xib */; };
 		F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */; };
@@ -39,6 +40,7 @@
 		0CBEE56A27049CA700809059 /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		0CBEE56F2704A18400809059 /* TransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewController.swift; sourceTree = "<group>"; };
 		0CE1D6172709B36200E37D34 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		BB5FCD07271818B900A01BB8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F718D3F5270492BB0034D15B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
 		F718D3F6270492BC0034D15B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		F718D3F7270492F30034D15B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Main.strings; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				0CBEE5332704833D00809059 /* HomeViewController.swift */,
+				BB5FCD07271818B900A01BB8 /* Extensions.swift */,
 				F72EE76E2709BAFB00FB8A7D /* AllExpencesViewController.swift */,
 				F72EE76C2709B59800FB8A7D /* TotalSummaryViewController.swift */,
 				F72EE7712709D76800FB8A7D /* HomeCollectionViewCell.xib */,
@@ -208,6 +211,7 @@
 				F72EE76D2709B59800FB8A7D /* TotalSummaryViewController.swift in Sources */,
 				0CBEE5342704833D00809059 /* HomeViewController.swift in Sources */,
 				0CBEE5702704A18400809059 /* TransferViewController.swift in Sources */,
+				BB5FCD08271818B900A01BB8 /* Extensions.swift in Sources */,
 				0CBEE5302704833D00809059 /* AppDelegate.swift in Sources */,
 				0CE1D6182709B36200E37D34 /* Model.swift in Sources */,
 				0CBEE56B27049CA700809059 /* CollectionViewCell.swift in Sources */,

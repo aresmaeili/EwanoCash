@@ -8,11 +8,10 @@
 import Foundation
 
 
-struct TransfersModel : Codable {
-    
-    var titleOfTransaction = ""
-    var amountOfTransaction = ""
-    var dateOfTransaction: Date
+struct TransactionData: Codable {
+    var title = ""
+    var amount: Double = 0
+    var date: Date
     var isIncome = true
 }
 

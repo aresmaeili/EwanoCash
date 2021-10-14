@@ -12,7 +12,7 @@ class AllExpencesViewController: UIViewController {
     @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var allExpencesTableView: UITableView!
     
-    var items = [TransfersModel]()
+    var items = [TransactionData]()
     var daysForSection : [String] = []
     
     override func viewDidLoad() {
@@ -50,10 +50,9 @@ class AllExpencesViewController: UIViewController {
     func loadDataFromUserDefault() {
         
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransfersModel>.self, from: data) {
-                // print("*****************\(String(describing: transferData))")
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
                 items = transferData
-                daysForSection = items.compactMap{$0.dateOfTransaction.getPrettyDate().description}
+                daysForSection = items.compactMap{$0.date.getPrettyDate().description}
                 DispatchQueue.main.async {
                     self.allExpencesTableView.reloadData()
                 }
@@ -63,21 +62,22 @@ class AllExpencesViewController: UIViewController {
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        let dateFormatter = DateFormatter()
-       // dateFormatter.timeStyle = DateFormatter.Style.none
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        
-        cell.itemTitle.text = items[indexPath.section].titleOfTransaction
-        cell.itemDate.text = items[indexPath.section].dateOfTransaction.getPrettyTime()
-        
-        cell.itemPrice.text = items[indexPath.section].amountOfTransaction.description
-        if items[indexPath.section].isIncome == true {
-            cell.itemImage.image = UIImage(named: "chevron_down")
-        } else {
-            cell.itemImage.image = UIImage(named: "chevron_up")
+        if items.isEmpty { return cell }
+        if items.indices.contains(indexPath.row) {
+            let item = items[indexPath.row]
+            cell.itemTitle.text = item.title
+            cell.itemDate.text = item.date.getPrettyDate()
+            if item.isIncome {
+                cell.itemImage.image = UIImage(named: "chevron_down")
+                cell.itemImage.tintColor = .systemGreen
+                cell.itemPrice.text = "+ " + item.amount.description
+            } else {
+                cell.itemImage.image = UIImage(named: "chevron_up")
+                cell.itemImage.tintColor = .systemRed
+                cell.itemPrice.text = "- " + item.amount.description
+            }
         }
         return cell
     }

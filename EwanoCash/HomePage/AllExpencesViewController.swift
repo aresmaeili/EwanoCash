@@ -7,10 +7,10 @@
 
 import UIKit
 
-class AllExpencesViewController: UIViewController {
+class A: UIViewController {
     
     @IBOutlet weak var listStatusLabel: UILabel!
-    @IBOutlet weak var allExpencesTableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     
     let yearArray = Array(2000...2030)
     var currentYear = Date().get(.year)
@@ -19,7 +19,7 @@ class AllExpencesViewController: UIViewController {
     var daysForSection : [String] = [] {
         didSet {
             DispatchQueue.main.async {
-                self.allExpencesTableView.reloadData()
+                self.tableView.reloadData()
             }
         }
     }
@@ -27,25 +27,41 @@ class AllExpencesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "All Expences"
-        allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        allExpencesTableView.delegate = self
-        allExpencesTableView.dataSource = self
-        allExpencesTableView.separatorStyle = .none
-        addYearButtonToNavigationBar()
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        setupNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         loadData()
-        allExpencesTableView.reloadData()
+        tableView.reloadData()
         updateListViewForItems()
     }
     
-    func addYearButtonToNavigationBar() {
+    func setupNavigationBar() {
+        navigationItem.title = "All Expences"
         let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
         navigationItem.rightBarButtonItem = butt
+
+        var statusBarHeight:CGFloat = 0
+        let navigationbarHeight = (navigationController?.navigationBar.bounds.size.height) ?? 44
+        if #available(iOS 13.0, *) {
+            statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        } else {
+            statusBarHeight = 20
+        }
+        let searchBar = UISearchBar()
+           searchBar.placeholder = "Search"
+        searchBar.frame = CGRect(x: 0, y: navigationbarHeight + statusBarHeight, width: view.frame.width, height: 64)
+           searchBar.barStyle = .default
+           searchBar.isTranslucent = false
+           searchBar.barTintColor = UIColor.groupTableViewBackground
+           searchBar.backgroundImage = UIImage()
+           view.addSubview(searchBar)
     }
     
     @objc func navigationYearButtonAction() {
@@ -55,10 +71,10 @@ class AllExpencesViewController: UIViewController {
     func updateListViewForItems() {
         if items.isEmpty {
             listStatusLabel.isHidden = false
-            allExpencesTableView.isHidden = true
+            tableView.isHidden = true
         } else {
             listStatusLabel.isHidden = true
-            allExpencesTableView.isHidden = false
+            tableView.isHidden = false
         }
     }
     

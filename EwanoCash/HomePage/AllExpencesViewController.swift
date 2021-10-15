@@ -12,6 +12,9 @@ class AllExpencesViewController: UIViewController {
     @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var allExpencesTableView: UITableView!
     
+    let yearArray = Array(2000...2030)
+    var currentYear = Date().get(.year)
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var items = [TransactionData]()
     var daysForSection : [String] = [] {
         didSet {
@@ -24,19 +27,29 @@ class AllExpencesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.title = "All Expences"
+        allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
         allExpencesTableView.delegate = self
         allExpencesTableView.dataSource = self
-        navigationItem.title = "All Expences"
         allExpencesTableView.separatorStyle = .none
-        allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        addYearButtonToNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        loadDataFromUserDefault()
+        loadData()
         allExpencesTableView.reloadData()
         updateListViewForItems()
+    }
+    
+    func addYearButtonToNavigationBar() {
+        let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
+        navigationItem.rightBarButtonItem = butt
+    }
+    
+    @objc func navigationYearButtonAction() {
+        showYearAlertPicker()
     }
     
     func updateListViewForItems() {
@@ -53,13 +66,49 @@ class AllExpencesViewController: UIViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
     }
     
-    func loadDataFromUserDefault() {
+    func loadData() {
         if let data = UserDefaults.standard.value(forKey: "listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                items = transferData
+                items = transferData.filter({$0.date.get(.year).description.contains(currentYear.description)})
                 daysForSection = items.compactMap{$0.date.getPrettyDate().description}
             }
         }
+    }
+}
+
+extension AllExpencesViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearArray[row].description
+    }
+    
+    func showYearAlertPicker() {
+        let alertView = UIAlertController(title: "Choose the year", message: "\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: 260, height: 142))
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        alertView.view.addSubview(pickerView)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: { [self] _ in
+            let selectedyear = yearArray[pickerView.selectedRow(inComponent: 0)]
+            navigationItem.rightBarButtonItem?.title = selectedyear.description
+            currentYear = selectedyear
+            loadData()
+        })
+        alertView.addAction(action)
+        alertView.addAction(cancelAction)
+        present(alertView, animated: true, completion: {
+            pickerView.frame.size.width = alertView.view.frame.size.width
+            pickerView.selectRow(Int(self.currentYear.description.dropFirst().dropFirst().description) ?? 0, inComponent: 0, animated: true)
+        })
     }
 }
 

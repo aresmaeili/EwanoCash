@@ -7,7 +7,7 @@
 
 import UIKit
 
-class A: UIViewController {
+class AllExpencesViewController: UIViewController {
     
     @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!

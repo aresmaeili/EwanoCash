@@ -107,15 +107,19 @@ extension TransferViewController: UITextFieldDelegate {
         }else{
             priceTextField.resignFirstResponder()
         }
-        
-        
-            
-        
         return true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return priceTextField.text?.count ?? 0 < 12
+        if textField == priceTextField {
+        let maxLength = 12
+        let currentString: NSString = textField.text! as NSString
+        let newString: NSString =
+            currentString.replacingCharacters(in: range, with: string) as NSString
+        let canChange = (newString.length <= maxLength) && (string.isNumeric || string == "")
+        return canChange
+        }
+        return true
     }
 }
 

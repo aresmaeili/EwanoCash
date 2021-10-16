@@ -124,17 +124,7 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
         let item = filteredItems.isEmpty ? items[indexPath.row] : filteredItems[indexPath.row]
-        cell.itemTitle.text = item.title
-        cell.itemDate.text = item.date.getPrettyDate()
-        if item.isIncome {
-            cell.itemImage.image = UIImage(named: "chevron_down")
-            cell.itemImage.tintColor = .systemGreen
-            cell.itemPrice.text = "$" + item.amount.description
-        } else {
-            cell.itemImage.image = UIImage(named: "chevron_up")
-            cell.itemImage.tintColor = .systemRed
-            cell.itemPrice.text = "$" + item.amount.description
-        }
+        cell.fill(with: item)
         return cell
     }
     

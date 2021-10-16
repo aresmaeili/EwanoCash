@@ -110,17 +110,7 @@ extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSour
         if items.isEmpty { return cell }
         if items.indices.contains(indexPath.row) {
             let item = items[indexPath.row]
-            cell.itemTitle.text = item.title
-            cell.itemDate.text = item.date.getPrettyDate()
-            if item.isIncome {
-                cell.itemImage.image = UIImage(named: "chevron_down")
-                cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = item.amount.description
-            } else {
-                cell.itemImage.image = UIImage(named: "chevron_up")
-                cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = item.amount.description
-            }
+            cell.fill(with: item)
         }
         return cell
     }

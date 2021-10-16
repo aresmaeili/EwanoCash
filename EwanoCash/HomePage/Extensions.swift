@@ -105,6 +105,22 @@ extension Date {
         formatter.timeStyle = .short
         return formatter.string(from: self)
     }
-    
-    
+}
+
+extension Numeric {
+    var formattedWithSeparator: String {
+        return Formatter.withSeparator.string(for: self) ?? ""
+    }
+}
+
+extension Formatter {
+    /**
+       This variable adds number formatting (for example a "," character) to any number
+    */
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 }

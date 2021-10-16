@@ -13,7 +13,6 @@ class AllExpencesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var items = [TransactionData]()
     var filteredItems = [TransactionData]()
     var daysForSection : [String] = [] {
@@ -147,13 +146,13 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if items.indices.contains(indexPath.row) {
-//                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
-//                    items.remove(at: index)
-//                    DataManager.shared.transactions = allItems
-//                    items =
-//                    tableView.reloadData()
-//                    updateListViewForItems()
-//                }
+                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
+                    items.remove(at: index)
+                    DataManager.shared.transactions = items
+                    loadData()
+                    tableView.reloadData()
+                    updateListViewForItems()
+                }
             }
         }
     }

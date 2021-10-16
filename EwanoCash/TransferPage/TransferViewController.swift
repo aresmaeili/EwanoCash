@@ -99,7 +99,16 @@ class TransferViewController: UIViewController {
 
 extension TransferViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
+        if textField == transactionTitletextField{
+            textField.resignFirstResponder()
+            priceTextField.becomeFirstResponder()
+        }else{
+            priceTextField.resignFirstResponder()
+        }
+        
+        
+            
+        
         return true
     }
 }
@@ -130,3 +139,5 @@ extension TransferViewController {
         }
     }
 }
+
+

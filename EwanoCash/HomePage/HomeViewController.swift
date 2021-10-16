@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
+    
     @IBAction func plusAddButton(_ sender: Any) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "TransferViewController") as! TransferViewController
         vc.delegate = self
@@ -86,7 +87,7 @@ class HomeViewController: UIViewController {
     
     func addYearButtonToNavigationBar() {
         let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
-        navigationItem.rightBarButtonItem = butt
+        navigationItem.leftBarButtonItem = butt
     }
     
     @objc func navigationYearButtonAction() {
@@ -221,7 +222,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
         return items.count

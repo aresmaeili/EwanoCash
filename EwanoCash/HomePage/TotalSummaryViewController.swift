@@ -67,14 +67,13 @@ class TotalSummaryViewController: UIViewController {
 
 // MARK: - Data manager
 extension TotalSummaryViewController {
-    
     func loadChartData() {
         let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
-        var balance: Double = 0
-        var allTransactions: [Double] = []
+        var balance: Int = 0
+        var allTransactions: [Int] = []
         for i in 0..<items.count {
             balance = balance + items[i].amount
             allTransactions.append(balance)

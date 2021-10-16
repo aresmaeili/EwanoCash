@@ -111,6 +111,10 @@ extension TransferViewController: UITextFieldDelegate {
         
         return true
     }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return priceTextField.text?.count ?? 0 < 12
+    }
 }
 
 extension TransferViewController {

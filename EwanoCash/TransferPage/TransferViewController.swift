@@ -83,6 +83,7 @@ class TransferViewController: UIViewController {
         transactionTitletextField.addCloseToolbar()
         priceTextField.addCloseToolbar()
         priceTextField.keyboardType = .numberPad
+        transactionTitletextField.becomeFirstResponder()
     }
     
     @objc func dateSelected() {

@@ -53,27 +53,32 @@ class TotalSummaryViewController: UIViewController {
     }
     
     func stupChartView() {
-        chartParentView.layer.cornerRadius = 10
-        chartParentView.clipsToBounds = true
+        chartParentView.backgroundColor = .clear
         chartView.frame = chartParentView.bounds
         chartParentView.addSubview(chartView)
         chartView.layer.position.x -= 5
     }
     
     func fillSummaryLabels() {
-        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({$0.amount}).description + "$"
-        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({$0.amount}).description + "$"
+        totalIncomeAmountLabel.text = items.filter({$0.isIncome}).compactMap({$0.amount}).reduce(0, +).description + "$"
+        totalSpendingAmountLabel.text = items.filter({!$0.isIncome}).compactMap({$0.amount}).reduce(0, +).description + "$"
     }
 }
 
 // MARK: - Data manager
 extension TotalSummaryViewController {
+    
     func loadChartData() {
         let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
         items = getData()
         isTableAutoReloadEnabled = true
-        let allTransactions = items.compactMap({Int($0.amount)})
+        var balance: Double = 0
+        var allTransactions: [Double] = []
+        for i in 0..<items.count {
+            balance = balance + items[i].amount
+            allTransactions.append(balance)
+        }
         let data = AAChartModel()
         //            .markerRadius(0) // MARK: For Hiding points on the chart
             .chartType(.areaspline)
@@ -84,15 +89,12 @@ extension TotalSummaryViewController {
             .legendEnabled(false)
             .dataLabelsEnabled(true)
             .markerSymbolStyle(.innerBlank)
-            .categories(allTransactions.compactMap({$0.description}))
+            .categories(items.compactMap({$0.date.getPrettyDate(format: "YYYY, MMM d")}))
             .series([
                 AASeriesElement()
-                    .name("Day")
+                    .name("Balance($)")
                     .data(allTransactions)
                     .color(gradientColor),
-                //                AASeriesElement()
-                //                    .name("")
-                //                    .data(allTransactions.compactMap({$0})),
             ])
         chartView.aa_drawChartWithChartModel(data)
     }
@@ -100,7 +102,7 @@ extension TotalSummaryViewController {
     func getData() -> [TransactionData] {
         if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                return transferData
+                return transferData //+ transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData // MARK: Uncomment to see the mass data
             }
         }
         return []
@@ -109,6 +111,7 @@ extension TotalSummaryViewController {
 
 // MARK: - TableView Functions
 extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }

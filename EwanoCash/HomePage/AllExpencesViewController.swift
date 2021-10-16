@@ -10,36 +10,71 @@ import UIKit
 class AllExpencesViewController: UIViewController {
     
     @IBOutlet weak var listStatusLabel: UILabel!
-    @IBOutlet weak var allExpencesTableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     
+    let yearArray = Array(2000...2030)
+    var currentYear = Date().get(.year)
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var items = [TransactionData]()
-    var daysForSection : [String] = []
+    var daysForSection : [String] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        allExpencesTableView.delegate = self
-        allExpencesTableView.dataSource = self
-        navigationItem.title = "All Expences"
-        tabBarController?.selectedIndex = 1
-        allExpencesTableView.separatorStyle = .none
-        allExpencesTableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        setupNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadDataFromUserDefault()
-        allExpencesTableView.reloadData()
+        
+        loadData()
+        tableView.reloadData()
         updateListViewForItems()
+    }
+    
+    func setupNavigationBar() {
+        navigationItem.title = "All Expences"
+        let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
+        navigationItem.rightBarButtonItem = butt
+
+        var statusBarHeight:CGFloat = 0
+        let navigationbarHeight = (navigationController?.navigationBar.bounds.size.height) ?? 44
+        if #available(iOS 13.0, *) {
+            statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        } else {
+            statusBarHeight = 20
+        }
+        let searchBar = UISearchBar()
+           searchBar.placeholder = "Search"
+        searchBar.frame = CGRect(x: 0, y: navigationbarHeight + statusBarHeight, width: view.frame.width, height: 64)
+           searchBar.barStyle = .default
+           searchBar.isTranslucent = false
+           searchBar.barTintColor = UIColor.groupTableViewBackground
+           searchBar.backgroundImage = UIImage()
+           view.addSubview(searchBar)
+    }
+    
+    @objc func navigationYearButtonAction() {
+        showYearAlertPicker()
     }
     
     func updateListViewForItems() {
         if items.isEmpty {
             listStatusLabel.isHidden = false
-            allExpencesTableView.isHidden = true
+            tableView.isHidden = true
         } else {
             listStatusLabel.isHidden = true
-            allExpencesTableView.isHidden = false
+            tableView.isHidden = false
         }
     }
     
@@ -47,36 +82,69 @@ class AllExpencesViewController: UIViewController {
         UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
     }
     
-    func loadDataFromUserDefault() {
-        
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+    func loadData() {
+        if let data = UserDefaults.standard.value(forKey: "listOfTransactions") as? Data {
             if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                items = transferData
+                items = transferData.filter({$0.date.get(.year).description.contains(currentYear.description)})
                 daysForSection = items.compactMap{$0.date.getPrettyDate().description}
-                DispatchQueue.main.async {
-                    self.allExpencesTableView.reloadData()
-                }
             }
         }
     }
 }
 
+extension AllExpencesViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearArray[row].description
+    }
+    
+    func showYearAlertPicker() {
+        let alertView = UIAlertController(title: "Choose the year", message: "\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: 260, height: 142))
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        alertView.view.addSubview(pickerView)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: { [self] _ in
+            let selectedyear = yearArray[pickerView.selectedRow(inComponent: 0)]
+            navigationItem.rightBarButtonItem?.title = selectedyear.description
+            currentYear = selectedyear
+            loadData()
+        })
+        alertView.addAction(action)
+        alertView.addAction(cancelAction)
+        present(alertView, animated: true, completion: {
+            pickerView.frame.size.width = alertView.view.frame.size.width
+            pickerView.selectRow(Int(self.currentYear.description.dropFirst().dropFirst().description) ?? 0, inComponent: 0, animated: true)
+        })
+    }
+}
+
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
-        if items.indices.contains(indexPath.row) {
-            let item = items[indexPath.row]
+        if items.indices.contains(indexPath.section) {
+            let item = items[indexPath.section]
             cell.itemTitle.text = item.title
             cell.itemDate.text = item.date.getPrettyDate()
             if item.isIncome {
                 cell.itemImage.image = UIImage(named: "chevron_down")
                 cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = item.amount.description
+                cell.itemPrice.text = "$" + item.amount.description
             } else {
                 cell.itemImage.image = UIImage(named: "chevron_up")
                 cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = item.amount.description
+                cell.itemPrice.text = "$" + item.amount.description
             }
         }
         return cell
@@ -92,7 +160,6 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return daysForSection[section]
-        
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

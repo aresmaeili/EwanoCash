@@ -78,9 +78,9 @@ extension Date {
         return df.string(from: self)
     }
     
-    func getPrettyDate() -> String {
+    func getPrettyDate(format:String = "EEEE, MMM d") -> String {
         let df = DateFormatter()
-        df.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
+        df.setLocalizedDateFormatFromTemplate(format)
         return df.string(from: self)
     }
     

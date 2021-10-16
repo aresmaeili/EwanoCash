@@ -18,7 +18,8 @@ class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    var dateArray = [String]()
+    let yearArray = Array(2000...2030)
+    var currentYear = Date().get(.year)
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
@@ -41,14 +42,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Home"
-        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        collectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        tabBarController?.selectedIndex = 0
-        tableView.separatorStyle = .none
+        setupTableView()
+        setupCollectionView()
+        addYearButtonToNavigationBar()
         setTabBarsStyle()
         loadData()
     }
@@ -75,19 +71,56 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.items![2].title = "Total"
     }
     
+    func setupTableView() {
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+    }
+    
+    func setupCollectionView() {
+        collectionView.register(UINib(nibName: "HomeCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HomeCollectionViewCell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+    func addYearButtonToNavigationBar() {
+        let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
+        navigationItem.rightBarButtonItem = butt
+    }
+    
+    @objc func navigationYearButtonAction() {
+        showYearAlertPicker()
+    }
+    
+    func saveDataToUserDefault() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
+    }
+    
+    func getDataFromUserDefault() -> [TransactionData] {
+        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
+            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
+                return transferData
+            }
+        }
+        return []
+    }
+
     func getChartData(for path: IndexPath?) -> AAChartModel {
         var balance: Int = 0
         var allTransactions: [Int] = []
         for i in 0...31 {
-            if items.compactMap({$0.date.get(.day)}).contains(i) {
-                for j in 0..<items.count {
-                    if items[j].date.get(.day) == i { // transaction in day of i
-                        balance = balance + items[j].amount
-                        allTransactions.append(balance)
+            if items.compactMap({$0.date.get(.year)}).contains(currentYear) {
+                if items.compactMap({$0.date.get(.day)}).contains(i) {
+                    for j in 0..<items.count {
+                        if items[j].date.get(.day) == i { // transaction in day of i
+                            balance = balance + items[j].amount
+                            allTransactions.append(balance)
+                        }
                     }
+                } else {
+                    allTransactions.append(balance) // MARK: Not sure about that
                 }
-            } else {
-                allTransactions.append(balance) // MARK: Not sure about that
             }
         }
         //        let gradientColor = AAGradientColor.linearGradient(
@@ -151,6 +184,7 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return months.count
     }
@@ -187,6 +221,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
         return items.count
@@ -228,6 +263,42 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
+    }
+}
+
+extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearArray[row].description
+    }
+    
+    func showYearAlertPicker() {
+        let alertView = UIAlertController(title: "Choose the year", message: "\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: 260, height: 142))
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        alertView.view.addSubview(pickerView)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: { [self] _ in
+            let selectedyear = yearArray[pickerView.selectedRow(inComponent: 0)]
+            navigationItem.rightBarButtonItem?.title = selectedyear.description
+            currentYear = selectedyear
+            loadData()
+        })
+        alertView.addAction(action)
+        alertView.addAction(cancelAction)
+        present(alertView, animated: true, completion: {
+            pickerView.frame.size.width = alertView.view.frame.size.width
+            pickerView.selectRow(Int(self.currentYear.description.dropFirst().dropFirst().description) ?? 0, inComponent: 0, animated: true)
+        })
     }
 }
 

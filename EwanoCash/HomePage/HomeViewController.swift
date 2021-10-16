@@ -36,6 +36,10 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async { [self] in
                     updateListViewForItems()
                     collectionView.reloadData()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        self.tableView.reloadData()
+                    }
+                    tableView.reloadData()
                     if !isCollectionViewScrolledToCurrentMonth {
                         collectionView.scrollToItem(at: IndexPath(row: Date().get(.month)-1, section: 0), at: .centeredVertically, animated: true)
                         isCollectionViewScrolledToCurrentMonth = true
@@ -54,9 +58,6 @@ class HomeViewController: UIViewController {
         addYearButtonToNavigationBar()
         setTabBarsStyle()
         loadData()
-        
-        collectionView.reloadData()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +69,6 @@ class HomeViewController: UIViewController {
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
         collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
-        
     }
     
     func setTabBarsStyle() {
@@ -149,7 +149,6 @@ class HomeViewController: UIViewController {
     }
     
     func getData(of path: IndexPath?)-> [TransactionData] {
-        #warning("")
         if let indexPath = path,
            months.indices.contains(indexPath.row) {
             let month: String = months[indexPath.row]
@@ -218,11 +217,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-    
-    
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
         return items.count
@@ -305,6 +303,7 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 extension HomeViewController: TransferViewControllerDelegate {
+    
     func insertedNewData(item: TransactionData) {
         allItems = DataManager.shared.transactions
         allItems.append(item)

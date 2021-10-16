@@ -95,19 +95,6 @@ class HomeViewController: UIViewController {
     @objc func navigationYearButtonAction() {
         showYearAlertPicker()
     }
-    
-    func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
-    }
-    
-    func getDataFromUserDefault() -> [TransactionData] {
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                return transferData
-            }
-        }
-        return []
-    }
 
     func getChartData(for path: IndexPath?) -> AAChartModel {
         var balance: Int = 0
@@ -297,7 +284,7 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         })
         alertView.addAction(action)
         alertView.addAction(cancelAction)
-        present(alertView, animated: true, completion: { [self] in
+        present(alertView, animated: true, completion: {
             pickerView.frame.size.width = alertView.view.frame.size.width
             if let firstIndex = yearArray.firstIndex(of: currentYear) {
                 pickerView.selectRow(firstIndex, inComponent: 0, animated: true)

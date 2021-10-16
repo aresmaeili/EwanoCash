@@ -70,7 +70,7 @@ extension TotalSummaryViewController {
     func loadChartData() {
         let gradientColor = AAGradientColor.linearGradient(direction: .toBottom, startColor: "#ADD8F9", endColor: "#ffffff00")
         isTableAutoReloadEnabled = false
-        items = getData()
+        items = DataManager.shared.transactions
         isTableAutoReloadEnabled = true
         var balance: Int = 0
         var allTransactions: [Int] = []
@@ -97,20 +97,10 @@ extension TotalSummaryViewController {
             ])
         chartView.aa_drawChartWithChartModel(data)
     }
-    
-    func getData() -> [TransactionData] {
-        if let data = UserDefaults.standard.value(forKey:"listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                return transferData //+ transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData + transferData // MARK: Uncomment to see the mass data
-            }
-        }
-        return []
-    }
 }
 
 // MARK: - TableView Functions
 extension TotalSummaryViewController : UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }

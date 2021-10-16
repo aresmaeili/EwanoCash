@@ -42,7 +42,7 @@ class AllExpencesViewController: UIViewController {
         navigationItem.title = "All Expences"
         let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
         navigationItem.rightBarButtonItem = butt
-
+        
         var statusBarHeight:CGFloat = 0
         let navigationbarHeight = (navigationController?.navigationBar.bounds.size.height) ?? 44
         if #available(iOS 13.0, *) {
@@ -51,13 +51,13 @@ class AllExpencesViewController: UIViewController {
             statusBarHeight = 20
         }
         let searchBar = UISearchBar()
-           searchBar.placeholder = "Search"
+        searchBar.placeholder = "Search"
         searchBar.frame = CGRect(x: 0, y: navigationbarHeight + statusBarHeight, width: view.frame.width, height: 64)
-           searchBar.barStyle = .default
-           searchBar.isTranslucent = false
-           searchBar.barTintColor = UIColor.groupTableViewBackground
-           searchBar.backgroundImage = UIImage()
-           view.addSubview(searchBar)
+        searchBar.barStyle = .default
+        searchBar.isTranslucent = false
+        searchBar.barTintColor = UIColor.groupTableViewBackground
+        searchBar.backgroundImage = UIImage()
+        view.addSubview(searchBar)
     }
     
     @objc func navigationYearButtonAction() {
@@ -74,18 +74,10 @@ class AllExpencesViewController: UIViewController {
         }
     }
     
-    func saveDataToUserDefault() {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode( items ) , forKey: "listOfTransactions")
-    }
-    
     func loadData() {
         navigationItem.rightBarButtonItem?.title = currentYear.description
-        if let data = UserDefaults.standard.value(forKey: "listOfTransactions") as? Data {
-            if let transferData = try? PropertyListDecoder().decode(Array<TransactionData>.self, from: data) {
-                items = transferData.filter({$0.date.get(.year).description.contains(currentYear.description)})
-                daysForSection = items.compactMap{$0.date.getPrettyDate().description}
-            }
-        }
+        items = DataManager.shared.transactions.filter({$0.date.get(.year).description.contains(currentYear.description)})
+        daysForSection = items.compactMap{$0.date.getPrettyDate().description}
     }
 }
 
@@ -118,7 +110,7 @@ extension AllExpencesViewController: UIPickerViewDataSource, UIPickerViewDelegat
         })
         alertView.addAction(action)
         alertView.addAction(cancelAction)
-        present(alertView, animated: true, completion: { [self] in
+        present(alertView, animated: true, completion: {
             pickerView.frame.size.width = alertView.view.frame.size.width
             if let firstIndex = yearArray.firstIndex(of: currentYear) {
                 pickerView.selectRow(firstIndex, inComponent: 0, animated: true)
@@ -128,7 +120,6 @@ extension AllExpencesViewController: UIPickerViewDataSource, UIPickerViewDelegat
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
@@ -163,14 +154,15 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            //            tableView.beginUpdates()
-            items.remove(at: indexPath.section)
-            
-            saveDataToUserDefault()
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            //            tableView.endUpdates()
-            tableView.reloadData()
-            updateListViewForItems()
+            if items.indices.contains(indexPath.row) {
+//                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
+//                    items.remove(at: index)
+//                    DataManager.shared.transactions = allItems
+//                    items =
+//                    tableView.reloadData()
+//                    updateListViewForItems()
+//                }
+            }
         }
     }
     

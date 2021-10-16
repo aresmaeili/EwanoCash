@@ -11,9 +11,11 @@ class AllExpencesViewController: UIViewController {
     
     @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var items = [TransactionData]()
+    var filteredItems = [TransactionData]()
     var daysForSection : [String] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -24,18 +26,25 @@ class AllExpencesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupNavigationBar()
-        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
+        setupTableView()
+        setupSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         loadData()
         tableView.reloadData()
         updateListViewForItems()
+    }
+    
+    func setupTableView() {
+        tableView.register(UINib(nibName: "HomeTableViewCell", bundle: nil), forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
     }
     
     func setupNavigationBar() {
@@ -50,14 +59,6 @@ class AllExpencesViewController: UIViewController {
         } else {
             statusBarHeight = 20
         }
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
-        searchBar.frame = CGRect(x: 0, y: navigationbarHeight + statusBarHeight, width: view.frame.width, height: 64)
-        searchBar.barStyle = .default
-        searchBar.isTranslucent = false
-        searchBar.barTintColor = UIColor.groupTableViewBackground
-        searchBar.backgroundImage = UIImage()
-        view.addSubview(searchBar)
     }
     
     @objc func navigationYearButtonAction() {
@@ -120,36 +121,27 @@ extension AllExpencesViewController: UIPickerViewDataSource, UIPickerViewDelegat
 }
 
 extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredItems.isEmpty ? items.count : filteredItems.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
         if items.isEmpty { return cell }
-        if items.indices.contains(indexPath.section) {
-            let item = items[indexPath.section]
-            cell.itemTitle.text = item.title
-            cell.itemDate.text = item.date.getPrettyDate()
-            if item.isIncome {
-                cell.itemImage.image = UIImage(named: "chevron_down")
-                cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = "$" + item.amount.description
-            } else {
-                cell.itemImage.image = UIImage(named: "chevron_up")
-                cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = "$" + item.amount.description
-            }
+        let item = filteredItems.isEmpty ? items[indexPath.row] : filteredItems[indexPath.row]
+        cell.itemTitle.text = item.title
+        cell.itemDate.text = item.date.getPrettyDate()
+        if item.isIncome {
+            cell.itemImage.image = UIImage(named: "chevron_down")
+            cell.itemImage.tintColor = .systemGreen
+            cell.itemPrice.text = "$" + item.amount.description
+        } else {
+            cell.itemImage.image = UIImage(named: "chevron_up")
+            cell.itemImage.tintColor = .systemRed
+            cell.itemPrice.text = "$" + item.amount.description
         }
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return daysForSection.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return daysForSection[section]
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -168,5 +160,20 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
+    }
+}
+
+extension AllExpencesViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredItems = items.filter({$0.title.lowercased().contains(searchText.lowercased())})
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func setupSearchBar() {
+        searchBar.placeholder = "Search"
+        searchBar.delegate = self
     }
 }

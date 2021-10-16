@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="bPD-rf-z1U">
-                                <rect key="frame" x="0.0" y="388" width="414" height="508"/>
+                                <rect key="frame" x="0.0" y="398" width="414" height="498"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="and-td-V4H" userLabel="TopView">
@@ -50,7 +50,7 @@
                         <viewLayoutGuide key="safeArea" id="ood-R5-Ojb"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="bPD-rf-z1U" firstAttribute="top" secondItem="and-td-V4H" secondAttribute="bottom" id="5JR-al-Sav"/>
+                            <constraint firstItem="bPD-rf-z1U" firstAttribute="top" secondItem="and-td-V4H" secondAttribute="bottom" constant="10" id="5JR-al-Sav"/>
                             <constraint firstItem="and-td-V4H" firstAttribute="trailing" secondItem="ood-R5-Ojb" secondAttribute="trailing" id="Cq6-gx-UND"/>
                             <constraint firstAttribute="bottom" secondItem="bPD-rf-z1U" secondAttribute="bottom" id="JbB-v1-5Mu"/>
                             <constraint firstItem="and-td-V4H" firstAttribute="leading" secondItem="ood-R5-Ojb" secondAttribute="leading" id="R2r-U1-VON"/>

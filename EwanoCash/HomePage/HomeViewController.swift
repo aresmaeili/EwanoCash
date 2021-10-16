@@ -57,18 +57,21 @@ class HomeViewController: UIViewController {
         setupCollectionView()
         addYearButtonToNavigationBar()
         setTabBarsStyle()
-        loadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadData()
     }
     
     func loadData() {
         navigationItem.leftBarButtonItem?.title = currentYear.description
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
-        collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
+        
+        if !isCollectionViewScrolledToCurrentMonth == true {
+            collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
+        }
     }
     
     func setTabBarsStyle() {

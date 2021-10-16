@@ -136,7 +136,10 @@ extension TransferViewController {
     func addButtonDidTapped() {
         var transactionTitle = "Default"
         transactionTitle = transactionTitletextField.text ?? ""
-        let amount = (Int(priceTextField.text ?? "0") ?? 0)
+        var amount = (Int(priceTextField.text ?? "0") ?? 0)
+        if !isIncome {
+            amount = amount * -1
+        }
         let item = TransactionData(title: transactionTitle, amount: amount, date: datePickerTextField.text!.toDate() ?? Date(), isIncome: isIncome)
 
         if transactionTitle == "" || transactionTitle == "$" || costTransferedLabel.text == "" {

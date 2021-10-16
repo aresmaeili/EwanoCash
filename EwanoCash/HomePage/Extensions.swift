@@ -39,11 +39,23 @@ extension UITextField {
         toolBar.setItems([cancel , flexibleSpace , done], animated: false)
         inputAccessoryView = toolBar
     }
+    
+    func setLeftPaddingPoints(_ amount:CGFloat){
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
+        self.leftView = paddingView
+        self.leftViewMode = .always
+    }
+    func setRightPaddingPoints(_ amount:CGFloat) {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
+        self.rightView = paddingView
+        self.rightViewMode = .always
+    }
 }
 
 extension UIViewController {
-    func dismissKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer( target:     self, action:    #selector(UIViewController.dismissKeyboardTouchOutside))
+    
+    func dismissKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
@@ -60,6 +72,10 @@ extension String {
         dateFormatter.dateStyle = DateFormatter.Style.medium
         //        2021-10-12 16:31:11 +0000
         return dateFormatter.date(from: self)
+    }
+    
+    var isNumeric: Bool {
+        return NumberFormatter().number(from: self) != nil
     }
 }
 
@@ -89,4 +105,22 @@ extension Date {
         formatter.timeStyle = .short
         return formatter.string(from: self)
     }
+}
+
+extension Numeric {
+    var formattedWithSeparator: String {
+        return Formatter.withSeparator.string(for: self) ?? ""
+    }
+}
+
+extension Formatter {
+    /**
+       This variable adds number formatting (for example a "," character) to any number
+    */
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 }

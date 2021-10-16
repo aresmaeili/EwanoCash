@@ -23,7 +23,7 @@ class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    var isCollectionViewScrolledToCurrentMonth = false
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
     var allItems: [TransactionData] = []
@@ -36,6 +36,14 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async { [self] in
                     updateListViewForItems()
                     collectionView.reloadData()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        self.tableView.reloadData()
+                    }
+                    tableView.reloadData()
+                    if !isCollectionViewScrolledToCurrentMonth {
+                        collectionView.scrollToItem(at: IndexPath(row: Date().get(.month)-1, section: 0), at: .centeredVertically, animated: true)
+                        isCollectionViewScrolledToCurrentMonth = true
+                    }
                 }
             }
         }
@@ -54,13 +62,13 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     func loadData() {
         navigationItem.leftBarButtonItem?.title = currentYear.description
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
+        collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
     }
     
     func setTabBarsStyle() {
@@ -141,7 +149,6 @@ class HomeViewController: UIViewController {
     }
     
     func getData(of path: IndexPath?)-> [TransactionData] {
-        #warning("")
         if let indexPath = path,
            months.indices.contains(indexPath.row) {
             let month: String = months[indexPath.row]
@@ -213,6 +220,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
         return items.count
@@ -223,17 +231,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
         if items.isEmpty { return cell }
         if items.indices.contains(indexPath.row) {
             let item = items[indexPath.row]
-            cell.itemTitle.text = item.title
-            cell.itemDate.text = item.date.getPrettyDate()
-            if item.isIncome {
-                cell.itemImage.image = UIImage(named: "chevron_down")
-                cell.itemImage.tintColor = .systemGreen
-                cell.itemPrice.text = item.amount.description
-            } else {
-                cell.itemImage.image = UIImage(named: "chevron_up")
-                cell.itemImage.tintColor = .systemRed
-                cell.itemPrice.text = item.amount.description
-            }
+            cell.fill(with: item)
         }
         return cell
     }
@@ -295,6 +293,7 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 extension HomeViewController: TransferViewControllerDelegate {
+    
     func insertedNewData(item: TransactionData) {
         allItems = DataManager.shared.transactions
         allItems.append(item)

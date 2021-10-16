@@ -52,7 +52,7 @@ class TransferViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dismissKeyboard()
+        self.dismissKeyboardWhenTappedAround()
         transactionTypeSegment.tintColor = UIColor.systemBlue
         transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
         transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
@@ -61,6 +61,8 @@ class TransferViewController: UIViewController {
         costTransferedLabel.clipsToBounds = true
         addButton.layer.cornerRadius = 25
         cancelButton.layer.cornerRadius = 25
+        priceTextField.setLeftPaddingPoints(20)
+        priceTextField.setRightPaddingPoints(20)
         
         if DataManager.shared.transactions.isEmpty {
             currentBalanceLabel.isHidden = false
@@ -99,7 +101,24 @@ class TransferViewController: UIViewController {
 
 extension TransferViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
+        if textField == transactionTitletextField{
+            textField.resignFirstResponder()
+            priceTextField.becomeFirstResponder()
+        }else{
+            priceTextField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == priceTextField {
+        let maxLength = 12
+        let currentString: NSString = textField.text! as NSString
+        let newString: NSString =
+            currentString.replacingCharacters(in: range, with: string) as NSString
+        let canChange = (newString.length <= maxLength) && (string.isNumeric || string == "")
+        return canChange
+        }
         return true
     }
 }
@@ -130,3 +149,4 @@ extension TransferViewController {
         }
     }
 }
+

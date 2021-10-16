@@ -73,6 +73,10 @@ extension String {
         //        2021-10-12 16:31:11 +0000
         return dateFormatter.date(from: self)
     }
+    
+    var isNumeric: Bool {
+        return NumberFormatter().number(from: self) != nil
+    }
 }
 
 extension Date {

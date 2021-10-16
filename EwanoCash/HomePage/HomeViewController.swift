@@ -24,11 +24,14 @@ class HomeViewController: UIViewController {
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
     var allItems: [TransactionData] = []
-    var items: [TransactionData] = [] {
-        didSet {
+    var items: [TransactionData] {
+        get {
+            return getData(of: collectionView.indexPathsForVisibleItems.first)
+        }
+        set {
             if isTableAutoReloadEnabled {
                 DispatchQueue.main.async { [self] in
-                    makeOutcomesNegetive()
+                    updateListViewForItems()
                     collectionView.reloadData()
                 }
             }
@@ -46,9 +49,14 @@ class HomeViewController: UIViewController {
         loadData()
     }
     
-   func loadData() {
-        allItems = getDataFromUserDefault()
-        items = allItems
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    func loadData() {
+        allItems = DataManager.shared.transactions
+        items = getData(of: collectionView.indexPathsForVisibleItems.first)
     }
     
     func setTabBarsStyle() {
@@ -97,13 +105,10 @@ class HomeViewController: UIViewController {
         }
         return []
     }
-    
+
     func getChartData(for path: IndexPath?) -> AAChartModel {
-        isTableAutoReloadEnabled = false
-        items = getData(of: path)
-        isTableAutoReloadEnabled = true
-        var balance: Double = 0
-        var allTransactions: [Double] = []
+        var balance: Int = 0
+        var allTransactions: [Int] = []
         for i in 0...31 {
             if items.compactMap({$0.date.get(.year)}).contains(currentYear) {
                 if items.compactMap({$0.date.get(.day)}).contains(i) {
@@ -145,7 +150,7 @@ class HomeViewController: UIViewController {
     }
     
     func getData(of path: IndexPath?)-> [TransactionData] {
-        if let indexPath = collectionView.indexPathsForVisibleItems.first,
+        if let indexPath = path,
            months.indices.contains(indexPath.row) {
             let month: String = months[indexPath.row]
             let items = allItems.filter({$0.date.getStringMonth().lowercased() == month.lowercased()}).sorted(by:{$0.date.get(.day) < $1.date.get(.day)})
@@ -176,16 +181,6 @@ class HomeViewController: UIViewController {
         let days = cal.range(of: .day, in: .month, for: date)
         return days.hashValue
     }
-    
-    func makeOutcomesNegetive() {
-        for i in 0..<items.count {
-            if !items[i].isIncome {
-                if items[i].amount > 0 {
-                    items[i].amount = items[i].amount * -1
-                }
-            }
-        }
-    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -208,8 +203,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == collectionView {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+                items = getData(of: collectionView.indexPathsForVisibleItems.first)
+                tableView.reloadData()
             }
         }
     }
@@ -228,7 +224,7 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         updateListViewForItems()
-        return getData(of: collectionView.indexPathsForVisibleItems.first).count
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -254,11 +250,12 @@ extension HomeViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if items.indices.contains(indexPath.row) {
-                tableView.beginUpdates()
-                items.remove(at: indexPath.row)
-                saveDataToUserDefault()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.endUpdates()
+                if let index = allItems.firstIndex(where: {$0 == items[indexPath.row]}) {
+                    allItems.remove(at: index)
+                    DataManager.shared.transactions = allItems
+                    items = getData(of: collectionView.indexPathsForVisibleItems.first)
+                    tableView.reloadData()
+                }
             }
         }
         return
@@ -306,10 +303,11 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 extension HomeViewController: TransferViewControllerDelegate {
-    
-    func insertedNewData() {
-        allItems = getDataFromUserDefault()
-        items = allItems
+    func insertedNewData(item: TransactionData) {
+        allItems = DataManager.shared.transactions
+        allItems.append(item)
+        DataManager.shared.transactions = allItems
+        items = getData(of: collectionView.indexPathsForVisibleItems.first)
         tableView.reloadData()
     }
 }

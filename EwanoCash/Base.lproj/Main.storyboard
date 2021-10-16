@@ -391,7 +391,7 @@
                                                     <constraint firstAttribute="height" constant="50" id="pf7-Ya-wYd"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="52"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="OjT-TP-Nkr">
                                                 <rect key="frame" x="21" y="232.5" width="32" height="40"/>

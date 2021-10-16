@@ -7,10 +7,9 @@
 
 import Foundation
 
-
-struct TransactionData: Codable {
+struct TransactionData: Codable, Equatable {
     var title = ""
-    var amount: Double = 0
+    var amount: Int = 0
     var date: Date
     var isIncome = true
 }

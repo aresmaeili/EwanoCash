@@ -23,7 +23,7 @@ class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    var isCollectionViewScrolledToCurrentMonth = false
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
     var allItems: [TransactionData] = []
@@ -36,6 +36,10 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async { [self] in
                     updateListViewForItems()
                     collectionView.reloadData()
+                    if !isCollectionViewScrolledToCurrentMonth {
+                        collectionView.scrollToItem(at: IndexPath(row: Date().get(.month)-1, section: 0), at: .centeredVertically, animated: true)
+                        isCollectionViewScrolledToCurrentMonth = true
+                    }
                 }
             }
         }
@@ -50,17 +54,21 @@ class HomeViewController: UIViewController {
         addYearButtonToNavigationBar()
         setTabBarsStyle()
         loadData()
+        
+        collectionView.reloadData()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     func loadData() {
         navigationItem.leftBarButtonItem?.title = currentYear.description
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
+        collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
+        
     }
     
     func setTabBarsStyle() {
@@ -210,6 +218,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
+    
+    
 }
 
 extension HomeViewController: UITableViewDelegate , UITableViewDataSource {

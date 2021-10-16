@@ -130,14 +130,12 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if items.indices.contains(indexPath.row) {
-                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
-                    items.remove(at: index)
-                    DataManager.shared.transactions = items
-                    loadData()
-                    tableView.reloadData()
-                    updateListViewForItems()
-                }
+            if items.indices.contains(indexPath.section) {
+                items.remove(at: indexPath.section)
+                DataManager.shared.transactions = items
+                loadData()
+                tableView.reloadData()
+                updateListViewForItems()
             }
         }
     }

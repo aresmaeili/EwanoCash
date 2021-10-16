@@ -12,7 +12,6 @@ class AllExpencesViewController: UIViewController {
     @IBOutlet weak var listStatusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var items = [TransactionData]()
     var daysForSection : [String] = [] {
         didSet {
@@ -155,13 +154,13 @@ extension AllExpencesViewController : UITableViewDelegate , UITableViewDataSourc
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if items.indices.contains(indexPath.row) {
-//                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
-//                    items.remove(at: index)
-//                    DataManager.shared.transactions = allItems
-//                    items =
-//                    tableView.reloadData()
-//                    updateListViewForItems()
-//                }
+                if let index = items.firstIndex(where: {$0 == items[indexPath.row]}) {
+                    items.remove(at: index)
+                    DataManager.shared.transactions = items
+                    loadData()
+                    tableView.reloadData()
+                    updateListViewForItems()
+                }
             }
         }
     }

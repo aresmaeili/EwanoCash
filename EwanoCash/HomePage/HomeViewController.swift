@@ -10,6 +10,7 @@ import AAInfographics
 
 var yearArray: [Int]!
 var currentYear = Date().get(.year)
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 class HomeViewController: UIViewController {
     

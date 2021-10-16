@@ -69,7 +69,7 @@ class HomeViewController: UIViewController {
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
         
-        if !isCollectionViewScrolledToCurrentMonth == true {
+        if !isCollectionViewScrolledToCurrentMonth  {
             collectionView.scrollToItem(at: IndexPath(row: Date().get(.month), section: 0), at: .left, animated: true)
         }
     }

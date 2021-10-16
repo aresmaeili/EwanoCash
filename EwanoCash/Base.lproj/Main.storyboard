@@ -88,7 +88,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="XIh-In-Z6V"/>
                                 </constraints>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cXr-Rm-dSY">
                                 <rect key="frame" x="0.0" y="138" width="414" height="758"/>
@@ -141,16 +141,16 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="240"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gq5-uT-Nmf">
-                                                <rect key="frame" x="20" y="0.0" width="374" height="30"/>
+                                                <rect key="frame" x="20" y="0.0" width="374" height="0.0"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="UYH-8b-oEh"/>
+                                                    <constraint firstAttribute="height" id="UYH-8b-oEh"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KrR-pg-d9g" userLabel="totalSummeryChartView">
-                                                <rect key="frame" x="10" y="40" width="394" height="190"/>
+                                                <rect key="frame" x="10" y="10" width="394" height="220"/>
                                                 <color key="backgroundColor" red="0.95343607659999996" green="0.94294714930000001" blue="0.8343961835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
                                         </subviews>
@@ -362,7 +362,7 @@
                                                     <constraint firstAttribute="height" constant="50" id="1Wk-WN-lob"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                                             </textField>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DaI-CN-IxD">
                                                 <rect key="frame" x="126" y="167.5" width="162" height="40"/>

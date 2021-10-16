@@ -52,7 +52,7 @@ class TransferViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dismissKeyboard()
+        self.dismissKeyboardWhenTappedAround()
         transactionTypeSegment.tintColor = UIColor.systemBlue
         transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
         transactionTypeSegment.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)

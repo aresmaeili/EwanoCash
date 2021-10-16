@@ -37,6 +37,7 @@ class AllExpencesViewController: UIViewController {
         loadData()
         tableView.reloadData()
         updateListViewForItems()
+        dismissKeyboardWhenTappedAround()
     }
     
     func setupTableView() {
@@ -51,13 +52,7 @@ class AllExpencesViewController: UIViewController {
         let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
         navigationItem.rightBarButtonItem = butt
         
-        var statusBarHeight:CGFloat = 0
-        let navigationbarHeight = (navigationController?.navigationBar.bounds.size.height) ?? 44
-        if #available(iOS 13.0, *) {
-            statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        } else {
-            statusBarHeight = 20
-        }
+
     }
     
     @objc func navigationYearButtonAction() {
@@ -171,8 +166,13 @@ extension AllExpencesViewController: UISearchBarDelegate {
         }
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
     func setupSearchBar() {
         searchBar.placeholder = "Search"
         searchBar.delegate = self
+        
     }
 }

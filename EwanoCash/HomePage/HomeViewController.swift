@@ -8,6 +8,9 @@
 import UIKit
 import AAInfographics
 
+var yearArray: [Int]!
+var currentYear = Date().get(.year)
+
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,8 +22,6 @@ class HomeViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    let yearArray = Array(2000...2030)
-    var currentYear = Date().get(.year)
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var monthValue : String = ""
     var isTableAutoReloadEnabled = true
@@ -38,10 +39,10 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        yearArray = Array(1980...currentYear)
         navigationItem.title = "Home"
         setupTableView()
         setupCollectionView()
@@ -56,6 +57,7 @@ class HomeViewController: UIViewController {
     }
     
     func loadData() {
+        navigationItem.leftBarButtonItem?.title = currentYear.description
         allItems = DataManager.shared.transactions
         items = getData(of: collectionView.indexPathsForVisibleItems.first)
     }
@@ -86,7 +88,7 @@ class HomeViewController: UIViewController {
     }
     
     func addYearButtonToNavigationBar() {
-        let butt = UIBarButtonItem(title: Date().get(.year).description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
+        let butt = UIBarButtonItem(title: currentYear.description, style: .plain, target: self, action: #selector(navigationYearButtonAction))
         navigationItem.leftBarButtonItem = butt
     }
     
@@ -290,15 +292,16 @@ extension HomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         let action = UIAlertAction(title: "OK", style: .default, handler: { [self] _ in
             let selectedyear = yearArray[pickerView.selectedRow(inComponent: 0)]
-            navigationItem.rightBarButtonItem?.title = selectedyear.description
             currentYear = selectedyear
             loadData()
         })
         alertView.addAction(action)
         alertView.addAction(cancelAction)
-        present(alertView, animated: true, completion: {
+        present(alertView, animated: true, completion: { [self] in
             pickerView.frame.size.width = alertView.view.frame.size.width
-            pickerView.selectRow(Int(self.currentYear.description.dropFirst().dropFirst().description) ?? 0, inComponent: 0, animated: true)
+            if let firstIndex = yearArray.firstIndex(of: currentYear) {
+                pickerView.selectRow(firstIndex, inComponent: 0, animated: true)
+            }
         })
     }
 }

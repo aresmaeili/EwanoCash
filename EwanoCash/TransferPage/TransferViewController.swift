@@ -61,6 +61,8 @@ class TransferViewController: UIViewController {
         costTransferedLabel.clipsToBounds = true
         addButton.layer.cornerRadius = 25
         cancelButton.layer.cornerRadius = 25
+        priceTextField.setLeftPaddingPoints(20)
+        priceTextField.setRightPaddingPoints(20)
         
         if DataManager.shared.transactions.isEmpty {
             currentBalanceLabel.isHidden = false
@@ -139,5 +141,4 @@ extension TransferViewController {
         }
     }
 }
-
 
